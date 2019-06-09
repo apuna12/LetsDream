@@ -5,17 +5,85 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/sky"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:showIn="@layout/app_bar_main"
         tools:context=".MainActivity">
 
-    <TextView
+        <ImageView
+            android:id="@+id/star_imageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_star"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/graph_imageView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.5"/>
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hello World!"
+            android:text="@string/main_layout_akcie"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintStart_toStartOf="@id/star_imageView"
+            app:layout_constraintEnd_toEndOf="@id/star_imageView"
+            app:layout_constraintTop_toBottomOf="@id/star_imageView"/>
+
+        <ImageView
+            android:id="@+id/graph_imageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_person"
+            app:layout_constraintStart_toEndOf="@id/star_imageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintVertical_bias="0.5"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/main_layout_statistika"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintStart_toStartOf="@id/graph_imageView"
+            app:layout_constraintEnd_toEndOf="@id/graph_imageView"
+            app:layout_constraintTop_toBottomOf="@id/graph_imageView"/>
+
+        <ImageView
+            android:id="@+id/person_imageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_person"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/door_imageView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.8"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/main_layout_vyber_mena"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintStart_toStartOf="@id/person_imageView"
+            app:layout_constraintEnd_toEndOf="@id/person_imageView"
+            app:layout_constraintTop_toBottomOf="@id/person_imageView"/>
+
+        <ImageView
+            android:id="@+id/door_imageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_person"
+            app:layout_constraintStart_toEndOf="@id/person_imageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.8"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/main_layout_akcie"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintStart_toStartOf="@id/door_imageView"
+            app:layout_constraintEnd_toEndOf="@id/door_imageView"
+            app:layout_constraintTop_toBottomOf="@id/door_imageView"/>
 
 </android.support.constraint.ConstraintLayout>
