@@ -11,6 +11,11 @@ import android.support.design.widget.NavigationView
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
+import android.widget.TextView
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -20,6 +25,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+
+        val time: TextView = findViewById(R.id.timeTW)
+        val date: TextView = findViewById(R.id.full_dateTW)
+
+        val timeFormatter: SimpleDateFormat = SimpleDateFormat("HH:mm")
+        val dateFormatter: SimpleDateFormat = SimpleDateFormat("dd.MM.yyyy")
+        val currentTime = timeFormatter.format(Date())
+        val currentDate = dateFormatter.format(Date())
+        time.text = currentTime
+        date.text = currentDate
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
