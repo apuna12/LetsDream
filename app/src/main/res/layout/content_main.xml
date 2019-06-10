@@ -11,9 +11,24 @@
         tools:context=".MainActivity">
 
         <ImageView
+            android:id="@+id/logo_letsdream"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:src="@mipmap/ic_letsdream"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.03" />
+
+        <ImageView
             android:id="@+id/star_imageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@drawable/ic_star"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/graph_imageView"
@@ -31,9 +46,9 @@
 
         <ImageView
             android:id="@+id/graph_imageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/ic_person"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_statistics"
             app:layout_constraintStart_toEndOf="@id/star_imageView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -50,8 +65,8 @@
 
         <ImageView
             android:id="@+id/person_imageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@drawable/ic_person"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/door_imageView"
@@ -69,9 +84,10 @@
 
         <ImageView
             android:id="@+id/door_imageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/ic_person"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_doors"
+            android:scaleX="-1"
             app:layout_constraintStart_toEndOf="@id/person_imageView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -80,7 +96,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/main_layout_akcie"
+            android:text="@string/main_layout_prichod_odchod"
             android:textColor="@color/colorWhite"
             app:layout_constraintStart_toStartOf="@id/door_imageView"
             app:layout_constraintEnd_toEndOf="@id/door_imageView"
