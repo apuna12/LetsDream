@@ -1,6 +1,8 @@
 package sk.letsdream
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
@@ -26,15 +28,41 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val time: TextView = findViewById(R.id.timeTW)
         val date: TextView = findViewById(R.id.full_dateTW)
+        val time: TextView = findViewById(R.id.timeTW)
 
         val timeFormatter: SimpleDateFormat = SimpleDateFormat("HH:mm")
         val dateFormatter: SimpleDateFormat = SimpleDateFormat("dd.MM.yyyy")
-        val currentTime = timeFormatter.format(Date())
-        val currentDate = dateFormatter.format(Date())
-        time.text = currentTime
-        date.text = currentDate
+
+
+        val timeThread = object : Thread() {
+
+            override fun run() {
+                try {
+                    while (!this.isInterrupted) {
+                        Thread.sleep(1000)
+
+                            val currentDate = dateFormatter.format(Date())
+                            val currentTime = timeFormatter.format(Date())
+
+                            time.text = currentTime
+                            date.text = currentDate
+
+                    }
+                } catch (e: InterruptedException) {
+                }
+
+            }
+        }
+
+        timeThread.start()
+
+
+
+
+
+
+
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
