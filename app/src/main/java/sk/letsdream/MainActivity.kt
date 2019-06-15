@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.widget.TextView
+import sk.letsdream.helperMethods.ButtonEffects
 import sk.letsdream.helperMethods.TimeMethods
 import java.text.SimpleDateFormat
 
@@ -27,11 +28,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val date: TextView = findViewById(R.id.full_dateTW)
         val time: TextView = findViewById(R.id.timeTW)
 
-        val timeFormatter: SimpleDateFormat = SimpleDateFormat("HH:mm")
-        val dateFormatter: SimpleDateFormat = SimpleDateFormat("dd.MM.yyyy")
-
         val timeMethod: TimeMethods = TimeMethods()
+        val buttonEffects: ButtonEffects = ButtonEffects()
+
         timeMethod.UpdateActualTime(date,time)
+        buttonEffects.ButtonClickEffect(findViewById(R.id.graph_imageButton))
+        buttonEffects.ButtonClickEffect(findViewById(R.id.star_imageButton))
+        buttonEffects.ButtonClickEffect(findViewById(R.id.person_imageButton))
+        buttonEffects.ButtonClickEffect(findViewById(R.id.door_imageButton))
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->

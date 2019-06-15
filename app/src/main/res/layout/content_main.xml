@@ -29,104 +29,133 @@
             android:id="@+id/full_dateTW"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
-            android:layout_marginLeft="48dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="52dp"
+            android:layout_marginLeft="52dp"
+            android:layout_marginTop="40dp"
             android:text="dd.MM.YYYY"
             android:textColor="@color/colorWhite"
-            app:layout_constraintBottom_toTopOf="@+id/star_imageView"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/logo_letsdream"
-            app:layout_constraintVertical_bias="0.344" />
+            app:layout_constraintTop_toBottomOf="@+id/logo_letsdream" />
 
         <TextView
             android:id="@+id/timeTW"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="48dp"
-            android:layout_marginRight="48dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="56dp"
+            android:layout_marginRight="56dp"
             android:text="HH:MM"
             android:textColor="@color/colorWhite"
-            app:layout_constraintBottom_toTopOf="@+id/graph_imageView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/logo_letsdream"
-            app:layout_constraintVertical_bias="0.344" />
+            app:layout_constraintTop_toBottomOf="@+id/logo_letsdream" />
 
-        <ImageView
-            android:id="@+id/star_imageView"
+        <ImageButton
+            android:id="@+id/star_imageButton"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/ic_star"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/ic_star"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/graph_imageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.282"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.499" />
+
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/textView3"
+            android:layout_width="37dp"
+            android:layout_height="20dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/main_layout_akcie"
             android:textColor="@color/colorWhite"
-            app:layout_constraintStart_toStartOf="@id/star_imageView"
-            app:layout_constraintEnd_toEndOf="@id/star_imageView"
-            app:layout_constraintTop_toBottomOf="@id/star_imageView"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/star_imageButton"
+            app:layout_constraintStart_toStartOf="@+id/star_imageButton"
+            app:layout_constraintTop_toBottomOf="@id/star_imageButton"
+            app:layout_constraintVertical_bias="0.003" />
 
-        <ImageView
-            android:id="@+id/graph_imageView"
+        <ImageButton
+            android:id="@+id/graph_imageButton"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/ic_statistics"
-            app:layout_constraintStart_toEndOf="@id/star_imageView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:background="@drawable/ic_statistics"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.5"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.717"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:text="@string/main_layout_statistika"
             android:textColor="@color/colorWhite"
-            app:layout_constraintStart_toStartOf="@id/graph_imageView"
-            app:layout_constraintEnd_toEndOf="@id/graph_imageView"
-            app:layout_constraintTop_toBottomOf="@id/graph_imageView"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/graph_imageButton"
+            app:layout_constraintStart_toStartOf="@+id/graph_imageButton"
+            app:layout_constraintTop_toBottomOf="@id/graph_imageButton"
+            app:layout_constraintVertical_bias="0.003" />
 
-        <ImageView
-            android:id="@+id/person_imageView"
+        <ImageButton
+            android:id="@+id/person_imageButton"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/ic_person"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/door_imageView"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/ic_person"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.8"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.282"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.8" />
+
         <TextView
+            android:id="@+id/textView5"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/main_layout_vyber_mena"
             android:textColor="@color/colorWhite"
-            app:layout_constraintStart_toStartOf="@id/person_imageView"
-            app:layout_constraintEnd_toEndOf="@id/person_imageView"
-            app:layout_constraintTop_toBottomOf="@id/person_imageView"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/person_imageButton"
+            app:layout_constraintStart_toStartOf="@+id/person_imageButton"
+            app:layout_constraintTop_toBottomOf="@id/person_imageButton"
+            app:layout_constraintVertical_bias="0.088" />
 
-        <ImageView
-            android:id="@+id/door_imageView"
+        <ImageButton
+            android:id="@+id/door_imageButton"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/ic_doors"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:background="@drawable/ic_doors"
             android:scaleX="-1"
-            app:layout_constraintStart_toEndOf="@id/person_imageView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.8"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.72"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.807" />
+
         <TextView
+            android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:text="@string/main_layout_prichod_odchod"
             android:textColor="@color/colorWhite"
-            app:layout_constraintStart_toStartOf="@id/door_imageView"
-            app:layout_constraintEnd_toEndOf="@id/door_imageView"
-            app:layout_constraintTop_toBottomOf="@id/door_imageView"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/door_imageButton"
+            app:layout_constraintStart_toStartOf="@+id/door_imageButton"
+            app:layout_constraintTop_toBottomOf="@id/door_imageButton"
+            app:layout_constraintVertical_bias="0.078" />
 
 </android.support.constraint.ConstraintLayout>
