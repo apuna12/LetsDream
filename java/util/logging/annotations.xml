@@ -1,0 +1,5 @@
+<root>
+    <item name='java.util.logging.Handler Handler()'>
+        <annotation name='java.lang.Deprecated' />
+    </item>
+</root>
