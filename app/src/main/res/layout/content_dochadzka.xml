@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/sky"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".DochadzkaActivity">
+
+    <TextView
+        android:id="@+id/prichodDatePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="330dp"
+        android:text="dd/mm/rrrr"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/prichodLABEL" />
+
+    <ImageView
+        android:id="@+id/logo_letsdream"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:src="@mipmap/ic_letsdream"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.03" />
+
+    <TextView
+        android:id="@+id/full_dateTW"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:layout_marginLeft="52dp"
+        android:layout_marginTop="40dp"
+        android:text="dd.MM.YYYY"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo_letsdream" />
+
+    <TextView
+        android:id="@+id/timeTW"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="56dp"
+        android:layout_marginRight="56dp"
+        android:text="HH:MM"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo_letsdream" />
+
+    <TextView
+        android:id="@+id/vybermenaLABEL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="76dp"
+        android:text="Výber mena"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/full_dateTW" />
+
+    <ImageView
+        android:id="@+id/person_labelIMAGE"
+        android:layout_width="35dp"
+        android:layout_height="34dp"
+        android:layout_marginBottom="380dp"
+        android:background="@drawable/ic_person"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/vybermenaLABEL" />
+
+    <Spinner
+        android:id="@+id/vybermenaSPINNER"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="388dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/person_labelIMAGE"></Spinner>
+
+    <TextView
+        android:id="@+id/odchodDatePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:text="dd/mm/rrrr"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintStart_toEndOf="@+id/odchodLABEL"
+        tools:layout_editor_absoluteY="436dp" />
+
+    <TextView
+        android:id="@+id/odchodTimePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="hh/mm"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/odchodDatePicker"
+        tools:layout_editor_absoluteY="436dp" />
+
+    <TextView
+        android:id="@+id/prichodTimePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="hh/mm"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/prichodDatePicker"
+        tools:layout_editor_absoluteY="381dp" />
+
+    <TextView
+        android:id="@+id/prichodLABEL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="40dp"
+        android:text="Príchod"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vybermenaLABEL" />
+
+    <TextView
+        android:id="@+id/odchodLABEL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="Odchod"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintTop_toBottomOf="@+id/prichodLABEL"
+        tools:layout_editor_absoluteX="52dp" />
+
+    <TextView
+        android:id="@+id/poznamkaLABEL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Poznámka"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintTop_toBottomOf="@+id/odchodLABEL"
+        tools:layout_editor_absoluteX="52dp" />
+
+    <TextView
+        android:id="@+id/poznamkaTW"
+        android:layout_width="198dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="216dp"
+        android:text="poznamkaaaaaaaaaaa"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/poznamkaLABEL" />
+
+</android.support.constraint.ConstraintLayout>
