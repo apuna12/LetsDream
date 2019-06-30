@@ -1,5 +1,6 @@
 package sk.letsdream
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
@@ -11,6 +12,7 @@ import android.support.design.widget.NavigationView
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
+import android.widget.ImageButton
 import android.widget.TextView
 import sk.letsdream.helperMethods.ButtonEffects
 import sk.letsdream.helperMethods.TimeMethods
@@ -27,6 +29,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val date: TextView = findViewById(R.id.full_dateTW)
         val time: TextView = findViewById(R.id.timeTW)
+
+        val dochadzka: ImageButton = findViewById(R.id.door_imageButton)
+        val meno: ImageButton = findViewById(R.id.person_imageButton)
+        val akcie: ImageButton = findViewById(R.id.star_imageButton)
+        val statistika: ImageButton = findViewById(R.id.graph_imageButton)
 
         val timeMethod: TimeMethods = TimeMethods()
         val buttonEffects: ButtonEffects = ButtonEffects()
@@ -51,6 +58,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
+
+
+        dochadzka.setOnClickListener{
+            val intent = Intent(this@MainActivity, DochadzkaActivity::class.java)
+            startActivity(intent)
+        }
+
+
     }
 
     override fun onBackPressed() {
