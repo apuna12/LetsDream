@@ -1,6 +1,10 @@
 package sk.letsdream
 
+import android.app.DatePickerDialog
+import android.app.PendingIntent.getActivity
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
@@ -11,19 +15,25 @@ import android.support.design.widget.NavigationView
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
+import android.widget.DatePicker
 import android.widget.TextView
 import sk.letsdream.helperMethods.ButtonEffects
 import sk.letsdream.helperMethods.TimeMethods
 import java.text.SimpleDateFormat
+import java.util.*
+import javax.xml.datatype.DatatypeConstants.MONTHS
+
+
 
 class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dochadzka)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        //setSupportActionBar(toolbar)
 
         val date: TextView = findViewById(R.id.full_dateTW)
         val time: TextView = findViewById(R.id.timeTW)
@@ -32,10 +42,10 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         val buttonEffects: ButtonEffects = ButtonEffects()
 
         timeMethod.UpdateActualTime(date,time)
-        buttonEffects.ButtonClickEffect(findViewById(R.id.graph_imageButton))
-        buttonEffects.ButtonClickEffect(findViewById(R.id.star_imageButton))
-        buttonEffects.ButtonClickEffect(findViewById(R.id.person_imageButton))
-        buttonEffects.ButtonClickEffect(findViewById(R.id.door_imageButton))
+        //buttonEffects.ButtonClickEffect(findViewById(R.id.graph_imageButton))
+        //buttonEffects.ButtonClickEffect(findViewById(R.id.star_imageButton))
+        //buttonEffects.ButtonClickEffect(findViewById(R.id.person_imageButton))
+        //buttonEffects.ButtonClickEffect(findViewById(R.id.door_imageButton))
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
@@ -51,6 +61,17 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
+
+
+        val prichodDatePicker: TextView = findViewById(R.id.prichodDatePicker)
+        val prichodTimePicker: TextView = findViewById(R.id.prichodTimePicker)
+        val odchodDatePicker: TextView = findViewById(R.id.odchodDatePicker)
+        val odchodTimePicker: TextView = findViewById(R.id.odchodTimePicker)
+
+        timeMethod.SetDatePicker(this, prichodDatePicker)
+        timeMethod.SetDatePicker(this, odchodDatePicker)
+        timeMethod.SetTimePicker(this, prichodTimePicker)
+        timeMethod.SetTimePicker(this, odchodTimePicker)
     }
 
     override fun onBackPressed() {

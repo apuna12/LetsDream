@@ -18,4 +18,8 @@
         <item name="colorAccent">@color/colorTyrkys</item>
     </style>
 
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/colorTyrkys</item>
+    </style>
+
 </resources>
