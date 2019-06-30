@@ -14,14 +14,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="330dp"
         android:text="dd/mm/rrrr"
         android:textColor="@color/colorWhite"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/prichodLABEL"
         app:layout_constraintStart_toEndOf="@+id/prichodLABEL"
-        app:layout_constraintTop_toBottomOf="@+id/person_labelIMAGE"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="@+id/prichodLABEL"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/logo_letsdream"
@@ -80,72 +78,61 @@
         android:id="@+id/person_labelIMAGE"
         android:layout_width="35dp"
         android:layout_height="34dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="380dp"
         android:background="@drawable/ic_person"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/vybermenaLABEL"
         app:layout_constraintStart_toEndOf="@+id/vybermenaLABEL"
-        app:layout_constraintTop_toBottomOf="@+id/full_dateTW"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="@+id/vybermenaLABEL" />
 
     <Spinner
         android:id="@+id/vybermenaSPINNER"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="388dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/person_labelIMAGE"
         app:layout_constraintStart_toEndOf="@+id/person_labelIMAGE"
-        app:layout_constraintTop_toBottomOf="@+id/full_dateTW"
+        app:layout_constraintTop_toTopOf="@+id/vybermenaLABEL"
         app:layout_constraintVertical_bias="1.0"></Spinner>
 
     <TextView
         android:id="@+id/odchodDatePicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="276dp"
+        android:layout_marginStart="28dp"
         android:text="dd/mm/rrrr"
         android:textColor="@color/colorWhite"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/odchodLABEL"
         app:layout_constraintStart_toEndOf="@+id/odchodLABEL"
-        app:layout_constraintTop_toBottomOf="@+id/prichodDatePicker"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="@+id/odchodLABEL"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/odchodTimePicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="276dp"
         android:text="hh/mm"
         android:textColor="@color/colorWhite"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/odchodDatePicker"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toEndOf="@+id/odchodDatePicker"
-        app:layout_constraintTop_toBottomOf="@+id/prichodTimePicker"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="@+id/odchodDatePicker"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/prichodTimePicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="328dp"
         android:text="hh/mm"
         android:textColor="@color/colorWhite"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/prichodDatePicker"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toEndOf="@+id/prichodDatePicker"
-        app:layout_constraintTop_toBottomOf="@+id/timeTW"
-        app:layout_constraintVertical_bias="0.984" />
+        app:layout_constraintTop_toTopOf="@+id/prichodDatePicker" />
 
     <TextView
         android:id="@+id/prichodLABEL"
@@ -194,16 +181,29 @@
         android:layout_width="198dp"
         android:layout_height="33dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="200dp"
+        android:textSize="15dp"
         android:text="poznamkaaaaaaaaaaa"
         android:textColor="@color/colorWhite"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/poznamkaLABEL"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/poznamkaLABEL"
-        app:layout_constraintTop_toBottomOf="@+id/odchodDatePicker"
-        app:layout_constraintVertical_bias="0.942" />
+        app:layout_constraintTop_toTopOf="@+id/poznamkaLABEL" />
 
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Odoslať"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.962" />
 </android.support.constraint.ConstraintLayout>
