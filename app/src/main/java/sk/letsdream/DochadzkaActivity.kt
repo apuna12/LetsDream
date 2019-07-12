@@ -2,6 +2,7 @@ package sk.letsdream
 
 import android.app.DatePickerDialog
 import android.app.PendingIntent.getActivity
+import android.database.SQLException
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
@@ -15,10 +16,18 @@ import android.support.design.widget.NavigationView
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
-import android.widget.DatePicker
-import android.widget.TextView
+import android.view.View
+import android.widget.*
+import kotlinx.android.synthetic.main.content_dochadzka.*
+import okhttp3.*
+import sk.letsdream.dbMethods.DBConnection
 import sk.letsdream.helperMethods.ButtonEffects
 import sk.letsdream.helperMethods.TimeMethods
+import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.URL
+import java.sql.Connection
+import java.sql.DriverManager
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.xml.datatype.DatatypeConstants.MONTHS
@@ -33,19 +42,17 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dochadzka)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
-        //setSupportActionBar(toolbar)
 
         val date: TextView = findViewById(R.id.full_dateTW)
         val time: TextView = findViewById(R.id.timeTW)
+        val submit: Button = findViewById(R.id.submitBtn)
+
 
         val timeMethod: TimeMethods = TimeMethods()
-        val buttonEffects: ButtonEffects = ButtonEffects()
+
+        var resp: String? = String()
 
         timeMethod.UpdateActualTime(date,time)
-        //buttonEffects.ButtonClickEffect(findViewById(R.id.graph_imageButton))
-        //buttonEffects.ButtonClickEffect(findViewById(R.id.star_imageButton))
-        //buttonEffects.ButtonClickEffect(findViewById(R.id.person_imageButton))
-        //buttonEffects.ButtonClickEffect(findViewById(R.id.door_imageButton))
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
@@ -67,11 +74,53 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         val prichodTimePicker: TextView = findViewById(R.id.prichodTimePicker)
         val odchodDatePicker: TextView = findViewById(R.id.odchodDatePicker)
         val odchodTimePicker: TextView = findViewById(R.id.odchodTimePicker)
+        val poznamka: EditText = findViewById(R.id.poznamkaET)
+        val meno: TextView = findViewById(R.id.nameFromSpinner)
+        val spinnerMeno: Spinner = findViewById(R.id.vybermenaSPINNER)
 
+        var list_of_items = arrayOf("Patvaros Nigel","Fero Pokuta", "Vikina Migova")
+        val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, list_of_items)
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerMeno!!.setAdapter(aa)
+
+        spinnerMeno?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                meno.text = spinnerMeno.selectedItem.toString()
+
+            }
+
+        }
         timeMethod.SetDatePicker(this, prichodDatePicker)
         timeMethod.SetDatePicker(this, odchodDatePicker)
         timeMethod.SetTimePicker(this, prichodTimePicker)
         timeMethod.SetTimePicker(this, odchodTimePicker)
+
+
+        submit.setOnClickListener{
+            var timeDifference = timeMethod.dateDifference(prichodDatePicker.text.toString(), prichodTimePicker.text.toString(),
+                odchodDatePicker.text.toString(), odchodTimePicker.text.toString())
+            val client = OkHttpClient()
+            val url = "http://letsdream.xf.cz/index.php?meno=" + meno.text + "&prichodDatum=" + prichodDatePicker.text +
+                    "&prichodCas=" + prichodTimePicker.text + "&odchodDatum=" + odchodDatePicker.text + "&odchodCas=" +
+                    odchodTimePicker.text + "&hodiny=" + timeDifference + "&poznamka=" + poznamkaET.text + "&table=dochadzka&mod=post"
+            val request = Request.Builder()
+                .url(url)
+                .build()
+
+            client.newCall(request).enqueue(object : Callback {
+
+                override fun onFailure(call: Call, e: IOException) {
+                    resp = e.toString()
+                }
+                override fun onResponse(call: Call, response: Response) = println(response.body()?.string())
+
+            })
+
+        }
     }
 
     override fun onBackPressed() {

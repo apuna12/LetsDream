@@ -14,7 +14,9 @@ import sk.letsdream.MainActivity
 import sk.letsdream.R
 import java.sql.Time
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.util.*
+import java.time.format.DateTimeFormatter
 
 
 class TimeMethods {
@@ -72,6 +74,31 @@ class TimeMethods {
             tpd.show()
 
         }
+    }
+
+    fun dateDifference(startDate: String, startTime: String, endDate: String, endTime: String): String
+    {
+        val startDateTimeString = startDate + " " + startTime
+        val endDateTimeString = endDate + " " + endTime
+        val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm")
+
+        var startDateTime = formatter.parse(startDateTimeString)
+        var endDateTime = formatter.parse(endDateTimeString)
+
+        var difference = endDateTime.time - startDateTime.time
+
+        var secondsInMilis = 1000
+        var minutesInMilis = secondsInMilis * 60
+        var hoursInMilis = minutesInMilis * 60
+        var daysInMilis = hoursInMilis * 24
+
+        var elapsedHours = difference / hoursInMilis
+        difference = difference % hoursInMilis
+
+        var elapsedMinutes = difference / minutesInMilis
+        difference = difference % minutesInMilis
+
+        return elapsedHours.toString() + ":" + elapsedMinutes.toString()
     }
 }
 
