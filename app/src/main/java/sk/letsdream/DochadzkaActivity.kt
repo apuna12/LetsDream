@@ -5,6 +5,7 @@ import android.app.PendingIntent.getActivity
 import android.database.SQLException
 import android.os.Build
 import android.os.Bundle
+import android.os.StrictMode
 import android.support.annotation.RequiresApi
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
@@ -47,6 +48,8 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         val time: TextView = findViewById(R.id.timeTW)
         val submit: Button = findViewById(R.id.submitBtn)
 
+        val policy: StrictMode.ThreadPolicy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy);
 
         val timeMethod: TimeMethods = TimeMethods()
 
@@ -104,22 +107,33 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             var timeDifference = timeMethod.dateDifference(prichodDatePicker.text.toString(), prichodTimePicker.text.toString(),
                 odchodDatePicker.text.toString(), odchodTimePicker.text.toString())
             val client = OkHttpClient()
-            val url = "http://letsdream.xf.cz/index.php?meno=" + meno.text + "&prichodDatum=" + prichodDatePicker.text +
+            val urlPost = "http://letsdream.xf.cz/index.php?meno=" + meno.text + "&prichodDatum=" + prichodDatePicker.text +
                     "&prichodCas=" + prichodTimePicker.text + "&odchodDatum=" + odchodDatePicker.text + "&odchodCas=" +
                     odchodTimePicker.text + "&hodiny=" + timeDifference + "&poznamka=" + poznamkaET.text + "&table=dochadzka&mod=post"
-            val request = Request.Builder()
-                .url(url)
-                .build()
+            val urlGet = "http://letsdream.xf.cz/index.php?meno=" + meno.text + "&prichodDatum=" + prichodDatePicker.text +
+                    "&prichodCas=" + prichodTimePicker.text + "&odchodDatum=" + odchodDatePicker.text + "&odchodCas=" +
+                    odchodTimePicker.text + "&hodiny=" + timeDifference + "&poznamka=" + poznamkaET.text + "&table=dochadzka&mod=get"
 
-            client.newCall(request).enqueue(object : Callback {
-
-                override fun onFailure(call: Call, e: IOException) {
-                    resp = e.toString()
+            URL(urlPost).readText()
+            var jsonStr = URL(urlGet).readText()
+            var firstApp: Int = 0
+            var lastApp: Int = 0
+            if(jsonStr.toString().contains("<") || jsonStr.toString().contains(">"))
+            {
+                for (i in 0 until jsonStr.toString().length)
+                {
+                    if(jsonStr[i] == '<') {
+                        firstApp = i
+                        break
+                    }
                 }
-                override fun onResponse(call: Call, response: Response) = println(response.body()?.string())
-
-            })
-
+                for (i in 0 until jsonStr.toString().length)
+                {
+                    if(jsonStr[i] == '>')
+                        lastApp = i
+                }
+                jsonStr = jsonStr.removeRange(firstApp, lastApp)
+            }
         }
     }
 
