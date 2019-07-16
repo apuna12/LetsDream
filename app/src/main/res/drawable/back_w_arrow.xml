@@ -1,0 +1,11 @@
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+<item>
+    <shape android:shape="rectangle" android:padding="10dp">
+        <stroke android:width="2dp" android:color="#FFF"/>
+    </shape>
+</item>
+<item android:drawable="@drawable/ic_arrow" />
+</layer-list>
+
+

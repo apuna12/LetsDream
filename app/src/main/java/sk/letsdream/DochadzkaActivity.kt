@@ -16,6 +16,7 @@ import android.support.v4.widget.DrawerLayout
 import android.support.design.widget.NavigationView
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.view.Gravity
 import android.view.Menu
 import android.view.View
 import android.widget.*
@@ -25,6 +26,7 @@ import sk.letsdream.dbMethods.DBConnection
 import sk.letsdream.helperMethods.ButtonEffects
 import sk.letsdream.helperMethods.TimeMethods
 import java.io.IOException
+import java.lang.Exception
 import java.net.HttpURLConnection
 import java.net.URL
 import java.sql.Connection
@@ -79,12 +81,14 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         val odchodTimePicker: TextView = findViewById(R.id.odchodTimePicker)
         val poznamka: EditText = findViewById(R.id.poznamkaET)
         val meno: TextView = findViewById(R.id.nameFromSpinner)
-        val spinnerMeno: Spinner = findViewById(R.id.vybermenaSPINNER)
+        val spinnerMeno: ImageButton = findViewById(R.id.vybermenaSPINNER)
 
         var list_of_items = arrayOf("Patvaros Nigel","Fero Pokuta", "Vikina Migova")
-        val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, list_of_items)
+       /*val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, list_of_items)
+
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerMeno!!.setAdapter(aa)
+
 
         spinnerMeno?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -96,7 +100,10 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
             }
 
-        }
+        }*/
+
+
+
         timeMethod.SetDatePicker(this, prichodDatePicker)
         timeMethod.SetDatePicker(this, odchodDatePicker)
         timeMethod.SetTimePicker(this, prichodTimePicker)
@@ -106,33 +113,40 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         submit.setOnClickListener{
             var timeDifference = timeMethod.dateDifference(prichodDatePicker.text.toString(), prichodTimePicker.text.toString(),
                 odchodDatePicker.text.toString(), odchodTimePicker.text.toString())
-            val client = OkHttpClient()
             val urlPost = "http://letsdream.xf.cz/index.php?meno=" + meno.text + "&prichodDatum=" + prichodDatePicker.text +
                     "&prichodCas=" + prichodTimePicker.text + "&odchodDatum=" + odchodDatePicker.text + "&odchodCas=" +
                     odchodTimePicker.text + "&hodiny=" + timeDifference + "&poznamka=" + poznamkaET.text + "&table=dochadzka&mod=post"
-            val urlGet = "http://letsdream.xf.cz/index.php?meno=" + meno.text + "&prichodDatum=" + prichodDatePicker.text +
+
+            try {
+                URL(urlPost).readText()
+
+                //In case you need to use jsonStr
+                /*val urlGet = "http://letsdream.xf.cz/index.php?meno=" + meno.text + "&prichodDatum=" + prichodDatePicker.text +
                     "&prichodCas=" + prichodTimePicker.text + "&odchodDatum=" + odchodDatePicker.text + "&odchodCas=" +
                     odchodTimePicker.text + "&hodiny=" + timeDifference + "&poznamka=" + poznamkaET.text + "&table=dochadzka&mod=get"
-
-            URL(urlPost).readText()
-            var jsonStr = URL(urlGet).readText()
-            var firstApp: Int = 0
-            var lastApp: Int = 0
-            if(jsonStr.toString().contains("<") || jsonStr.toString().contains(">"))
-            {
-                for (i in 0 until jsonStr.toString().length)
-                {
-                    if(jsonStr[i] == '<') {
-                        firstApp = i
-                        break
+                var jsonStr = URL(urlGet).readText()
+                var firstApp: Int = 0
+                var lastApp: Int = 0
+                if (jsonStr.toString().contains("<") || jsonStr.toString().contains(">")) {
+                    for (i in 0 until jsonStr.toString().length) {
+                        if (jsonStr[i] == '<') {
+                            firstApp = i
+                            break
+                        }
                     }
-                }
-                for (i in 0 until jsonStr.toString().length)
-                {
-                    if(jsonStr[i] == '>')
-                        lastApp = i
-                }
-                jsonStr = jsonStr.removeRange(firstApp, lastApp)
+                    for (i in 0 until jsonStr.toString().length) {
+                        if (jsonStr[i] == '>')
+                            lastApp = i
+                    }
+                    jsonStr = jsonStr.removeRange(firstApp, lastApp)
+
+
+                }*/
+                Toast.makeText(this, "Záznam pridaný", Toast.LENGTH_LONG).show()
+            }
+            catch (e: Exception)
+            {
+                Toast.makeText(this, "Pridanie neprebehlo úspešne", Toast.LENGTH_LONG).show()
             }
         }
     }

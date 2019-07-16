@@ -85,34 +85,33 @@
         app:layout_constraintStart_toEndOf="@+id/vybermenaLABEL"
         app:layout_constraintTop_toTopOf="@+id/vybermenaLABEL" />
 
-    <Spinner
+    <ImageButton
         android:id="@+id/vybermenaSPINNER"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="@color/colorWhite"
+        android:layout_width="60dp"
+        android:layout_height="57dp"
+        android:background="@drawable/back_w_arrow"
         app:layout_constraintBottom_toBottomOf="@+id/person_labelIMAGE"
         app:layout_constraintStart_toEndOf="@+id/person_labelIMAGE"
-        app:layout_constraintTop_toTopOf="@+id/vybermenaLABEL"
-        app:layout_constraintVertical_bias="1.0"></Spinner>
+        app:layout_constraintTop_toTopOf="@+id/person_labelIMAGE"
+        app:layout_constraintVertical_bias="0.391" />
 
     <TextView
         android:id="@+id/nameFromSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="52dp"
         android:background="@drawable/back"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:text="Meno Priezvisko"
         android:textColor="@color/colorWhite"
-        app:layout_constraintBottom_toBottomOf="@+id/vybermenaSPINNER"
+        app:layout_constraintBottom_toBottomOf="@+id/person_labelIMAGE"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.352"
-        app:layout_constraintStart_toEndOf="@+id/vybermenaSPINNER"
-        app:layout_constraintTop_toTopOf="@+id/vybermenaSPINNER"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/person_imageButton"
+        app:layout_constraintTop_toTopOf="@+id/person_labelIMAGE"
+        app:layout_constraintVertical_bias="0.466" />
 
 
     <TextView
