@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/sky"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".StatistikyActivity"
+    tools:showIn="@layout/app_bar_statistics">
+
+    <ImageView
+        android:id="@+id/logo_letsdream"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:src="@mipmap/ic_letsdream"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.03" />
+
+    <TextView
+        android:id="@+id/full_dateTW"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:layout_marginLeft="52dp"
+        android:layout_marginTop="40dp"
+        android:text="dd.MM.YYYY"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo_letsdream" />
+
+    <TextView
+        android:id="@+id/timeTW"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="56dp"
+        android:layout_marginRight="56dp"
+        android:text="HH:MM"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo_letsdream" />
+
+    <TextView
+        android:id="@+id/vyberstatistikyLABEL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="76dp"
+        android:layout_marginBottom="8dp"
+        android:text="Výber štatistiky"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/full_dateTW"
+        app:layout_constraintVertical_bias="0.005" />
+
+    <ImageButton
+        android:id="@+id/vyberstatistikySPINNER"
+        android:layout_width="30dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="24dp"
+        android:background="@drawable/back_w_arrow"
+        app:layout_constraintBottom_toBottomOf="@+id/vyberstatistikyLABEL"
+        app:layout_constraintStart_toEndOf="@+id/vyberstatistikyLABEL"
+        app:layout_constraintTop_toTopOf="@+id/vyberstatistikyLABEL" />
+
+    <TextView
+        android:id="@+id/statFromSpinner"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:background="@drawable/back"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:singleLine="true"
+        android:text="Nazov statistiky"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="@+id/vyberstatistikySPINNER"
+        app:layout_constraintEnd_toEndOf="@+id/timeTW"
+        app:layout_constraintStart_toEndOf="@+id/vyberstatistikySPINNER"
+        app:layout_constraintTop_toTopOf="@+id/vyberstatistikySPINNER" />
+
+    <TextView
+        android:id="@+id/názovStatistikyLABEL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="36dp"
+        android:text="Názov zobrazenej štatistiky"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vyberstatistikyLABEL" />
+
+</android.support.constraint.ConstraintLayout>
