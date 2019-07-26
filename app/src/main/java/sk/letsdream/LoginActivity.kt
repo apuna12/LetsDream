@@ -10,17 +10,17 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.text.InputType
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ImageButton
-import android.widget.TextView
+import android.widget.*
 import sk.letsdream.helperMethods.ButtonEffects
 import sk.letsdream.helperMethods.TimeMethods
 
 class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_statistics)
+        setContentView(R.layout.activity_login)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
@@ -40,6 +40,17 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
+
+
+        val showPassChb: CheckBox = findViewById(R.id.showPassChb)
+        val passwordEdt: EditText = findViewById(R.id.passwordEdt)
+
+        showPassChb.setOnCheckedChangeListener{ compoundButton: CompoundButton, b: Boolean ->
+            if(b)
+                passwordEdt.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
+            else
+                passwordEdt.inputType = 129
+        }
 
 
     }

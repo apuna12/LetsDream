@@ -64,6 +64,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val intent = Intent(this@MainActivity, DochadzkaActivity::class.java)
             startActivity(intent)
         }
+        dochadzka.setOnClickListener{
+            val intent = Intent(this@MainActivity, DochadzkaActivity::class.java)
+            startActivity(intent)
+        }
+        dochadzka.setOnClickListener{
+            val intent = Intent(this@MainActivity, DochadzkaActivity::class.java)
+            startActivity(intent)
+        }
+        statistika.setOnClickListener{
+            val intent = Intent(this@MainActivity, StatistikyActivity::class.java)
+            startActivity(intent)
+        }
 
 
     }

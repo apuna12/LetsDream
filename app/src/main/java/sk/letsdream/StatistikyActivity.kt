@@ -2,7 +2,9 @@ package sk.letsdream
 
 import android.app.DatePickerDialog
 import android.app.PendingIntent.getActivity
+import android.content.res.ColorStateList
 import android.database.SQLException
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
@@ -20,7 +22,15 @@ import android.view.Gravity
 import android.view.Menu
 import android.view.View
 import android.widget.*
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.github.mikephil.charting.interfaces.datasets.IPieDataSet
 import kotlinx.android.synthetic.main.content_dochadzka.*
+import kotlinx.android.synthetic.main.content_statistics.view.*
 import okhttp3.*
 import sk.letsdream.dbMethods.DBConnection
 import sk.letsdream.helperMethods.ButtonEffects
@@ -34,7 +44,7 @@ import java.sql.DriverManager
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.xml.datatype.DatatypeConstants.MONTHS
-
+import kotlin.collections.ArrayList
 
 
 class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -66,6 +76,89 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
+
+        val imageButton: ImageButton = findViewById(R.id.vyberstatistikySPINNER)
+        val textViewStatName: TextView = findViewById(R.id.statFromSpinner)
+        val textViewStatNameLabel: TextView = findViewById(R.id.názovStatistikyLABEL)
+
+
+        imageButton.setOnClickListener{
+            var popUpMenu: PopupMenu = PopupMenu(this, imageButton)
+            popUpMenu.inflate(R.menu.stat_menu)
+            popUpMenu.setOnMenuItemClickListener {
+                textViewStatName.setText(it.title.toString())
+                textViewStatNameLabel.setText(it.title.toString())
+                true
+            }
+            popUpMenu.show()
+        }
+
+
+
+
+        val lineChart: LineChart = findViewById(R.id.lineChart)
+        val barChart: BarChart = findViewById(R.id.barChart)
+        val pieChart: PieChart = findViewById(R.id.pieChart)
+
+        /*var arrayList: ArrayList<Entry> = ArrayList()
+        arrayList.add(Entry(0F, 20F))
+        arrayList.add(Entry(1F, 24F))
+        arrayList.add(Entry(2F, 2F))
+        arrayList.add(Entry(3F, 10F))
+
+        var lds: LineDataSet = LineDataSet(arrayList,"Prvy Pokus")
+        lds.setColor(Color.RED)
+        lds.lineWidth = 2F
+        var ilds: ArrayList<ILineDataSet> = ArrayList()
+        ilds.add(lds)
+
+        var lineData: LineData = LineData(ilds)
+        lineChart.data = lineData
+        lineChart.xAxis.textColor = Color.WHITE
+        lineChart.axisLeft.textColor = Color.WHITE
+        lineChart.axisRight.textColor = Color.WHITE
+        lineChart.legend.textColor = Color.WHITE
+        //chart.data.setValueTextColor(Color.WHITE)
+        lineChart.description.text = ""
+        lineChart.isEnabled = false*/
+
+        /*var arrayList: ArrayList<BarEntry> = ArrayList()
+        arrayList.add(BarEntry(0F, 20F))
+        arrayList.add(BarEntry(1F, 24F))
+        arrayList.add(BarEntry(2F, 2F))
+        arrayList.add(BarEntry(3F, 10F))
+
+        var bds: BarDataSet = BarDataSet(arrayList,"Prvy Pokus")
+        bds.setColor(Color.RED)
+        var ibds: ArrayList<IBarDataSet> = ArrayList()
+        ibds.add(bds)
+
+        var barData: BarData = BarData(ibds)
+        barChart.data = barData
+        barChart.xAxis.textColor = Color.WHITE
+        barChart.axisLeft.textColor = Color.WHITE
+        barChart.axisRight.textColor = Color.WHITE
+        barChart.legend.textColor = Color.WHITE
+        //chart.data.setValueTextColor(Color.WHITE)
+        barChart.description.text = ""
+        barChart.isEnabled = true*/
+
+        /*var arrayList: ArrayList<PieEntry> = ArrayList()
+        arrayList.add(PieEntry(0F, 20F))
+        arrayList.add(PieEntry(1F, 24F))
+        arrayList.add(PieEntry(2F, 2F))
+        arrayList.add(PieEntry(3F, 10F))
+
+        var pds: PieDataSet = PieDataSet(arrayList,"Prvy Pokus")
+        pds.setColor(Color.RED)
+        var ipds: ArrayList<IPieDataSet> = ArrayList()
+        ipds.add(pds)
+        var iPieDataSet: IPieDataSet = pds
+        var pieData: PieData = PieData(iPieDataSet)
+        pieChart.data = pieData
+        pieChart.legend.textColor = Color.WHITE
+        pieChart.description.text = ""
+        pieChart.isEnabled = true*/
 
     }
 
