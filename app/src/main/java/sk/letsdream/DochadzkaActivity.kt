@@ -51,7 +51,7 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         val submit: Button = findViewById(R.id.submitBtn)
 
         val policy: StrictMode.ThreadPolicy = StrictMode.ThreadPolicy.Builder().permitAll().build()
-        StrictMode.setThreadPolicy(policy);
+        StrictMode.setThreadPolicy(policy)
 
         val timeMethod: TimeMethods = TimeMethods()
 
@@ -115,7 +115,7 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 odchodDatePicker.text.toString(), odchodTimePicker.text.toString())
             val urlPost = "http://letsdream.xf.cz/index.php?meno=" + meno.text + "&prichodDatum=" + prichodDatePicker.text +
                     "&prichodCas=" + prichodTimePicker.text + "&odchodDatum=" + odchodDatePicker.text + "&odchodCas=" +
-                    odchodTimePicker.text + "&hodiny=" + timeDifference + "&poznamka=" + poznamkaET.text + "&table=dochadzka&mod=post"
+                    odchodTimePicker.text + "&hodiny=" + timeDifference + "&poznamka=" + poznamkaET.text + "&table=dochadzka&rest=post"
 
             try {
                 URL(urlPost).readText()

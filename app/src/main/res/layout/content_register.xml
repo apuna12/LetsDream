@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/sky"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".RegistrationActivity"
+    tools:showIn="@layout/app_bar_register">
+
+    <ImageView
+        android:id="@+id/logo_letsdream"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:src="@mipmap/ic_letsdream"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.03" />
+
+    <TextView
+        android:id="@+id/full_dateTW"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:layout_marginLeft="52dp"
+        android:layout_marginTop="40dp"
+        android:text="dd.MM.YYYY"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo_letsdream" />
+
+    <TextView
+        android:id="@+id/timeTW"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="56dp"
+        android:layout_marginRight="56dp"
+        android:text="HH:MM"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo_letsdream" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="68dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="72dp"
+        android:text="Používateľ"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintStart_toStartOf="@+id/full_dateTW"
+        app:layout_constraintTop_toBottomOf="@+id/full_dateTW" />
+
+    <EditText
+        android:id="@+id/userEdt"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="@drawable/back"
+        android:paddingLeft="5dp"
+        android:text="Používateľ"
+        android:textColor="@color/colorWhite"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="@+id/timeTW"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/full_dateTW"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="68dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="28dp"
+        android:text="Heslo"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintStart_toStartOf="@+id/full_dateTW"
+        app:layout_constraintTop_toBottomOf="@+id/userEdt" />
+
+    <EditText
+        android:id="@+id/passwordRegEdt"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="@drawable/back"
+        android:inputType="textPassword"
+        android:paddingLeft="5dp"
+        android:text="Heslo"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="@+id/timeTW"
+        app:layout_constraintStart_toStartOf="@+id/full_dateTW"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="68dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="28dp"
+        android:text="Email"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintStart_toStartOf="@+id/full_dateTW"
+        app:layout_constraintTop_toBottomOf="@+id/passwordRegEdt" />
+
+    <EditText
+        android:id="@+id/emailRegEdt"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="@drawable/back"
+        android:paddingLeft="5dp"
+        android:text="Email"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="@+id/timeTW"
+        app:layout_constraintStart_toStartOf="@+id/full_dateTW"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+    <Button
+        android:id="@+id/registrujBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Registrovať"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/timeTW"
+        app:layout_constraintStart_toStartOf="@+id/full_dateTW"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.962" />
+
+
+</android.support.constraint.ConstraintLayout>

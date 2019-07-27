@@ -19,9 +19,10 @@ import sk.letsdream.helperMethods.TimeMethods
 import java.text.SimpleDateFormat
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-
+    var privileges: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        privileges = intent.getStringExtra("privileges")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -62,18 +63,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         dochadzka.setOnClickListener{
             val intent = Intent(this@MainActivity, DochadzkaActivity::class.java)
+            intent.putExtra("privileges", privileges)
             startActivity(intent)
         }
-        dochadzka.setOnClickListener{
+        meno.setOnClickListener{
             val intent = Intent(this@MainActivity, DochadzkaActivity::class.java)
+            intent.putExtra("privileges", privileges)
             startActivity(intent)
         }
-        dochadzka.setOnClickListener{
+        akcie.setOnClickListener{
             val intent = Intent(this@MainActivity, DochadzkaActivity::class.java)
+            intent.putExtra("privileges", privileges)
             startActivity(intent)
         }
         statistika.setOnClickListener{
             val intent = Intent(this@MainActivity, StatistikyActivity::class.java)
+            intent.putExtra("privileges", privileges)
             startActivity(intent)
         }
 
