@@ -15,7 +15,9 @@ import android.text.InputType
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
+import kotlinx.android.synthetic.main.content_login.*
 import sk.letsdream.helperMethods.ButtonEffects
+import sk.letsdream.helperMethods.EmailMethods
 import sk.letsdream.helperMethods.HexMethods
 import sk.letsdream.helperMethods.TimeMethods
 import java.lang.Exception
@@ -52,10 +54,34 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
         val showPassChb: CheckBox = findViewById(R.id.showPassChb)
-        val passwordEdt: EditText = findViewById(R.id.passwordEdt)
-        val usernameEdt: EditText = findViewById(R.id.userEdt)
+        var passwordEdt: EditText = findViewById(R.id.passwordEdt)
+        var usernameEdt: EditText = findViewById(R.id.userEdt)
         val registerBtn: Button = findViewById(R.id.registraciaBtn)
         val loginBtn: Button = findViewById(R.id.prihlasBtn)
+
+        usernameEdt.setOnFocusChangeListener { v, hasFocus ->
+            if(hasFocus)
+            {
+                    usernameEdt.hint=""
+            }
+            else
+            {
+                if(usernameEdt.text.toString()=="")
+                    usernameEdt.hint="Používateľ"
+            }
+        }
+
+        passwordEdt.setOnFocusChangeListener { v, hasFocus ->
+            if(hasFocus)
+            {
+                passwordEdt.hint=""
+            }
+            else
+            {
+                if(passwordEdt.text.toString()=="")
+                    passwordEdt.hint="Heslo"
+            }
+        }
 
         showPassChb.setOnCheckedChangeListener{ compoundButton: CompoundButton, b: Boolean ->
             if(b)
