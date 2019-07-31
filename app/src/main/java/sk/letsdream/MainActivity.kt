@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivity(intent)
         }
         akcie.setOnClickListener{
-            val intent = Intent(this@MainActivity, DochadzkaActivity::class.java)
+            val intent = Intent(this@MainActivity, AkcieActivity::class.java)
             intent.putExtra("privileges", privileges)
             startActivity(intent)
         }

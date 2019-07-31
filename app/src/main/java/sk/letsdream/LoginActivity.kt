@@ -124,14 +124,14 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     {
                         Toast.makeText(this,"Nesprávne heslo", Toast.LENGTH_LONG).show()
                     }
-                    else if(jsonStr=="1")
+                    else if(jsonStr=="1") // User
                     {
                         Toast.makeText(this,"Prihlásenie úspešné", Toast.LENGTH_LONG).show()
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         intent.putExtra("privileges","1")
                         startActivity(intent)
                     }
-                    else if(jsonStr=="11")
+                    else if(jsonStr=="11") // Admin
                     {
                         Toast.makeText(this,"Prihlásenie úspešné", Toast.LENGTH_LONG).show()
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)

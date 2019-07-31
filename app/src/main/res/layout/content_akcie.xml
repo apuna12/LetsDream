@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/sky"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".AkcieActivity"
+    tools:showIn="@layout/app_bar_akcie">
+
+    <ImageView
+        android:id="@+id/logo_letsdream"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:src="@mipmap/ic_letsdream"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.03" />
+
+    <TextView
+        android:id="@+id/full_dateTW"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:layout_marginLeft="52dp"
+        android:layout_marginTop="40dp"
+        android:text="dd.MM.YYYY"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo_letsdream" />
+
+    <TextView
+        android:id="@+id/timeTW"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="56dp"
+        android:layout_marginRight="56dp"
+        android:text="HH:MM"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo_letsdream" />
+
+    <TextView
+        android:id="@+id/historiaakciiLABEL"
+        android:layout_width="85dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:layout_marginBottom="24dp"
+        android:text="História akcií"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toTopOf="@+id/adminUserTW"
+        app:layout_constraintStart_toStartOf="@+id/full_dateTW"
+        app:layout_constraintTop_toBottomOf="@+id/full_dateTW"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:id="@+id/vyberakcieSPINNER"
+        android:layout_width="30dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="0dp"
+        android:background="@drawable/back_w_arrow"
+        app:layout_constraintBottom_toBottomOf="@+id/historiaakciiLABEL"
+        app:layout_constraintStart_toEndOf="@+id/historiaakciiLABEL"
+        app:layout_constraintTop_toTopOf="@+id/historiaakciiLABEL" />
+
+    <TextView
+        android:id="@+id/akciaFromSpinner"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/back"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:singleLine="true"
+        android:text="Názov akcie"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="@+id/vyberakcieSPINNER"
+        app:layout_constraintEnd_toEndOf="@+id/timeTW"
+        app:layout_constraintTop_toTopOf="@+id/vyberakcieSPINNER" />
+
+    <TextView
+        android:id="@+id/adminUserTW"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="320dp"
+        android:text="Používateľ"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/historiaakciiLABEL" />
+
+    <ImageView
+        android:id="@+id/changePriv"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/ic_sync_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/adminUserTW"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/vyberakcieSPINNER"
+        app:layout_constraintTop_toTopOf="@+id/adminUserTW" />
+
+    <TextView
+        android:id="@+id/makeNewAction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Vytvoriť novú akciu"
+        android:textColor="@color/yellow"
+        app:layout_constraintStart_toStartOf="@+id/adminUserTW"
+        app:layout_constraintTop_toBottomOf="@+id/adminUserTW" />
+
+    <TextView
+        android:id="@+id/actionName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Názov akcie zo spinnera"
+        android:textColor="@color/yellow"
+        app:layout_constraintStart_toStartOf="@+id/makeNewAction"
+        app:layout_constraintTop_toBottomOf="@+id/makeNewAction" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="Počet dobrovoľníkov:"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintStart_toStartOf="@+id/actionName"
+        app:layout_constraintTop_toBottomOf="@+id/actionName" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="Počet návštevníkov:"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintStart_toStartOf="@+id/textView10"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="Dátum:"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintStart_toStartOf="@+id/textView11"
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="Čas:"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintStart_toStartOf="@+id/textView12"
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+    <TextView
+        android:id="@+id/upravitDobrovol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="132dp"
+        android:text="upraviť"
+        android:textColor="@color/yellow"
+        app:layout_constraintBottom_toBottomOf="@+id/textView10"
+        app:layout_constraintEnd_toEndOf="@+id/akciaFromSpinner"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/textView10"
+        app:layout_constraintTop_toTopOf="@+id/textView10" />
+
+    <TextView
+        android:id="@+id/upravitNavstev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="upraviť"
+        android:textColor="@color/yellow"
+        app:layout_constraintBottom_toBottomOf="@+id/textView11"
+        app:layout_constraintEnd_toEndOf="@+id/upravitDobrovol"
+        app:layout_constraintStart_toStartOf="@+id/upravitDobrovol"
+        app:layout_constraintTop_toTopOf="@+id/textView11" />
+
+    <TextView
+        android:id="@+id/upravitDatum"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="upraviť"
+        android:textColor="@color/yellow"
+        app:layout_constraintBottom_toBottomOf="@+id/textView12"
+        app:layout_constraintEnd_toEndOf="@+id/upravitNavstev"
+        app:layout_constraintStart_toStartOf="@+id/upravitNavstev"
+        app:layout_constraintTop_toTopOf="@+id/textView12" />
+
+    <TextView
+        android:id="@+id/upravitCas"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="upraviť"
+        android:textColor="@color/yellow"
+        app:layout_constraintBottom_toBottomOf="@+id/textView13"
+        app:layout_constraintEnd_toEndOf="@+id/upravitDatum"
+        app:layout_constraintStart_toStartOf="@+id/upravitDatum"
+        app:layout_constraintTop_toTopOf="@+id/textView13" />
+
+    <TextView
+        android:id="@+id/pocetDobrET"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="999"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="@+id/textView10"
+        app:layout_constraintStart_toEndOf="@+id/textView10"
+        app:layout_constraintTop_toTopOf="@+id/textView10" />
+
+    <TextView
+        android:id="@+id/pocetNavsET"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="999"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="@+id/textView11"
+        app:layout_constraintStart_toEndOf="@+id/textView11"
+        app:layout_constraintTop_toTopOf="@+id/textView11" />
+
+    <TextView
+        android:id="@+id/datumET"
+        android:layout_width="85dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="24.12.2999"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="@+id/textView12"
+        app:layout_constraintStart_toEndOf="@+id/textView12"
+        app:layout_constraintTop_toTopOf="@+id/textView12" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="od:"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="@+id/textView13"
+        app:layout_constraintStart_toEndOf="@+id/textView13"
+        app:layout_constraintTop_toTopOf="@+id/textView13"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/casOd"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="77:77"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="@+id/textView13"
+        app:layout_constraintStart_toEndOf="@+id/textView14"
+        app:layout_constraintTop_toTopOf="@+id/textView13"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="do:"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="@+id/textView13"
+        app:layout_constraintStart_toEndOf="@+id/casOd"
+        app:layout_constraintTop_toTopOf="@+id/textView13" />
+
+    <TextView
+        android:id="@+id/casDo"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="77:77"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="@+id/textView13"
+        app:layout_constraintStart_toEndOf="@+id/textView15"
+        app:layout_constraintTop_toTopOf="@+id/textView13" />
+
+
+</android.support.constraint.ConstraintLayout>
