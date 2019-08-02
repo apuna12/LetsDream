@@ -1,5 +1,8 @@
 package sk.letsdream
 
+import android.app.AlertDialog
+import android.app.TimePickerDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.media.Image
 import android.os.Bundle
@@ -12,20 +15,28 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.text.InputFilter
 import android.text.InputType
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import kotlinx.android.synthetic.main.content_login.*
+import kotlinx.android.synthetic.main.dialog_addnewaction.view.*
+import kotlinx.android.synthetic.main.dialog_fullpoznamka.view.*
+import kotlinx.android.synthetic.main.dialog_poznamka.view.*
 import org.w3c.dom.Text
-import sk.letsdream.helperMethods.ButtonEffects
-import sk.letsdream.helperMethods.EmailMethods
-import sk.letsdream.helperMethods.HexMethods
-import sk.letsdream.helperMethods.TimeMethods
+import sk.letsdream.dbMethods.DBConnection
+import sk.letsdream.helperMethods.*
 import java.lang.Exception
 import java.net.URL
 import java.security.MessageDigest
+import java.text.SimpleDateFormat
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.util.*
 
 
 class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -58,7 +69,8 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         navView.setNavigationItemSelectedListener(this)
 
-
+        val dbMethods: DBConnection = DBConnection()
+        val updateLabelMethods: UpdateLabelMethods = UpdateLabelMethods()
 
 
         val vyberAkcieSpinner: ImageButton = findViewById(R.id.vyberakcieSPINNER)
@@ -68,6 +80,7 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val nazovAkcieZoSpinnera: TextView = findViewById(R.id.actionName)
         val pocetDobr: TextView = findViewById(R.id.pocetDobrET)
         val pocetNavs: TextView = findViewById(R.id.pocetNavsET)
+        val poznamka: TextView = findViewById(R.id.poznamkaET)
         val datum: TextView = findViewById(R.id.datumET)
         val casOd: TextView = findViewById(R.id.casOd)
         val casDo: TextView = findViewById(R.id.casDo)
@@ -75,14 +88,79 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val upravitNavs: TextView = findViewById(R.id.upravitNavstev)
         val upravitDatum: TextView = findViewById(R.id.upravitDatum)
         val upravitCas: TextView = findViewById(R.id.upravitCas)
+        val upravitPozn: TextView = findViewById(R.id.upravitPozn)
         val adminUserLabel: TextView = findViewById(R.id.adminUserTW)
+        val poznamkaLabel: TextView = findViewById(R.id.poznLABEL)
+        val deleteAction: TextView = findViewById(R.id.deleteAction)
+
+
+        poznamka.filters = arrayOf(*poznamka.filters, InputFilter.LengthFilter(100))
+
+        var akcieList: Array<String>
+        akcieList = arrayOf<String>()
+        val sql = "http://letsdream.xf.cz/index.php?mod=getAllActions&rest=get"
+
+        try{
+            var jsonStr: String = URL(sql).readText()
+            var firstApp: Int = 0
+            var lastApp: Int = 0
+            if (jsonStr.toString().contains("<") || jsonStr.toString().contains(">")) {
+                for (i in 0 until jsonStr.toString().length) {
+                    if (jsonStr[i] == '<') {
+                        firstApp = i
+                        break
+                    }
+                }
+                for (i in 0 until jsonStr.toString().length) {
+                    if (jsonStr[i] == '>')
+                        lastApp = i
+                }
+                jsonStr = jsonStr.removeRange(firstApp, lastApp+1)
+                if(jsonStr=="0")
+                {
+                    Toast.makeText(this,"Hups! Niekde nastala chyba", Toast.LENGTH_LONG).show()
+                }
+                else
+                {
+                    akcieList = jsonStr.split(",").toTypedArray()
+                    akcieList = akcieList.dropLast(1).toTypedArray()
+                }
+            }
+        }
+        catch (e: Exception)
+        {
+            throw Exception(e)
+        }
+
 
         var popUpMenu: PopupMenu = PopupMenu(this, vyberAkcieSpinner)
-        popUpMenu.inflate(R.menu.temp_menu)
+        if(akcieList.size > 0) {
+            for (i in 0 until akcieList.size) {
+                if(akcieList[i] != null || akcieList[i] != "")
+                    popUpMenu.menu.add(akcieList[i])
+            }
+        }
+        else
+        {
+
+        }
 
         try {
-            nazovAkcieVedlaSpinnera.text = popUpMenu.menu.getItem(0).toString()
-            nazovAkcieZoSpinnera.text = popUpMenu.menu.getItem(0).toString()
+            var actionName: String = popUpMenu.menu.getItem(0).toString()
+            nazovAkcieVedlaSpinnera.text = actionName
+            nazovAkcieZoSpinnera.text = actionName
+            val statsArray: Array<String> = dbMethods.getLabelStatistics(actionName)
+            if(statsArray.get(0) != "NaN") {
+                pocetDobr.text = statsArray.get(0)
+                pocetNavs.text = statsArray.get(1)
+                datum.text = statsArray.get(2)
+                casOd.text = statsArray.get(3)
+                casDo.text = statsArray.get(4)
+                poznamka.text = statsArray.get(5)
+                //dorobit poznamku
+            }
+            else
+                Toast.makeText(this, "Hups! Niečo je zlé", Toast.LENGTH_LONG).show()
         }
         catch (e:Exception)
         {
@@ -92,20 +170,37 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         vyberAkcieSpinner.setOnClickListener{
             popUpMenu.setOnMenuItemClickListener {
-                nazovAkcieVedlaSpinnera.setText(it.title.toString())
-                nazovAkcieZoSpinnera.setText(it.title.toString())
+                var actionName: String = it.title.toString()
+                nazovAkcieVedlaSpinnera.setText(actionName)
+                nazovAkcieZoSpinnera.setText(actionName)
+                val statsArray: Array<String> = dbMethods.getLabelStatistics(actionName)
+                if(statsArray.get(0) != "NaN") {
+                    pocetDobr.text = statsArray.get(0)
+                    pocetNavs.text = statsArray.get(1)
+                    datum.text = statsArray.get(2)
+                    casOd.text = statsArray.get(3)
+                    casDo.text = statsArray.get(4)
+                    poznamka.text = statsArray.get(5)
+                    //dorobit poznamku
+                }
+                else
+                    Toast.makeText(this, "Hups! Niečo je zlé", Toast.LENGTH_LONG).show()
                 true
             }
             popUpMenu.show()
 
 
         }
-        //PHP funguje... uz len vytvorit connection z DB na LABELY
         vytvoritAkciu.visibility = View.INVISIBLE
         upravitDobr.visibility = View.INVISIBLE
         upravitNavs.visibility = View.INVISIBLE
         upravitDatum.visibility = View.INVISIBLE
         upravitCas.visibility = View.INVISIBLE
+        upravitPozn.visibility = View.INVISIBLE
+        poznamkaLabel.visibility = View.INVISIBLE
+        poznamka.visibility = View.INVISIBLE
+        deleteAction.visibility = View.INVISIBLE
+
         adminUserLabel.text = "Používateľ"
 
         changePrivileges.setOnClickListener{
@@ -121,7 +216,11 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 upravitNavs.visibility = View.VISIBLE
                 upravitDatum.visibility = View.VISIBLE
                 upravitCas.visibility = View.VISIBLE
+                upravitPozn.visibility = View.VISIBLE
                 adminUserLabel.text = "Administrátor"
+                poznamkaLabel.visibility = View.VISIBLE
+                poznamka.visibility = View.VISIBLE
+                deleteAction.visibility = View.VISIBLE
             }
             else if(privileges.toLowerCase() == "11" && adminUserLabel.text == "Administrátor")
             {
@@ -131,7 +230,11 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 upravitNavs.visibility = View.INVISIBLE
                 upravitDatum.visibility = View.INVISIBLE
                 upravitCas.visibility = View.INVISIBLE
+                upravitPozn.visibility = View.INVISIBLE
                 adminUserLabel.text = "Používateľ"
+                poznamkaLabel.visibility = View.INVISIBLE
+                poznamka.visibility = View.INVISIBLE
+                deleteAction.visibility = View.INVISIBLE
             }
             else
             {
@@ -142,9 +245,119 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 upravitDatum.visibility = View.INVISIBLE
                 upravitCas.visibility = View.INVISIBLE
                 adminUserLabel.text = "Používateľ"
+                poznamkaLabel.visibility = View.INVISIBLE
+                poznamka.visibility = View.INVISIBLE
+                deleteAction.visibility = View.INVISIBLE
             }
         }
 
+        upravitCas.setOnClickListener{
+            updateLabelMethods.updateTimeLabel(this, casOd, casDo, nazovAkcieVedlaSpinnera)
+        }
+        upravitDobr.setOnClickListener{
+            updateLabelMethods.updateNumberLabels(this, upravitDobr, pocetDobr, nazovAkcieVedlaSpinnera, "pocDobr")
+        }
+        upravitNavs.setOnClickListener{
+            updateLabelMethods.updateNumberLabels(this, upravitNavs, pocetNavs, nazovAkcieVedlaSpinnera, "pocNavs")
+        }
+        upravitDatum.setOnClickListener{
+            updateLabelMethods.updateDateLabel(this, upravitDatum, datum, nazovAkcieVedlaSpinnera)
+        }
+        upravitPozn.setOnClickListener{
+            updateLabelMethods.updatePoznLabels(this, upravitPozn, poznamka, nazovAkcieVedlaSpinnera)
+        }
+        poznamka.setOnClickListener {
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_fullpoznamka, null)
+            val mBuilder = AlertDialog.Builder(this).setView(dialogView).setTitle("Poznámka")
+            dialogView.fullPoznDialog.filters =
+                arrayOf(*dialogView.fullPoznDialog.filters, InputFilter.LengthFilter(100))
+            dialogView.fullPoznDialog.text = poznamka.text
+            val mAlertDialog = mBuilder.show()
+            dialogView.buttonSpatDialog.setOnClickListener {
+                mAlertDialog.dismiss()
+            }
+        }
+        vytvoritAkciu.setOnClickListener{
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_addnewaction, null)
+            val mBuilder = AlertDialog.Builder(this).setView(dialogView).setTitle("Pridať novú akciu")
+            dialogView.actionNameAddAction.filters =
+                arrayOf(*dialogView.actionNameAddAction.filters, InputFilter.LengthFilter(100))
+            dialogView.poznamkaAddAction.filters =
+                arrayOf(*dialogView.poznamkaAddAction.filters, InputFilter.LengthFilter(100))
+            val mAlertDialog = mBuilder.show()
+            dialogView.submitAddAction.setOnClickListener{
+                var parser = SimpleDateFormat("HH:mm")
+                var formatter = SimpleDateFormat("HH:mm")
+                var casOdTIME = formatter.format(parser.parse(dialogView.casOdAddAction.text.toString()))
+                var casDoTIME = formatter.format(parser.parse(dialogView.casDoAddAction.text.toString()))
+
+                if(casOdTIME > casDoTIME)
+
+                if(dialogView.actionNameAddAction.text.toString() != "" &&
+                    dialogView.dateAddAction.text.toString() != "" &&
+                    dialogView.casOdAddAction.text.toString() != "" &&
+                    dialogView.casDoAddAction.text.toString() != "") {
+                    if(casOdTIME < casDoTIME) {
+                        val check = dbMethods.addNewAction(
+                            dialogView.actionNameAddAction.text.toString(),
+                            dialogView.pocDobrAddAction.text.toString(),
+                            dialogView.pocNavsAddAction.text.toString(),
+                            dialogView.dateAddAction.text.toString(),
+                            dialogView.casOdAddAction.text.toString(),
+                            dialogView.casDoAddAction.text.toString(),
+                            dialogView.poznamkaAddAction.text.toString()
+                        )
+                        if (check == "1") {
+                            mAlertDialog.dismiss()
+                            Toast.makeText(this, "Nová akcia pridaná", Toast.LENGTH_LONG).show()
+                            finish()
+                            startActivity(intent)
+                        } else
+                            Toast.makeText(this, "Hups! Záznam nebol pridaný.", Toast.LENGTH_LONG).show()
+                    }
+                    else
+                        Toast.makeText(this, "Hups! Opravte si prosím čas.", Toast.LENGTH_LONG).show()
+                }
+                else
+                    Toast.makeText(this, "Vyplnte prosím všetky povinné položky!", Toast.LENGTH_LONG).show()
+            }
+            dialogView.backAddAction.setOnClickListener{
+                finish()
+                startActivity(intent)
+            }
+
+            dialogView.dateAddAction.setOnClickListener{
+                timeMethod.SetDatePicker(this, dialogView.dateAddAction)
+            }
+            dialogView.casOdAddAction.setOnClickListener{
+                timeMethod.SetTimePicker(this, dialogView.casOdAddAction)
+            }
+            dialogView.casDoAddAction.setOnClickListener{
+                timeMethod.SetTimePicker(this, dialogView.casDoAddAction)
+            }
+        }
+        deleteAction.setOnClickListener{
+            val alertDialog = AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Naozaj chcete vymazať akciu '" + nazovAkcieZoSpinnera.text.toString() + "' ?")
+                .setPositiveButton("Áno", DialogInterface.OnClickListener{ dialog, i ->
+                    if(dbMethods.deleteAction(nazovAkcieVedlaSpinnera.text.toString()) == "1") {
+                        finish()
+                        startActivity(intent)
+                        Toast.makeText(this, "Akcia úspešne vymazaná", Toast.LENGTH_LONG).show()
+                    }
+                    else
+                    {
+                        finish()
+                        Toast.makeText(this, "Hups! Akcia nebola vymazaná", Toast.LENGTH_LONG).show()
+                    }
+                })
+                .setNegativeButton("Nie", DialogInterface.OnClickListener{ dialog, i ->
+                    finish()
+                })
+                .show()
+
+        }
     }
 
     override fun onBackPressed() {

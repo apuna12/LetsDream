@@ -1,6 +1,9 @@
 package sk.letsdream.dbMethods
 
 import android.database.SQLException
+import android.widget.Toast
+import java.lang.Exception
+import java.net.URL
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.ResultSet
@@ -8,73 +11,156 @@ import java.sql.Statement
 import java.util.*
 
 class DBConnection {
-    internal var conn: Connection? = null
-    internal var username = "HbOgj5NDZ2" // provide the username
-    internal var password = "JfZxfWyCeW" // provide the corresponding password
 
-    fun executeMySQLQuery() {
-        var stmt: Statement? = null
-        var resultset: ResultSet? = null
-        try {
-            stmt = conn!!.createStatement()
-            resultset = stmt!!.executeQuery("SHOW DATABASES;")
-            if (stmt.execute("SHOW DATABASES;")) {
-                resultset = stmt.resultSet
-            }
-            while (resultset!!.next()) {
-                println(resultset.getString("Database"))
-            }
-        } catch (ex: SQLException) {
-            // handle any errors
-            ex.printStackTrace()
-        } finally {
-            // release resources
-            if (resultset != null) {
-                try {
-                    resultset.close()
-                } catch (sqlEx: SQLException) {
+    fun getLabelStatistics(actionName: String): Array<String>
+    {
+        // zjednodusit... radsej zobrat vsetky hodnoty a splitnut do listu a tak zobrazit
+
+        val sql = "http://letsdream.xf.cz/index.php?action=" + actionName + "&mod=getAction&rest=get"
+
+        try{
+            var jsonStr: String = URL(sql).readText()
+            var firstApp: Int = 0
+            var lastApp: Int = 0
+            if (jsonStr.toString().contains("<") || jsonStr.toString().contains(">")) {
+                for (i in 0 until jsonStr.toString().length) {
+                    if (jsonStr[i] == '<') {
+                        firstApp = i
+                        break
+                    }
                 }
-                resultset = null
-            }
-            if (stmt != null) {
-                try {
-                    stmt.close()
-                } catch (sqlEx: SQLException) {
+                for (i in 0 until jsonStr.toString().length) {
+                    if (jsonStr[i] == '>')
+                        lastApp = i
                 }
-                stmt = null
-            }
-            if (conn != null) {
-                try {
-                    conn!!.close()
-                } catch (sqlEx: SQLException) {
+                jsonStr = jsonStr.removeRange(firstApp, lastApp+1)
+                if(jsonStr == "0")
+                    return "NaN".split(",").toTypedArray()
+                else
+                {
+                    return jsonStr.split(",").toTypedArray()
                 }
-                conn = null
             }
         }
+        catch (e: java.lang.Exception)
+        {
+            throw java.lang.Exception(e)
+        }
+        return "NaN".split(",").toTypedArray()
     }
-    /**
-     * This method makes a connection to MySQL Server
-     * In this example, MySQL Server is running in the local host (so 127.0.0.1)
-     * at the standard port 3306
-     */
-    fun getConnection() {
-        val connectionProps = Properties()
-        connectionProps.put("user", username)
-        connectionProps.put("password", password)
-        try {
-            Class.forName("com.mysql.jdbc.Driver").newInstance()
-            conn = DriverManager.getConnection(
-                "jdbc:" + "mysql" + "://" +
-                        "remotemysql.com" +
-                        ":" + "3306" + "/" +
-                        "",
-                connectionProps)
-        } catch (ex: SQLException) {
-            // handle any errors
-            ex.printStackTrace()
-        } catch (ex: Exception) {
-            // handle any errors
-            ex.printStackTrace()
+
+    fun setLabelStatistics(action: String, setting: String, value: String): String
+    {
+        val sql = "http://letsdream.xf.cz/index.php?action=" + action + "&setting=" +
+                setting + "&value=" + value + "&mod=updateAction&rest=post"
+
+        try{
+            var jsonStr: String = URL(sql).readText()
+            var firstApp: Int = 0
+            var lastApp: Int = 0
+            if (jsonStr.toString().contains("<") || jsonStr.toString().contains(">")) {
+                for (i in 0 until jsonStr.toString().length) {
+                    if (jsonStr[i] == '<') {
+                        firstApp = i
+                        break
+                    }
+                }
+                for (i in 0 until jsonStr.toString().length) {
+                    if (jsonStr[i] == '>')
+                        lastApp = i
+                }
+                jsonStr = jsonStr.removeRange(firstApp, lastApp+1)
+                if(jsonStr.contains("0"))
+                {
+                    return "0"
+                }
+                else
+                {
+                    return "1"
+                }
+            }
         }
+        catch (e: Exception)
+        {
+            throw Exception(e)
+        }
+        return "0"
+    }
+
+
+    fun addNewAction(action: String, pocDobr: String, pocNavs: String, datum: String, casOd: String, casDo: String, poznamka: String): String
+    {
+        val sql = "http://letsdream.xf.cz/index.php?action=" + action + "&pocDobr=" +
+                pocDobr + "&pocNavs=" + pocNavs + "&datum=" + datum + "&casOd=" + casOd +
+                "&casDo=" + casDo + "&poznamka=" + poznamka + "&mod=addNewAction&rest=post"
+
+        try{
+            var jsonStr: String = URL(sql).readText()
+            var firstApp: Int = 0
+            var lastApp: Int = 0
+            if (jsonStr.toString().contains("<") || jsonStr.toString().contains(">")) {
+                for (i in 0 until jsonStr.toString().length) {
+                    if (jsonStr[i] == '<') {
+                        firstApp = i
+                        break
+                    }
+                }
+                for (i in 0 until jsonStr.toString().length) {
+                    if (jsonStr[i] == '>')
+                        lastApp = i
+                }
+                jsonStr = jsonStr.removeRange(firstApp, lastApp+1)
+                if(jsonStr.contains("1"))
+                {
+                    return "1"
+                }
+                else
+                {
+                    return "0"
+                }
+            }
+        }
+        catch (e: Exception)
+        {
+            throw Exception(e)
+        }
+        return "0"
+    }
+
+    fun deleteAction(action: String): String
+    {
+        val sql = "http://letsdream.xf.cz/index.php?action=" + action + "&mod=deleteAction&rest=delete"
+
+        try{
+            var jsonStr: String = URL(sql).readText()
+            var firstApp: Int = 0
+            var lastApp: Int = 0
+            if (jsonStr.toString().contains("<") || jsonStr.toString().contains(">")) {
+                for (i in 0 until jsonStr.toString().length) {
+                    if (jsonStr[i] == '<') {
+                        firstApp = i
+                        break
+                    }
+                }
+                for (i in 0 until jsonStr.toString().length) {
+                    if (jsonStr[i] == '>')
+                        lastApp = i
+                }
+                jsonStr = jsonStr.removeRange(firstApp, lastApp+1)
+                if(jsonStr.contains("1"))
+                {
+                    return "1"
+                }
+                else
+                {
+                    return "0"
+                }
+            }
+        }
+        catch (e: Exception)
+        {
+            throw Exception(e)
+        }
+        return "0"
     }
 }

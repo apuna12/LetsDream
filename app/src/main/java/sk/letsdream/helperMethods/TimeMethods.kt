@@ -52,7 +52,7 @@ class TimeMethods {
             val dpd = DatePickerDialog(context, R.style.DialogTheme,
                 DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
-                    textView.setText("" + dayOfMonth + "/" + monthOfYear + "/" + year)
+                    textView.setText("" + dayOfMonth + "." + monthOfYear + "." + year)
                 }, year, month, day
             )
             dpd.show()
@@ -67,7 +67,10 @@ class TimeMethods {
 
             val tpd = TimePickerDialog(context,  R.style.DialogTheme, TimePickerDialog.OnTimeSetListener(function = { view, h, m ->
 
-                textView.setText("" + h + ":" + m)
+                if(m<10)
+                    textView.setText("" + h + ":0" + m)
+                else
+                    textView.setText("" + h + ":" + m)
 
             }), hour, minute, true)
 

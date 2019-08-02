@@ -76,6 +76,7 @@
         android:layout_width="125dp"
         android:layout_height="wrap_content"
         android:background="@drawable/back"
+        android:ellipsize="end"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:singleLine="true"
@@ -116,6 +117,16 @@
         android:textColor="@color/yellow"
         app:layout_constraintStart_toStartOf="@+id/adminUserTW"
         app:layout_constraintTop_toBottomOf="@+id/adminUserTW" />
+
+    <TextView
+        android:id="@+id/deleteAction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Vymazať akciu"
+        android:textColor="@color/yellow"
+        app:layout_constraintBottom_toBottomOf="@+id/makeNewAction"
+        app:layout_constraintEnd_toEndOf="@+id/akciaFromSpinner"
+        app:layout_constraintTop_toTopOf="@+id/makeNewAction" />
 
     <TextView
         android:id="@+id/actionName"
@@ -166,6 +177,43 @@
         android:textColor="@color/colorWhite"
         app:layout_constraintStart_toStartOf="@+id/textView12"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+    <TextView
+        android:id="@+id/poznLABEL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="Poznámka:"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintStart_toStartOf="@+id/textView13"
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+    <TextView
+        android:id="@+id/poznamkaET"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:ellipsize="end"
+        android:maxLength="100"
+        android:maxLines="1"
+        android:text="Nejaká krátka poznámka"
+        android:textColor="@color/colorWhite"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@+id/poznLABEL"
+        app:layout_constraintEnd_toStartOf="@+id/upravitPozn"
+        app:layout_constraintStart_toEndOf="@+id/poznLABEL"
+        app:layout_constraintTop_toTopOf="@+id/poznLABEL" />
+
+    <TextView
+        android:id="@+id/upravitPozn"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="upraviť"
+        android:textColor="@color/yellow"
+        app:layout_constraintBottom_toBottomOf="@+id/poznLABEL"
+        app:layout_constraintEnd_toEndOf="@+id/upravitCas"
+        app:layout_constraintStart_toStartOf="@+id/upravitCas"
+        app:layout_constraintTop_toTopOf="@+id/poznLABEL" />
 
     <TextView
         android:id="@+id/upravitDobrovol"
