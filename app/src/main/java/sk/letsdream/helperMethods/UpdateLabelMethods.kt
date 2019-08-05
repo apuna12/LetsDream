@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
+import android.os.Vibrator
 import android.text.InputFilter
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -47,7 +48,8 @@ class UpdateLabelMethods {
         val minute2 = d.get(Calendar.MINUTE)
 
         val tpd2 = TimePickerDialog(context,  R.style.DialogTheme, TimePickerDialog.OnTimeSetListener(function = { view, h, m ->
-
+            val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+            vibrate.vibrate(70)
             if(m < 10)
                 casDo.setText("" + h + ":0" + m)
             else
@@ -58,8 +60,12 @@ class UpdateLabelMethods {
 
         tpd.show()
         tpd.setOnDismissListener {
+            val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+            vibrate.vibrate(70)
             tpd2.show()
             tpd2.setOnDismissListener {
+                val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                vibrate.vibrate(70)
                 if(dbMethods.setLabelStatistics(nazovAkcieVedlaSpinnera.text.toString(), "Cas_Od", casOd.text.toString()) == "1")
                 {
                     Toast.makeText(context,"Záznam upravený", Toast.LENGTH_LONG).show()
@@ -85,7 +91,7 @@ class UpdateLabelMethods {
     {
         val dbMethods: DBConnection = DBConnection()
 
-        upravit.setOnClickListener{
+
             var popUpMenu: PopupMenu = PopupMenu(context, upravit)
             for (i in 0 until 500)
             {
@@ -94,76 +100,92 @@ class UpdateLabelMethods {
             popUpMenu.show()
 
             popUpMenu.setOnMenuItemClickListener {
+                val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                vibrate.vibrate(70)
                 textView.setText(it.title.toString())
-                if(setting == "pocDobr") {
-                    if (dbMethods.setLabelStatistics(action.text.toString(), "Pocet_Dobrovolnikov", textView.text.toString()) == "1")
-                        Toast.makeText(context,"Záznam upravený", Toast.LENGTH_LONG).show()
+                if (setting == "pocDobr") {
+                    if (dbMethods.setLabelStatistics(
+                            action.text.toString(),
+                            "Pocet_Dobrovolnikov",
+                            textView.text.toString()
+                        ) == "1"
+                    )
+                        Toast.makeText(context, "Záznam upravený", Toast.LENGTH_LONG).show()
                     else
                         Toast.makeText(context, "Záznam sa nepodarilo upraviť", Toast.LENGTH_LONG).show()
-                }
-                else if(setting == "pocNavs")
-                {
-                    if (dbMethods.setLabelStatistics(action.text.toString(), "Pocet_Navstevnikov", textView.text.toString()) == "1")
-                        Toast.makeText(context,"Záznam upravený", Toast.LENGTH_LONG).show()
+                } else if (setting == "pocNavs") {
+                    if (dbMethods.setLabelStatistics(
+                            action.text.toString(),
+                            "Pocet_Navstevnikov",
+                            textView.text.toString()
+                        ) == "1"
+                    )
+                        Toast.makeText(context, "Záznam upravený", Toast.LENGTH_LONG).show()
                     else
                         Toast.makeText(context, "Záznam sa nepodarilo upraviť", Toast.LENGTH_LONG).show()
                 }
                 true
+
             }
-        }
     }
 
-    fun updateDateLabel(context: Context, upravit: TextView, textView: TextView, action: TextView)
-    {
+    fun updateDateLabel(context: Context, upravit: TextView, textView: TextView, action: TextView) {
         val dbMethods: DBConnection = DBConnection()
-        upravit.setOnClickListener {
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
 
-            val dpd = DatePickerDialog(
-                context, R.style.DialogTheme,
-                DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                    // Display Selected date in textbox
-                    textView.setText("" + dayOfMonth + "." + monthOfYear + "." + year)
-                }, year, month, day
-            )
-            dpd.show()
-            dpd.setOnDismissListener{
-                if (dbMethods.setLabelStatistics(action.text.toString(), "Datum", textView.text.toString()) == "1")
-                    Toast.makeText(context,"Záznam upravený", Toast.LENGTH_LONG).show()
+        val dpd = DatePickerDialog(
+            context, R.style.DialogTheme,
+            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                vibrate.vibrate(70)
+                // Display Selected date in textbox
+                textView.setText("" + dayOfMonth + "." + monthOfYear + "." + year)
+            }, year, month, day
+        )
+        dpd.show()
+        dpd.setOnDismissListener {
+            val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+            vibrate.vibrate(70)
+            if (dbMethods.setLabelStatistics(action.text.toString(), "Datum", textView.text.toString()) == "1")
+                Toast.makeText(context, "Záznam upravený", Toast.LENGTH_LONG).show()
+            else
+                Toast.makeText(context, "Záznam sa nepodarilo upraviť", Toast.LENGTH_LONG).show()
+        }
+
+
+    }
+
+    fun updatePoznLabels(context: Context, upravit: TextView, textView: TextView, action: TextView) {
+        val dbMethods: DBConnection = DBConnection()
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_poznamka, null)
+        val mBuilder = AlertDialog.Builder(context).setView(dialogView).setTitle("Upravte poznámku")
+        dialogView.poznDialogET.filters = arrayOf(*dialogView.poznDialogET.filters, InputFilter.LengthFilter(100))
+        if (dialogView.parent != null)
+            (dialogView.parent as ViewGroup).removeView(dialogView)
+        else {
+            val mAlertDialog = mBuilder.show()
+            dialogView.poznDialogBUTTON.setOnClickListener {
+                val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                vibrate.vibrate(70)
+                mAlertDialog.dismiss()
+                textView.setText(dialogView.poznDialogET.text)
+                if (dbMethods.setLabelStatistics(action.text.toString(), "Poznamka", textView.text.toString()) == "1")
+                    Toast.makeText(context, "Záznam upravený", Toast.LENGTH_LONG).show()
                 else
                     Toast.makeText(context, "Záznam sa nepodarilo upraviť", Toast.LENGTH_LONG).show()
             }
-
-        }
-    }
-
-    fun updatePoznLabels(context: Context, upravit: TextView, textView: TextView, action: TextView)
-    {
-        val dbMethods: DBConnection = DBConnection()
-        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_poznamka,null)
-        val mBuilder = AlertDialog.Builder(context).setView(dialogView).setTitle("Upravte poznámku")
-        dialogView.poznDialogET.filters = arrayOf(*dialogView.poznDialogET.filters, InputFilter.LengthFilter(100))
-        upravit.setOnClickListener {
-            if(dialogView.parent != null)
-                (dialogView.parent as ViewGroup).removeView(dialogView)
-            else {
-                val mAlertDialog = mBuilder.show()
-                dialogView.poznDialogBUTTON.setOnClickListener {
-                    mAlertDialog.dismiss()
-                    textView.setText(dialogView.poznDialogET.text)
-                    if (dbMethods.setLabelStatistics(action.text.toString(), "Poznamka", textView.text.toString()) == "1")
-                        Toast.makeText(context,"Záznam upravený", Toast.LENGTH_LONG).show()
-                    else
-                        Toast.makeText(context, "Záznam sa nepodarilo upraviť", Toast.LENGTH_LONG).show()
-                }
+            dialogView.backPoznDialogBUTTON.setOnClickListener{
+                val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                vibrate.vibrate(70)
+                mAlertDialog.cancel()
             }
-
-            true
-
         }
+
+        true
+
 
     }
 

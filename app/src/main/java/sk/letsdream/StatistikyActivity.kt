@@ -25,6 +25,7 @@ import android.widget.*
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
@@ -80,6 +81,7 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         val imageButton: ImageButton = findViewById(R.id.vyberstatistikySPINNER)
         val textViewStatName: TextView = findViewById(R.id.statFromSpinner)
         val textViewStatNameLabel: TextView = findViewById(R.id.názovStatistikyLABEL)
+        val dbMethods: DBConnection = DBConnection()
 
 
         imageButton.setOnClickListener{
@@ -88,16 +90,52 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
             popUpMenu.setOnMenuItemClickListener {
                 textViewStatName.setText(it.title.toString())
                 textViewStatNameLabel.setText(it.title.toString())
+                if(it.itemId == 0)
+                {
+
+                }
+                else if(it.itemId == 1) {
+                    val request: String = dbMethods.getStatistics(it.itemId)
+
+                    val barChart: BarChart = findViewById(R.id.barChart)
+                    var arrayList: ArrayList<BarEntry> = ArrayList()
+                    var typedArrayList = request.split(",").toTypedArray()
+                    //mam arraylist v tvare 'akcia-pocet'...rozdelit do dvoch separatnych listov alebo dvojrozmerneho pola
+                    var xAxis: XAxis = XAxis()
+                    for (i in 0 until typedArrayList.size)
+                    {
+                        //arrayList.add(Entry(,""))
+                    }
+
+                    var bds: BarDataSet = BarDataSet(arrayList, "Prvy Pokus")
+                    bds.setColor(Color.RED)
+                    var ibds: ArrayList<IBarDataSet> = ArrayList()
+                    ibds.add(bds)
+
+                    var barData: BarData = BarData(ibds)
+                    barChart.data = barData
+                    barChart.xAxis.textColor = Color.WHITE
+                    barChart.axisLeft.textColor = Color.WHITE
+                    barChart.axisRight.textColor = Color.WHITE
+                    barChart.legend.textColor = Color.WHITE
+                    //chart.data.setValueTextColor(Color.WHITE)
+                    barChart.description.text = ""
+                    barChart.isEnabled = true
+                }
+                else if(it.itemId == 2)
+                {
+
+                }
+                else if(it.itemId == 3)
+                {
+
+                }
                 true
             }
             popUpMenu.show()
         }
 
-
-
-
         val lineChart: LineChart = findViewById(R.id.lineChart)
-        val barChart: BarChart = findViewById(R.id.barChart)
         val pieChart: PieChart = findViewById(R.id.pieChart)
 
         /*var arrayList: ArrayList<Entry> = ArrayList()
@@ -122,26 +160,7 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         lineChart.description.text = ""
         lineChart.isEnabled = false*/
 
-        /*var arrayList: ArrayList<BarEntry> = ArrayList()
-        arrayList.add(BarEntry(0F, 20F))
-        arrayList.add(BarEntry(1F, 24F))
-        arrayList.add(BarEntry(2F, 2F))
-        arrayList.add(BarEntry(3F, 10F))
 
-        var bds: BarDataSet = BarDataSet(arrayList,"Prvy Pokus")
-        bds.setColor(Color.RED)
-        var ibds: ArrayList<IBarDataSet> = ArrayList()
-        ibds.add(bds)
-
-        var barData: BarData = BarData(ibds)
-        barChart.data = barData
-        barChart.xAxis.textColor = Color.WHITE
-        barChart.axisLeft.textColor = Color.WHITE
-        barChart.axisRight.textColor = Color.WHITE
-        barChart.legend.textColor = Color.WHITE
-        //chart.data.setValueTextColor(Color.WHITE)
-        barChart.description.text = ""
-        barChart.isEnabled = true*/
 
         /*var arrayList: ArrayList<PieEntry> = ArrayList()
         arrayList.add(PieEntry(0F, 20F))

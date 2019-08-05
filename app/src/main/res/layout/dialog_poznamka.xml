@@ -14,12 +14,27 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="left"
+        android:paddingTop="20dp">
         <Button
-            android:id="@+id/poznDialogBUTTON"
+            android:id="@+id/backPoznDialogBUTTON"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Potvrdiť"/>
-    </LinearLayout>
+            android:gravity="center"
+            android:text="Späť"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="right">
 
+            <Button
+                android:id="@+id/poznDialogBUTTON"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Potvrdiť" />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

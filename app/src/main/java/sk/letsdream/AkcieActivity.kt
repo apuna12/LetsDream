@@ -2,11 +2,13 @@ package sk.letsdream
 
 import android.app.AlertDialog
 import android.app.TimePickerDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.media.Image
 import android.os.Bundle
 import android.os.StrictMode
+import android.os.Vibrator
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
@@ -71,6 +73,7 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val dbMethods: DBConnection = DBConnection()
         val updateLabelMethods: UpdateLabelMethods = UpdateLabelMethods()
+        val vibrate = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
 
         val vyberAkcieSpinner: ImageButton = findViewById(R.id.vyberakcieSPINNER)
@@ -169,7 +172,9 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         vyberAkcieSpinner.setOnClickListener{
+            vibrate.vibrate(70)
             popUpMenu.setOnMenuItemClickListener {
+                vibrate.vibrate(70)
                 var actionName: String = it.title.toString()
                 nazovAkcieVedlaSpinnera.setText(actionName)
                 nazovAkcieZoSpinnera.setText(actionName)
@@ -201,14 +206,26 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         poznamka.visibility = View.INVISIBLE
         deleteAction.visibility = View.INVISIBLE
 
-        adminUserLabel.text = "Používateľ"
+        if(privileges.toLowerCase()=="11" || privileges.toLowerCase()=="111")
+        {
+            adminUserLabel.text = "Používateľ"
+            adminUserLabel.visibility = View.VISIBLE
+        }
+        else
+        {
+            adminUserLabel.visibility = View.INVISIBLE
+            changePrivileges.visibility = View.INVISIBLE
+
+        }
+
 
         changePrivileges.setOnClickListener{
+            vibrate.vibrate(70)
             if(privileges.toLowerCase()=="1" && adminUserLabel.text == "Používateľ")
             {
                 Toast.makeText(this,"K tejto funkcii ma prístup iba administrátor!", Toast.LENGTH_LONG).show()
             }
-            else if(privileges.toLowerCase() == "11" && adminUserLabel.text == "Používateľ")
+            else if((privileges.toLowerCase() == "11" || privileges.toLowerCase()=="111") && adminUserLabel.text == "Používateľ")
             {
                 Toast.makeText(this,"Zapnutý admin mód!", Toast.LENGTH_LONG).show()
                 vytvoritAkciu.visibility = View.VISIBLE
@@ -221,8 +238,11 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 poznamkaLabel.visibility = View.VISIBLE
                 poznamka.visibility = View.VISIBLE
                 deleteAction.visibility = View.VISIBLE
+                adminUserLabel.visibility = View.VISIBLE
+                changePrivileges.visibility = View.VISIBLE
+
             }
-            else if(privileges.toLowerCase() == "11" && adminUserLabel.text == "Administrátor")
+            else if((privileges.toLowerCase() == "11" || privileges.toLowerCase()=="111") && adminUserLabel.text == "Administrátor")
             {
                 Toast.makeText(this,"Zapnutý používateľský mód!", Toast.LENGTH_LONG).show()
                 vytvoritAkciu.visibility = View.INVISIBLE
@@ -248,25 +268,33 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 poznamkaLabel.visibility = View.INVISIBLE
                 poznamka.visibility = View.INVISIBLE
                 deleteAction.visibility = View.INVISIBLE
+                adminUserLabel.visibility = View.INVISIBLE
+                changePrivileges.visibility = View.INVISIBLE
             }
         }
 
         upravitCas.setOnClickListener{
+            vibrate.vibrate(70)
             updateLabelMethods.updateTimeLabel(this, casOd, casDo, nazovAkcieVedlaSpinnera)
         }
         upravitDobr.setOnClickListener{
+            vibrate.vibrate(70)
             updateLabelMethods.updateNumberLabels(this, upravitDobr, pocetDobr, nazovAkcieVedlaSpinnera, "pocDobr")
         }
         upravitNavs.setOnClickListener{
+            vibrate.vibrate(70)
             updateLabelMethods.updateNumberLabels(this, upravitNavs, pocetNavs, nazovAkcieVedlaSpinnera, "pocNavs")
         }
         upravitDatum.setOnClickListener{
+            vibrate.vibrate(70)
             updateLabelMethods.updateDateLabel(this, upravitDatum, datum, nazovAkcieVedlaSpinnera)
         }
         upravitPozn.setOnClickListener{
+            vibrate.vibrate(70)
             updateLabelMethods.updatePoznLabels(this, upravitPozn, poznamka, nazovAkcieVedlaSpinnera)
         }
         poznamka.setOnClickListener {
+            vibrate.vibrate(70)
             val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_fullpoznamka, null)
             val mBuilder = AlertDialog.Builder(this).setView(dialogView).setTitle("Poznámka")
             dialogView.fullPoznDialog.filters =
@@ -278,6 +306,7 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
         vytvoritAkciu.setOnClickListener{
+            vibrate.vibrate(70)
             val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_addnewaction, null)
             val mBuilder = AlertDialog.Builder(this).setView(dialogView).setTitle("Pridať novú akciu")
             dialogView.actionNameAddAction.filters =
@@ -286,6 +315,7 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 arrayOf(*dialogView.poznamkaAddAction.filters, InputFilter.LengthFilter(100))
             val mAlertDialog = mBuilder.show()
             dialogView.submitAddAction.setOnClickListener{
+                vibrate.vibrate(70)
                 var parser = SimpleDateFormat("HH:mm")
                 var formatter = SimpleDateFormat("HH:mm")
                 var casOdTIME = formatter.format(parser.parse(dialogView.casOdAddAction.text.toString()))
@@ -320,40 +350,48 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
                 else
                     Toast.makeText(this, "Vyplnte prosím všetky povinné položky!", Toast.LENGTH_LONG).show()
+
+
             }
+
             dialogView.backAddAction.setOnClickListener{
-                finish()
-                startActivity(intent)
+                vibrate.vibrate(70)
+                mAlertDialog.cancel()
             }
 
             dialogView.dateAddAction.setOnClickListener{
+                vibrate.vibrate(70)
                 timeMethod.SetDatePicker(this, dialogView.dateAddAction)
             }
             dialogView.casOdAddAction.setOnClickListener{
+                vibrate.vibrate(70)
                 timeMethod.SetTimePicker(this, dialogView.casOdAddAction)
             }
             dialogView.casDoAddAction.setOnClickListener{
+                vibrate.vibrate(70)
                 timeMethod.SetTimePicker(this, dialogView.casDoAddAction)
             }
         }
         deleteAction.setOnClickListener{
+            vibrate.vibrate(70)
             val alertDialog = AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle("Naozaj chcete vymazať akciu '" + nazovAkcieZoSpinnera.text.toString() + "' ?")
                 .setPositiveButton("Áno", DialogInterface.OnClickListener{ dialog, i ->
                     if(dbMethods.deleteAction(nazovAkcieVedlaSpinnera.text.toString()) == "1") {
+                        vibrate.vibrate(70)
                         finish()
                         startActivity(intent)
                         Toast.makeText(this, "Akcia úspešne vymazaná", Toast.LENGTH_LONG).show()
                     }
                     else
                     {
-                        finish()
                         Toast.makeText(this, "Hups! Akcia nebola vymazaná", Toast.LENGTH_LONG).show()
                     }
                 })
                 .setNegativeButton("Nie", DialogInterface.OnClickListener{ dialog, i ->
-                    finish()
+                    vibrate.vibrate(70)
+                    dialog.cancel()
                 })
                 .show()
 

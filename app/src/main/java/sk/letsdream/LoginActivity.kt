@@ -138,9 +138,20 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         intent.putExtra("privileges","11")
                         startActivity(intent)
                     }
+                    else if(jsonStr=="111") // Super Admin
+                    {
+                        Toast.makeText(this,"Prihlásenie úspešné", Toast.LENGTH_LONG).show()
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        intent.putExtra("privileges","111")
+                        startActivity(intent)
+                    }
                     else if(jsonStr=="2")
                     {
                         Toast.makeText(this,"Daný užívateľ neexistuje", Toast.LENGTH_LONG).show()
+                    }
+                    else if(jsonStr=="3")
+                    {
+                        Toast.makeText(this, "Vaša registrácia nebola potvrdená administrátorom!", Toast.LENGTH_LONG).show()
                     }
                     else
                     {
