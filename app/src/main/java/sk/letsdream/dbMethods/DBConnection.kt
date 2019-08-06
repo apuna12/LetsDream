@@ -184,9 +184,9 @@ class DBConnection {
                         lastApp = i
                 }
                 jsonStr = jsonStr.removeRange(firstApp, lastApp+1)
-                if(jsonStr.contains("1"))
+                if(jsonStr != "0")
                 {
-                    return "1" //dokoncit php + toto...toto bude hardcore
+                    return jsonStr //dokoncit php + toto...toto bude hardcore
                 }
                 else
                 {

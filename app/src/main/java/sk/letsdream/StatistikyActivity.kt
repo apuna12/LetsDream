@@ -27,6 +27,7 @@ import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet
@@ -90,22 +91,31 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
             popUpMenu.setOnMenuItemClickListener {
                 textViewStatName.setText(it.title.toString())
                 textViewStatNameLabel.setText(it.title.toString())
-                if(it.itemId == 0)
+                val itemId= -2131230846 + it.itemId
+                if(itemId == 0)
                 {
 
                 }
-                else if(it.itemId == 1) {
-                    val request: String = dbMethods.getStatistics(it.itemId)
+                else if(itemId == 1) {
+                    val request: String = dbMethods.getStatistics(itemId)
 
                     val barChart: BarChart = findViewById(R.id.barChart)
                     var arrayList: ArrayList<BarEntry> = ArrayList()
                     var typedArrayList = request.split(",").toTypedArray()
+                    typedArrayList = typedArrayList.dropLast(1).toTypedArray()
+                    var items = arrayOf<Array<String>>()
+
                     //mam arraylist v tvare 'akcia-pocet'...rozdelit do dvoch separatnych listov alebo dvojrozmerneho pola
-                    var xAxis: XAxis = XAxis()
+                    var xAxisValues = ArrayList<String>()
                     for (i in 0 until typedArrayList.size)
                     {
-                        //arrayList.add(Entry(,""))
+                        items  += typedArrayList[i].split("-").toTypedArray()
+                        arrayList.add(BarEntry(i.toFloat(), items[i][1].toFloat()))
+                        xAxisValues.add(items[i][0])
                     }
+                    //dajak nefunguje zobrazenie.. nvm preco
+                    val xAxis = barChart.xAxis
+                    xAxis.setValueFormatter(IndexAxisValueFormatter(xAxisValues))
 
                     var bds: BarDataSet = BarDataSet(arrayList, "Prvy Pokus")
                     bds.setColor(Color.RED)
@@ -122,11 +132,11 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                     barChart.description.text = ""
                     barChart.isEnabled = true
                 }
-                else if(it.itemId == 2)
+                else if(itemId == 2)
                 {
 
                 }
-                else if(it.itemId == 3)
+                else if(itemId == 3)
                 {
 
                 }
