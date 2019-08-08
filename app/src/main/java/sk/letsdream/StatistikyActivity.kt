@@ -3,6 +3,7 @@ package sk.letsdream
 import android.app.DatePickerDialog
 import android.app.PendingIntent.getActivity
 import android.content.res.ColorStateList
+import android.content.res.Resources
 import android.database.SQLException
 import android.graphics.Color
 import android.os.Build
@@ -13,14 +14,12 @@ import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
-import android.view.MenuItem
 import android.support.v4.widget.DrawerLayout
 import android.support.design.widget.NavigationView
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.MenuPopupWindow
 import android.support.v7.widget.Toolbar
-import android.view.Gravity
-import android.view.Menu
-import android.view.View
+import android.view.*
 import android.widget.*
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.LineChart
@@ -36,6 +35,7 @@ import kotlinx.android.synthetic.main.content_statistics.view.*
 import okhttp3.*
 import sk.letsdream.dbMethods.DBConnection
 import sk.letsdream.helperMethods.ButtonEffects
+import sk.letsdream.helperMethods.ChartMethods
 import sk.letsdream.helperMethods.TimeMethods
 import java.io.IOException
 import java.lang.Exception
@@ -87,56 +87,27 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
 
         imageButton.setOnClickListener{
             var popUpMenu: PopupMenu = PopupMenu(this, imageButton)
-            popUpMenu.inflate(R.menu.stat_menu)
+
+            popUpMenu.menuInflater.inflate(R.menu.array, popUpMenu.menu)
             popUpMenu.setOnMenuItemClickListener {
                 textViewStatName.setText(it.title.toString())
                 textViewStatNameLabel.setText(it.title.toString())
-                val itemId= -2131230846 + it.itemId
-                if(itemId == 0)
-                {
+                val itemId= it.itemId
+                val chartMethods: ChartMethods = ChartMethods()
+                if(itemId == R.id.menu_item_1) {
 
                 }
-                else if(itemId == 1) {
-                    val request: String = dbMethods.getStatistics(itemId)
-
+                else if(itemId == R.id.menu_item_2) {
                     val barChart: BarChart = findViewById(R.id.barChart)
-                    var arrayList: ArrayList<BarEntry> = ArrayList()
-                    var typedArrayList = request.split(",").toTypedArray()
-                    typedArrayList = typedArrayList.dropLast(1).toTypedArray()
-                    var items = arrayOf<Array<String>>()
+                    chartMethods.barChart(this,2,barChart)
 
-                    //mam arraylist v tvare 'akcia-pocet'...rozdelit do dvoch separatnych listov alebo dvojrozmerneho pola
-                    var xAxisValues = ArrayList<String>()
-                    for (i in 0 until typedArrayList.size)
-                    {
-                        items  += typedArrayList[i].split("-").toTypedArray()
-                        arrayList.add(BarEntry(i.toFloat(), items[i][1].toFloat()))
-                        xAxisValues.add(items[i][0])
-                    }
-                    //dajak nefunguje zobrazenie.. nvm preco
-                    val xAxis = barChart.xAxis
-                    xAxis.setValueFormatter(IndexAxisValueFormatter(xAxisValues))
-
-                    var bds: BarDataSet = BarDataSet(arrayList, "Prvy Pokus")
-                    bds.setColor(Color.RED)
-                    var ibds: ArrayList<IBarDataSet> = ArrayList()
-                    ibds.add(bds)
-
-                    var barData: BarData = BarData(ibds)
-                    barChart.data = barData
-                    barChart.xAxis.textColor = Color.WHITE
-                    barChart.axisLeft.textColor = Color.WHITE
-                    barChart.axisRight.textColor = Color.WHITE
-                    barChart.legend.textColor = Color.WHITE
-                    //chart.data.setValueTextColor(Color.WHITE)
-                    barChart.description.text = ""
-                    barChart.isEnabled = true
                 }
-                else if(itemId == 2)
+                else if(itemId == R.id.menu_item_3)
                 {
-
+                    val barChart: BarChart = findViewById(R.id.barChart)
+                    chartMethods.barChart(this,3,barChart)
                 }
-                else if(itemId == 3)
+                else if(itemId == R.id.menu_item_4)
                 {
 
                 }
@@ -145,8 +116,8 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
             popUpMenu.show()
         }
 
-        val lineChart: LineChart = findViewById(R.id.lineChart)
-        val pieChart: PieChart = findViewById(R.id.pieChart)
+        //val lineChart: LineChart = findViewById(R.id.lineChart)
+        //val pieChart: PieChart = findViewById(R.id.pieChart)
 
         /*var arrayList: ArrayList<Entry> = ArrayList()
         arrayList.add(Entry(0F, 20F))
