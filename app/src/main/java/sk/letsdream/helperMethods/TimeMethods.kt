@@ -42,48 +42,49 @@ class TimeMethods {
     }
 
 
-    fun SetDatePicker(context: Context, textView: TextView){
-        textView.setOnClickListener{
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
+    fun SetDatePicker(context: Context, textView: TextView) {
 
-            val dpd = DatePickerDialog(context, R.style.DialogTheme,
-                DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                    // Display Selected date in textbox
-                    textView.setText("" + dayOfMonth + "." + monthOfYear + "." + year)
-                }, year, month, day
-            )
-            dpd.show()
-        }
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+
+        val dpd = DatePickerDialog(
+            context, R.style.DialogTheme,
+            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in textbox
+                textView.setText("" + dayOfMonth + "." + monthOfYear + "." + year)
+            }, year, month, day
+        )
+        dpd.show()
+
     }
 
-    fun SetTimePicker(context: Context, textView: TextView){
-        textView.setOnClickListener {
-            val c = Calendar.getInstance()
-            val hour = c.get(Calendar.HOUR)
-            val minute = c.get(Calendar.MINUTE)
+    fun SetTimePicker(context: Context, textView: TextView) {
+        val c = Calendar.getInstance()
+        val hour = c.get(Calendar.HOUR)
+        val minute = c.get(Calendar.MINUTE)
 
-            val tpd = TimePickerDialog(context,  R.style.DialogTheme, TimePickerDialog.OnTimeSetListener(function = { view, h, m ->
+        val tpd =
+            TimePickerDialog(context, R.style.DialogTheme, TimePickerDialog.OnTimeSetListener(function = { view, h, m ->
 
-                if(m<10)
+                if (m < 10)
                     textView.setText("" + h + ":0" + m)
                 else
                     textView.setText("" + h + ":" + m)
 
             }), hour, minute, true)
 
-            tpd.show()
+        tpd.show()
 
-        }
+
     }
 
     fun dateDifference(startDate: String, startTime: String, endDate: String, endTime: String): String
     {
         val startDateTimeString = startDate + " " + startTime
         val endDateTimeString = endDate + " " + endTime
-        val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm")
+        val formatter = SimpleDateFormat("dd.MM.yyyy HH:mm")
 
         var startDateTime = formatter.parse(startDateTimeString)
         var endDateTime = formatter.parse(endDateTimeString)

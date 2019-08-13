@@ -31,7 +31,9 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet
 import kotlinx.android.synthetic.main.content_dochadzka.*
+import kotlinx.android.synthetic.main.content_statistics.*
 import kotlinx.android.synthetic.main.content_statistics.view.*
+import kotlinx.android.synthetic.main.content_statistics.view.barChart
 import okhttp3.*
 import sk.letsdream.dbMethods.DBConnection
 import sk.letsdream.helperMethods.ButtonEffects
@@ -83,12 +85,15 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         val textViewStatName: TextView = findViewById(R.id.statFromSpinner)
         val textViewStatNameLabel: TextView = findViewById(R.id.názovStatistikyLABEL)
         val dbMethods: DBConnection = DBConnection()
+        var popUpMenu: PopupMenu = PopupMenu(this, imageButton)
 
+        popUpMenu.menuInflater.inflate(R.menu.array, popUpMenu.menu)
+        textViewStatName.setText(popUpMenu.menu.getItem(0).toString())
+        textViewStatNameLabel.setText(textViewStatName.text)
 
         imageButton.setOnClickListener{
-            var popUpMenu: PopupMenu = PopupMenu(this, imageButton)
 
-            popUpMenu.menuInflater.inflate(R.menu.array, popUpMenu.menu)
+
             popUpMenu.setOnMenuItemClickListener {
                 textViewStatName.setText(it.title.toString())
                 textViewStatNameLabel.setText(it.title.toString())
@@ -98,68 +103,34 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
 
                 }
                 else if(itemId == R.id.menu_item_2) {
-                    val barChart: BarChart = findViewById(R.id.barChart)
-                    chartMethods.barChart(this,2,barChart)
+                    val lineChart: LineChart = findViewById(R.id.lineChart)
+                    barChart.visibility = View.INVISIBLE
+                    pieChart.visibility = View.INVISIBLE
+                    lineChart.visibility = View.VISIBLE
+                    chartMethods.lineChart(this,2,lineChart)
 
                 }
                 else if(itemId == R.id.menu_item_3)
                 {
                     val barChart: BarChart = findViewById(R.id.barChart)
+                    lineChart.visibility = View.INVISIBLE
+                    pieChart.visibility = View.INVISIBLE
+                    barChart.visibility = View.VISIBLE
                     chartMethods.barChart(this,3,barChart)
                 }
                 else if(itemId == R.id.menu_item_4)
                 {
-
+                    val pieChart: PieChart = findViewById(R.id.pieChart)
+                    lineChart.visibility = View.INVISIBLE
+                    pieChart.visibility = View.VISIBLE
+                    barChart.visibility = View.INVISIBLE
+                    chartMethods.pieChart(this,pieChart)
+                    pieChart.setExtraBottomOffset(20f);
                 }
                 true
             }
             popUpMenu.show()
         }
-
-        //val lineChart: LineChart = findViewById(R.id.lineChart)
-        //val pieChart: PieChart = findViewById(R.id.pieChart)
-
-        /*var arrayList: ArrayList<Entry> = ArrayList()
-        arrayList.add(Entry(0F, 20F))
-        arrayList.add(Entry(1F, 24F))
-        arrayList.add(Entry(2F, 2F))
-        arrayList.add(Entry(3F, 10F))
-
-        var lds: LineDataSet = LineDataSet(arrayList,"Prvy Pokus")
-        lds.setColor(Color.RED)
-        lds.lineWidth = 2F
-        var ilds: ArrayList<ILineDataSet> = ArrayList()
-        ilds.add(lds)
-
-        var lineData: LineData = LineData(ilds)
-        lineChart.data = lineData
-        lineChart.xAxis.textColor = Color.WHITE
-        lineChart.axisLeft.textColor = Color.WHITE
-        lineChart.axisRight.textColor = Color.WHITE
-        lineChart.legend.textColor = Color.WHITE
-        //chart.data.setValueTextColor(Color.WHITE)
-        lineChart.description.text = ""
-        lineChart.isEnabled = false*/
-
-
-
-        /*var arrayList: ArrayList<PieEntry> = ArrayList()
-        arrayList.add(PieEntry(0F, 20F))
-        arrayList.add(PieEntry(1F, 24F))
-        arrayList.add(PieEntry(2F, 2F))
-        arrayList.add(PieEntry(3F, 10F))
-
-        var pds: PieDataSet = PieDataSet(arrayList,"Prvy Pokus")
-        pds.setColor(Color.RED)
-        var ipds: ArrayList<IPieDataSet> = ArrayList()
-        ipds.add(pds)
-        var iPieDataSet: IPieDataSet = pds
-        var pieData: PieData = PieData(iPieDataSet)
-        pieChart.data = pieData
-        pieChart.legend.textColor = Color.WHITE
-        pieChart.description.text = ""
-        pieChart.isEnabled = true*/
-
     }
 
     override fun onBackPressed() {

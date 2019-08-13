@@ -24,6 +24,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import kotlinx.android.synthetic.main.content_dochadzka.view.*
 import kotlinx.android.synthetic.main.content_login.*
 import kotlinx.android.synthetic.main.dialog_addnewaction.view.*
 import kotlinx.android.synthetic.main.dialog_fullpoznamka.view.*
@@ -152,7 +153,7 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             var actionName: String = popUpMenu.menu.getItem(0).toString()
             nazovAkcieVedlaSpinnera.text = actionName
             nazovAkcieZoSpinnera.text = actionName
-            val statsArray: Array<String> = dbMethods.getLabelStatistics(actionName)
+            val statsArray: Array<String> = dbMethods.getLabelStatistics(actionName.replace(" ", "_"))
             if(statsArray.get(0) != "NaN") {
                 pocetDobr.text = statsArray.get(0)
                 pocetNavs.text = statsArray.get(1)
@@ -160,7 +161,6 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 casOd.text = statsArray.get(3)
                 casDo.text = statsArray.get(4)
                 poznamka.text = statsArray.get(5)
-                //dorobit poznamku
             }
             else
                 Toast.makeText(this, "Hups! Niečo je zlé", Toast.LENGTH_LONG).show()
@@ -291,7 +291,7 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         upravitPozn.setOnClickListener{
             vibrate.vibrate(70)
-            updateLabelMethods.updatePoznLabels(this, upravitPozn, poznamka, nazovAkcieVedlaSpinnera)
+            updateLabelMethods.updatePoznLabels(this, poznamka, nazovAkcieVedlaSpinnera)
         }
         poznamka.setOnClickListener {
             vibrate.vibrate(70)
@@ -321,8 +321,6 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 var casOdTIME = formatter.format(parser.parse(dialogView.casOdAddAction.text.toString()))
                 var casDoTIME = formatter.format(parser.parse(dialogView.casDoAddAction.text.toString()))
 
-                if(casOdTIME > casDoTIME)
-
                 if(dialogView.actionNameAddAction.text.toString() != "" &&
                     dialogView.dateAddAction.text.toString() != "" &&
                     dialogView.casOdAddAction.text.toString() != "" &&
@@ -349,7 +347,7 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         Toast.makeText(this, "Hups! Opravte si prosím čas.", Toast.LENGTH_LONG).show()
                 }
                 else
-                    Toast.makeText(this, "Vyplnte prosím všetky povinné položky!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Vyplňte prosím všetky povinné položky!", Toast.LENGTH_LONG).show()
 
 
             }

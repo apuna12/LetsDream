@@ -54,10 +54,9 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         StrictMode.setThreadPolicy(policy)
 
         val timeMethod: TimeMethods = TimeMethods()
+        val dbMethods: DBConnection = DBConnection()
 
-        var resp: String? = String()
-
-        timeMethod.UpdateActualTime(date,time)
+        timeMethod.UpdateActualTime(date, time)
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
@@ -83,73 +82,53 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         val meno: TextView = findViewById(R.id.nameFromSpinner)
         val spinnerMeno: ImageButton = findViewById(R.id.vybermenaSPINNER)
 
-        var list_of_items = arrayOf("Patvaros Nigel","Fero Pokuta", "Vikina Migova")
-       /*val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, list_of_items)
-
-        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerMeno!!.setAdapter(aa)
-
-
-        spinnerMeno?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                meno.text = spinnerMeno.selectedItem.toString()
-
-            }
-
-        }*/
+        var list_of_items = arrayOf("Patvaros Nigel", "Fero Pokuta", "Vikina Migova")
 
 
 
-        timeMethod.SetDatePicker(this, prichodDatePicker)
-        timeMethod.SetDatePicker(this, odchodDatePicker)
-        timeMethod.SetTimePicker(this, prichodTimePicker)
-        timeMethod.SetTimePicker(this, odchodTimePicker)
+
+        prichodDatePicker.setOnClickListener{
+            timeMethod.SetDatePicker(this, prichodDatePicker)
+        }
+        odchodDatePicker.setOnClickListener{
+            timeMethod.SetDatePicker(this, odchodDatePicker)
+        }
+        prichodTimePicker.setOnClickListener{
+            timeMethod.SetTimePicker(this, prichodTimePicker)
+        }
+        odchodTimePicker.setOnClickListener{
+            timeMethod.SetTimePicker(this, odchodTimePicker)
+        }
 
 
-        submit.setOnClickListener{
-            var timeDifference = timeMethod.dateDifference(prichodDatePicker.text.toString(), prichodTimePicker.text.toString(),
-                odchodDatePicker.text.toString(), odchodTimePicker.text.toString())
-            val urlPost = "http://letsdream.xf.cz/index.php?meno=" + meno.text + "&prichodDatum=" + prichodDatePicker.text +
-                    "&prichodCas=" + prichodTimePicker.text + "&odchodDatum=" + odchodDatePicker.text + "&odchodCas=" +
-                    odchodTimePicker.text + "&hodiny=" + timeDifference + "&poznamka=" + poznamkaET.text + "&table=dochadzka&rest=post"
-
+        submit.setOnClickListener {
+            var timeDifference = timeMethod.dateDifference(
+                prichodDatePicker.text.toString(), prichodTimePicker.text.toString(),
+                odchodDatePicker.text.toString(), odchodTimePicker.text.toString()
+            )
             try {
-                URL(urlPost).readText()
-
-                //In case you need to use jsonStr
-                /*val urlGet = "http://letsdream.xf.cz/index.php?meno=" + meno.text + "&prichodDatum=" + prichodDatePicker.text +
-                    "&prichodCas=" + prichodTimePicker.text + "&odchodDatum=" + odchodDatePicker.text + "&odchodCas=" +
-                    odchodTimePicker.text + "&hodiny=" + timeDifference + "&poznamka=" + poznamkaET.text + "&table=dochadzka&mod=get"
-                var jsonStr = URL(urlGet).readText()
-                var firstApp: Int = 0
-                var lastApp: Int = 0
-                if (jsonStr.toString().contains("<") || jsonStr.toString().contains(">")) {
-                    for (i in 0 until jsonStr.toString().length) {
-                        if (jsonStr[i] == '<') {
-                            firstApp = i
-                            break
-                        }
-                    }
-                    for (i in 0 until jsonStr.toString().length) {
-                        if (jsonStr[i] == '>')
-                            lastApp = i
-                    }
-                    jsonStr = jsonStr.removeRange(firstApp, lastApp)
-
-
-                }*/
-                Toast.makeText(this, "Záznam pridaný", Toast.LENGTH_LONG).show()
+                if (dbMethods.addActivityToVolunteer(
+                        meno.text.toString(),
+                        prichodDatePicker.text.toString(),
+                        prichodTimePicker.text.toString(),
+                        odchodDatePicker.text.toString(),
+                        odchodTimePicker.text.toString(),
+                        timeDifference.toString(),
+                        poznamka.text.toString()
+                    ) == "1"
+                ) {
+                    Toast.makeText(this, "Záznam pridaný", Toast.LENGTH_LONG).show()
+                } else
+                    Toast.makeText(this, "Hups! Záznam nebol pridaný!", Toast.LENGTH_LONG).show()
             }
-            catch (e: Exception)
+            catch (e:Exception)
             {
-                Toast.makeText(this, "Pridanie neprebehlo úspešne", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Hups! Záznam nebol pridaný! Máte zapnutý internet?", Toast.LENGTH_LONG).show()
             }
         }
     }
+
+
 
     override fun onBackPressed() {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)

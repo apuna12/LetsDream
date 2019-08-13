@@ -66,7 +66,7 @@ class UpdateLabelMethods {
             tpd2.setOnDismissListener {
                 val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
                 vibrate.vibrate(70)
-                if(dbMethods.setLabelStatistics(nazovAkcieVedlaSpinnera.text.toString(), "Cas_Od", casOd.text.toString()) == "1")
+                if(dbMethods.setLabelStatistics(nazovAkcieVedlaSpinnera.text.toString().replace(" ", "_"), "Cas_Od", casOd.text.toString()) == "1")
                 {
                     Toast.makeText(context,"Záznam upravený", Toast.LENGTH_LONG).show()
                 }
@@ -75,7 +75,7 @@ class UpdateLabelMethods {
                     Toast.makeText(context,"Záznam sa nepodarilo upraviť", Toast.LENGTH_LONG).show()
                 }
 
-                if(dbMethods.setLabelStatistics(nazovAkcieVedlaSpinnera.text.toString(), "Cas_Do", casDo.text.toString()) == "1")
+                if(dbMethods.setLabelStatistics(nazovAkcieVedlaSpinnera.text.toString().replace(" ", "_"), "Cas_Do", casDo.text.toString()) == "1")
                 {
                     Toast.makeText(context,"Záznam upravený", Toast.LENGTH_LONG).show()
                 }
@@ -105,7 +105,7 @@ class UpdateLabelMethods {
                 textView.setText(it.title.toString())
                 if (setting == "pocDobr") {
                     if (dbMethods.setLabelStatistics(
-                            action.text.toString(),
+                            action.text.toString().replace(" ", "_"),
                             "Pocet_Dobrovolnikov",
                             textView.text.toString()
                         ) == "1"
@@ -115,7 +115,7 @@ class UpdateLabelMethods {
                         Toast.makeText(context, "Záznam sa nepodarilo upraviť", Toast.LENGTH_LONG).show()
                 } else if (setting == "pocNavs") {
                     if (dbMethods.setLabelStatistics(
-                            action.text.toString(),
+                            action.text.toString().replace(" ", "_"),
                             "Pocet_Navstevnikov",
                             textView.text.toString()
                         ) == "1"
@@ -149,7 +149,7 @@ class UpdateLabelMethods {
         dpd.setOnDismissListener {
             val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
             vibrate.vibrate(70)
-            if (dbMethods.setLabelStatistics(action.text.toString(), "Datum", textView.text.toString()) == "1")
+            if (dbMethods.setLabelStatistics(action.text.toString().replace(" ", "_"), "Datum", textView.text.toString()) == "1")
                 Toast.makeText(context, "Záznam upravený", Toast.LENGTH_LONG).show()
             else
                 Toast.makeText(context, "Záznam sa nepodarilo upraviť", Toast.LENGTH_LONG).show()
@@ -158,7 +158,7 @@ class UpdateLabelMethods {
 
     }
 
-    fun updatePoznLabels(context: Context, upravit: TextView, textView: TextView, action: TextView) {
+    fun updatePoznLabels(context: Context, textView: TextView, action: TextView) {
         val dbMethods: DBConnection = DBConnection()
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_poznamka, null)
         val mBuilder = AlertDialog.Builder(context).setView(dialogView).setTitle("Upravte poznámku")
@@ -172,7 +172,7 @@ class UpdateLabelMethods {
                 vibrate.vibrate(70)
                 mAlertDialog.dismiss()
                 textView.setText(dialogView.poznDialogET.text)
-                if (dbMethods.setLabelStatistics(action.text.toString(), "Poznamka", textView.text.toString()) == "1")
+                if (dbMethods.setLabelStatistics(action.text.toString().replace(" ", "_"), "Poznamka", textView.text.toString()) == "1")
                     Toast.makeText(context, "Záznam upravený", Toast.LENGTH_LONG).show()
                 else
                     Toast.makeText(context, "Záznam sa nepodarilo upraviť", Toast.LENGTH_LONG).show()

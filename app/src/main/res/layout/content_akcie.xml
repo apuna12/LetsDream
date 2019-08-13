@@ -50,22 +50,19 @@
 
     <TextView
         android:id="@+id/historiaakciiLABEL"
-        android:layout_width="85dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="76dp"
-        android:layout_marginBottom="24dp"
         android:text="História akcií"
         android:textColor="@color/colorWhite"
-        app:layout_constraintBottom_toTopOf="@+id/adminUserTW"
         app:layout_constraintStart_toStartOf="@+id/full_dateTW"
-        app:layout_constraintTop_toBottomOf="@+id/full_dateTW"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/full_dateTW" />
 
     <ImageButton
         android:id="@+id/vyberakcieSPINNER"
         android:layout_width="30dp"
         android:layout_height="27dp"
-        android:layout_marginStart="0dp"
+        android:layout_marginStart="8dp"
         android:background="@drawable/back_w_arrow"
         app:layout_constraintBottom_toBottomOf="@+id/historiaakciiLABEL"
         app:layout_constraintStart_toEndOf="@+id/historiaakciiLABEL"
@@ -73,8 +70,9 @@
 
     <TextView
         android:id="@+id/akciaFromSpinner"
-        android:layout_width="125dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
         android:background="@drawable/back"
         android:ellipsize="end"
         android:paddingLeft="10dp"
@@ -83,19 +81,23 @@
         android:text="Názov akcie"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="@+id/vyberakcieSPINNER"
         app:layout_constraintEnd_toEndOf="@+id/timeTW"
+        app:layout_constraintStart_toEndOf="@+id/vyberakcieSPINNER"
         app:layout_constraintTop_toTopOf="@+id/vyberakcieSPINNER" />
 
     <TextView
         android:id="@+id/adminUserTW"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="320dp"
         android:text="Používateľ"
         android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/historiaakciiLABEL" />
+        app:layout_constraintStart_toStartOf="@+id/historiaakciiLABEL"
+        app:layout_constraintTop_toBottomOf="@+id/historiaakciiLABEL" />
 
     <ImageView
         android:id="@+id/changePriv"
@@ -263,7 +265,7 @@
 
     <TextView
         android:id="@+id/pocetDobrET"
-        android:layout_width="30dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:text="999"
@@ -274,7 +276,7 @@
 
     <TextView
         android:id="@+id/pocetNavsET"
-        android:layout_width="30dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:text="999"
@@ -285,7 +287,7 @@
 
     <TextView
         android:id="@+id/datumET"
-        android:layout_width="85dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:text="24.12.2999"
@@ -308,7 +310,7 @@
 
     <TextView
         android:id="@+id/casOd"
-        android:layout_width="40dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="77:77"
@@ -331,7 +333,7 @@
 
     <TextView
         android:id="@+id/casDo"
-        android:layout_width="40dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="77:77"

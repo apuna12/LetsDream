@@ -12,8 +12,10 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.text.InputType
+import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.*
 import kotlinx.android.synthetic.main.content_login.*
 import sk.letsdream.helperMethods.ButtonEffects
@@ -22,10 +24,17 @@ import sk.letsdream.helperMethods.HexMethods
 import sk.letsdream.helperMethods.TimeMethods
 import java.lang.Exception
 import java.net.URL
+import java.security.Key
 import java.security.MessageDigest
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
+import android.widget.EditText
+
+
 
 class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -71,6 +80,23 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
 
+        usernameEdt.setOnKeyListener(View.OnKeyListener{v, keyCode, event ->
+            if(keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP)
+            {
+                passwordEdt.requestFocus()
+                return@OnKeyListener true
+            }
+            false
+        })
+
+        passwordEdt.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
+                loginBtn.performClick()
+                return@OnKeyListener true
+            }
+            false
+        })
+
         passwordEdt.setOnFocusChangeListener { v, hasFocus ->
             if(hasFocus)
             {
@@ -94,6 +120,8 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val intent = Intent(this@LoginActivity, RegistrationActivity::class.java)
             startActivity(intent)
         }
+
+
 
         loginBtn.setOnClickListener{
 

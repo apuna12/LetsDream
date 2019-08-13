@@ -74,7 +74,7 @@
 
     <TextView
         android:id="@+id/statFromSpinner"
-        android:layout_width="140dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
         android:background="@drawable/back"
@@ -84,6 +84,7 @@
         android:text="Nazov statistiky"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="@+id/vyberstatistikySPINNER"
         app:layout_constraintEnd_toEndOf="@+id/timeTW"
         app:layout_constraintStart_toEndOf="@+id/vyberstatistikySPINNER"
@@ -96,7 +97,7 @@
         android:layout_marginStart="36dp"
         android:layout_marginTop="36dp"
         android:text="Názov zobrazenej štatistiky"
-        android:textColor="@color/colorWhite"
+        android:textColor="@color/yellow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/vyberstatistikyLABEL" />
 
@@ -106,14 +107,42 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="44dp"
         android:background="@color/colorDarkBlue"
+        android:visibility="invisible"
         app:layout_constrainedHeight="true"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/statFromSpinner"
-        app:layout_constraintStart_toStartOf="@+id/názovStatistikyLABEL"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/názovStatistikyLABEL"></com.github.mikephil.charting.charts.BarChart>
 
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/lineChart"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="44dp"
+        android:background="@color/colorDarkBlue"
+        android:visibility="invisible"
+        app:layout_constrainedHeight="true"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/názovStatistikyLABEL"></com.github.mikephil.charting.charts.LineChart>
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pieChart"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorDarkBlue"
+        android:visibility="invisible"
+        app:layout_constrainedHeight="true"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/názovStatistikyLABEL"></com.github.mikephil.charting.charts.PieChart>
 
 </android.support.constraint.ConstraintLayout>
