@@ -2,6 +2,7 @@ package sk.letsdream
 
 import android.app.DatePickerDialog
 import android.app.PendingIntent.getActivity
+import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.database.SQLException
@@ -85,7 +86,9 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         val textViewStatName: TextView = findViewById(R.id.statFromSpinner)
         val textViewStatNameLabel: TextView = findViewById(R.id.názovStatistikyLABEL)
         val dbMethods: DBConnection = DBConnection()
-        var popUpMenu: PopupMenu = PopupMenu(this, imageButton)
+
+        val wrapper: Context = ContextThemeWrapper(this, R.style.popupMenuStyle)
+        var popUpMenu: PopupMenu = PopupMenu(wrapper, imageButton)
 
         popUpMenu.menuInflater.inflate(R.menu.array, popUpMenu.menu)
         textViewStatName.setText(popUpMenu.menu.getItem(0).toString())

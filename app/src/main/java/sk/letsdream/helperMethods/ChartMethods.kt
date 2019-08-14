@@ -17,6 +17,9 @@ import sk.letsdream.dbMethods.DBConnection
 import java.sql.Time
 import android.R.attr.entries
 import com.github.mikephil.charting.components.Legend
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.random.Random
 
 
 class ChartMethods{
@@ -159,19 +162,20 @@ class ChartMethods{
                 }
             }
         }
-
+        var tempString: String = String()
         var legendLabels: List<LegendEntry> = ArrayList<LegendEntry>()
         for(i in 0 until fullCountedList.size)
         {
             arrayList.add(PieEntry(fullCountedList[i][1].toFloat(), fullCountedList[i][1].toFloat()))
             val entry = LegendEntry()
-            entry.formColor = ColorTemplate.COLORFUL_COLORS.get(i)
+            entry.formColor = CUSTOM_COLORS.get(i)
+
             entry.label = fullCountedList[i][0]
             legendLabels += entry
         }
 
         var pds: PieDataSet = PieDataSet(arrayList, "")
-        pds.colors = ColorTemplate.COLORFUL_COLORS.toList()
+        pds.colors = CUSTOM_COLORS.toList()
         pds.valueTextSize = 10f
         var pieData: PieData = PieData(pds)
         pieChart.data = pieData
@@ -185,5 +189,32 @@ class ChartMethods{
         pieChart.invalidate()
         pieChart.refreshDrawableState()
     }
+
+    val CUSTOM_COLORS = intArrayOf(Color.rgb(65, 236, 186), Color.rgb(120, 100, 0),
+        Color.rgb(50, 147, 40), Color.rgb(122, 127, 199), Color.rgb(202, 127, 134), Color.rgb(144, 97, 234), Color.rgb(76, 97, 181),
+        Color.rgb(102, 144, 164), Color.rgb(250, 60, 87), Color.rgb(238, 110, 55), Color.rgb(34, 46, 148),
+        Color.rgb(50, 24, 200), Color.rgb(210, 162, 148), Color.rgb(149, 50, 42), Color.rgb(140, 201, 201), 
+        Color.rgb(56, 15, 67), Color.rgb(37, 7, 70), Color.rgb(246, 73, 5), Color.rgb(186, 112, 32), 
+        Color.rgb(6, 157, 143), Color.rgb(124, 89, 58), Color.rgb(150, 126, 81), Color.rgb(72, 254, 173), 
+        Color.rgb(89, 92, 167), Color.rgb(70, 166, 49), Color.rgb(175, 33, 35), Color.rgb(186, 222, 130), 
+        Color.rgb(254, 202, 151), Color.rgb(118, 177, 155), Color.rgb(222, 254, 230), Color.rgb(197, 86, 219), 
+        Color.rgb(16, 189, 254), Color.rgb(41, 222, 117), Color.rgb(19, 71, 117), Color.rgb(212, 164, 50), 
+        Color.rgb(8, 111, 142), Color.rgb(45, 83, 112), Color.rgb(108, 113, 71), Color.rgb(72, 55, 115), 
+        Color.rgb(53, 246, 163), Color.rgb(178, 4, 160), Color.rgb(51, 132, 224), Color.rgb(147, 95, 218), 
+        Color.rgb(67, 174, 10), Color.rgb(191, 146, 99), Color.rgb(53, 15, 0), Color.rgb(146, 177, 159), 
+        Color.rgb(117, 182, 56), Color.rgb(201, 221, 116), Color.rgb(100, 2, 141), Color.rgb(128, 18, 55), 
+        Color.rgb(47, 12, 154), Color.rgb(211, 171, 107), Color.rgb(7, 49, 145), Color.rgb(207, 151, 209), 
+        Color.rgb(217, 76, 215), Color.rgb(127, 130, 87), Color.rgb(196, 158, 19), Color.rgb(84, 79, 177), 
+        Color.rgb(35, 131, 50), Color.rgb(175, 51, 93), Color.rgb(87, 156, 68), Color.rgb(106, 52, 227), 
+        Color.rgb(24, 9, 59), Color.rgb(205, 188, 14), Color.rgb(252, 29, 160), Color.rgb(240, 34, 108), 
+        Color.rgb(173, 204, 89), Color.rgb(224, 117, 236), Color.rgb(19, 146, 193), Color.rgb(154, 225, 184), 
+        Color.rgb(91, 161, 14), Color.rgb(223, 99, 126), Color.rgb(9, 11, 187), Color.rgb(194, 252, 44), 
+        Color.rgb(249, 112, 56), Color.rgb(44, 143, 174), Color.rgb(235, 143, 34), Color.rgb(176, 138, 156), 
+        Color.rgb(228, 216, 2), Color.rgb(233, 83, 84), Color.rgb(221, 186, 220), Color.rgb(169, 215, 43), 
+        Color.rgb(191, 79, 100), Color.rgb(194, 194, 202), Color.rgb(47, 120, 130), Color.rgb(98, 184, 237), 
+        Color.rgb(29, 51, 175), Color.rgb(241, 24, 242), Color.rgb(240, 247, 134), Color.rgb(125, 9, 162), 
+        Color.rgb(150, 254, 247), Color.rgb(8, 11, 113), Color.rgb(209, 45, 64), Color.rgb(104, 181, 181), 
+        Color.rgb(215, 153, 223), Color.rgb(131, 129, 52), Color.rgb(89, 104, 22), Color.rgb(121, 100, 42), 
+        Color.rgb(95, 59, 59))
 
 }

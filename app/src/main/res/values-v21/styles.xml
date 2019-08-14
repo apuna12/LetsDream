@@ -4,4 +4,10 @@
         <item name="windowNoTitle">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
+    <style name="popupMenuStyle" parent="Widget.AppCompat.ListView.DropDown">
+        <item name="android:textColor">#000</item>
+        <item name="android:itemBackground">#FFFFFF</item>
+        <item name="android:divider">@drawable/list_divider</item>
+        <item name="android:dividerHeight">2dp</item>
+    </style>
 </resources>

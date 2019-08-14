@@ -3,6 +3,7 @@ package sk.letsdream
 import android.app.AlertDialog
 import android.app.TimePickerDialog
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.DialogInterface
 import android.content.Intent
 import android.media.Image
@@ -19,10 +20,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.text.InputFilter
 import android.text.InputType
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.*
 import kotlinx.android.synthetic.main.content_dochadzka.view.*
 import kotlinx.android.synthetic.main.content_login.*
@@ -136,8 +134,8 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             throw Exception(e)
         }
 
-
-        var popUpMenu: PopupMenu = PopupMenu(this, vyberAkcieSpinner)
+        val wrapper: Context = ContextThemeWrapper(this, R.style.popupMenuStyle)
+        var popUpMenu: PopupMenu = PopupMenu(wrapper, vyberAkcieSpinner)
         if(akcieList.size > 0) {
             for (i in 0 until akcieList.size) {
                 if(akcieList[i] != null || akcieList[i] != "")

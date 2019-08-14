@@ -22,4 +22,11 @@
         <item name="colorAccent">@color/colorTyrkys</item>
     </style>
 
+    <style name="popupMenuStyle">
+        <item name="android:textColor">#000</item>
+        <item name="android:itemBackground">#FFFFFF</item>
+        <item name="android:divider">@drawable/list_divider</item>
+        <item name="android:dividerHeight">2dp</item>
+    </style>
+
 </resources>
