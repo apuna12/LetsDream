@@ -15,8 +15,6 @@ class DBConnection {
 
     fun getLabelStatistics(actionName: String): Array<String>
     {
-        // zjednodusit... radsej zobrat vsetky hodnoty a splitnut do listu a tak zobrazit
-
         val sql = "http://letsdream.xf.cz/index.php?action=" + actionName.replace(" ","_") + "&mod=getAction&rest=get"
 
         try{
@@ -228,6 +226,43 @@ class DBConnection {
                 if(jsonStr.contains("1"))
                 {
                     return "1"
+                }
+                else
+                {
+                    return "0"
+                }
+            }
+        }
+        catch (e: Exception)
+        {
+            throw Exception(e)
+        }
+        return "0"
+    }
+
+    fun getAllApprovedNames(): String
+    {
+        val sql = "http://letsdream.xf.cz/index.php?mod=getAllApprovedNames&rest=get"
+
+        try{
+            var jsonStr: String = URL(sql).readText()
+            var firstApp: Int = 0
+            var lastApp: Int = 0
+            if (jsonStr.toString().contains("<") || jsonStr.toString().contains(">")) {
+                for (i in 0 until jsonStr.toString().length) {
+                    if (jsonStr[i] == '<') {
+                        firstApp = i
+                        break
+                    }
+                }
+                for (i in 0 until jsonStr.toString().length) {
+                    if (jsonStr[i] == '>')
+                        lastApp = i
+                }
+                jsonStr = jsonStr.removeRange(firstApp, lastApp+1)
+                if(!jsonStr.contains("0"))
+                {
+                    return jsonStr
                 }
                 else
                 {

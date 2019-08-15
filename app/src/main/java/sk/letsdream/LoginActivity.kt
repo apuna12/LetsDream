@@ -1,5 +1,6 @@
 package sk.letsdream
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
@@ -11,11 +12,9 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.text.InputFilter
 import android.text.InputType
-import android.view.KeyEvent
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.*
 import kotlinx.android.synthetic.main.content_login.*
 import sk.letsdream.helperMethods.ButtonEffects
@@ -29,7 +28,8 @@ import java.security.MessageDigest
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import android.widget.EditText
-
+import kotlinx.android.synthetic.main.dialog_addnewaction.view.*
+import kotlinx.android.synthetic.main.dialog_register.view.*
 
 
 class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -116,12 +116,225 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 passwordEdt.inputType = 129
         }
 
-        registerBtn.setOnClickListener{
-            val intent = Intent(this@LoginActivity, RegistrationActivity::class.java)
-            startActivity(intent)
+        registerBtn.setOnClickListener {
+            val emailMethods: EmailMethods = EmailMethods()
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_register, null)
+            val mBuilder = AlertDialog.Builder(this).setView(dialogView).setTitle("Registrácia")
+            val mAlertDialog = mBuilder.show()
+            val userRegister = dialogView.userEdt
+            val passRegister = dialogView.passwordRegEdt
+            val passAgainRegister = dialogView.passwordAgainRegEdt
+            val emailRegister = dialogView.emailRegEdt
+            val nameRegister = dialogView.nameRegEdt
+            val surnameRegister = dialogView.surnameRegEdt
+            val submit = dialogView.registrujBtn
+            val back = dialogView.backRegBtn
+            val gdprCHB = dialogView.gdprCHB
+            userRegister.setOnFocusChangeListener { v, hasFocus ->
+                if (hasFocus) {
+                    userRegister.hint = ""
+                } else {
+                    if (userRegister.text.toString() == "")
+                        userRegister.hint = "Používateľ"
+                }
+            }
+            passRegister.setOnFocusChangeListener { v, hasFocus ->
+                if (hasFocus) {
+                    passRegister.hint = ""
+                } else {
+                    if (passRegister.text.toString() == "")
+                        passRegister.hint = "Heslo"
+                }
+            }
+            passAgainRegister.setOnFocusChangeListener { v, hasFocus ->
+                if (hasFocus) {
+                    passAgainRegister.hint = ""
+                } else {
+                    if (passAgainRegister.text.toString() == "")
+                        passAgainRegister.hint = "Heslo znova"
+                }
+            }
+            emailRegister.setOnFocusChangeListener { v, hasFocus ->
+                if (hasFocus) {
+                    emailRegister.hint = ""
+                } else {
+                    if (emailRegister.text.toString() == "")
+                        emailRegister.hint = "Email"
+                }
+            }
+
+            nameRegister.setOnFocusChangeListener { v, hasFocus ->
+                if (hasFocus) {
+                    emailRegister.hint = ""
+                } else {
+                    if (emailRegister.text.toString() == "")
+                        emailRegister.hint = "Zadajte meno"
+                }
+            }
+            surnameRegister.setOnFocusChangeListener { v, hasFocus ->
+                if (hasFocus) {
+                    emailRegister.hint = ""
+                } else {
+                    if (emailRegister.text.toString() == "")
+                        emailRegister.hint = "Zadajte priezvisko"
+                }
+            }
+
+            userRegister.setOnKeyListener(View.OnKeyListener{v, keyCode, event ->
+                if(keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP)
+                {
+                    passRegister.requestFocus()
+                    return@OnKeyListener true
+                }
+                false
+            })
+            passRegister.setOnKeyListener(View.OnKeyListener{v, keyCode, event ->
+                if(keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP)
+                {
+                    passAgainRegister.requestFocus()
+                    return@OnKeyListener true
+                }
+                false
+            })
+            passAgainRegister.setOnKeyListener(View.OnKeyListener{v, keyCode, event ->
+                if(keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP)
+                {
+                    nameRegister.requestFocus()
+                    return@OnKeyListener true
+                }
+                false
+            })
+            nameRegister.setOnKeyListener(View.OnKeyListener{v, keyCode, event ->
+                if(keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP)
+                {
+                    surnameRegister.requestFocus()
+                    return@OnKeyListener true
+                }
+                false
+            })
+            surnameRegister.setOnKeyListener(View.OnKeyListener{v, keyCode, event ->
+                if(keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP)
+                {
+                    emailRegister.requestFocus()
+                    return@OnKeyListener true
+                }
+                false
+            })
+            surnameRegister.setOnKeyListener(View.OnKeyListener{v, keyCode, event ->
+                if(keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP)
+                {
+                    emailRegister.requestFocus()
+                    return@OnKeyListener true
+                }
+                false
+            })
+            emailRegister.setOnKeyListener(View.OnKeyListener{v, keyCode, event ->
+                if(keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP)
+                {
+                    gdprCHB.requestFocus()
+                    return@OnKeyListener true
+                }
+                false
+            })
+
+            dialogView.registrujBtn.setOnClickListener {
+                if (userRegister.text.toString() == "") {
+                    Toast.makeText(this, "Prosím zadajte meno účtu!", Toast.LENGTH_LONG).show()
+                } else if (passRegister.text.toString() == "") {
+                    Toast.makeText(this, "Prosím zadajte heslo!", Toast.LENGTH_LONG).show()
+                } else if (passAgainRegister.text.toString() == "") {
+                    Toast.makeText(this, "Prosím zadajte znova heslo!", Toast.LENGTH_LONG).show()
+                } else if (emailRegister.text.toString() == "") {
+                    Toast.makeText(this, "Prosím zadajte emailovú adresu!", Toast.LENGTH_LONG).show()
+                } else if (!emailMethods.isEmailValid(emailRegister.text.toString())) {
+                    Toast.makeText(this, "Prosím zadajte správnu emailovú adresu!", Toast.LENGTH_LONG).show()
+                } else if (passRegister.text.toString() != passAgainRegister.text.toString()) {
+                    Toast.makeText(this, "Vaše heslá sa nezhodujú!", Toast.LENGTH_LONG).show()
+                } else if (nameRegister.text.toString() == "") {
+                    Toast.makeText(this, "Zadajte prosím meno!", Toast.LENGTH_LONG).show()
+                } else if (surnameRegister.text.toString() == "") {
+                    Toast.makeText(this, "Zadajte prosím priezvisko!", Toast.LENGTH_LONG).show()
+                } else if (!gdprCHB.isChecked) {
+                    Toast.makeText(
+                        this,
+                        "Pre úspešne zaregistrovanie musíte súhlasiť so spracovaním údajov!",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+
+                    val sql =
+                        "http://letsdream.xf.cz/index.php?username=" + userRegister.text + "&mod=register&rest=get"
+
+                    try {
+                        var jsonStr: String = URL(sql).readText()
+                        var firstApp: Int = 0
+                        var lastApp: Int = 0
+                        if (jsonStr.toString().contains("<") || jsonStr.toString().contains(">")) {
+                            for (i in 0 until jsonStr.toString().length) {
+                                if (jsonStr[i] == '<') {
+                                    firstApp = i
+                                    break
+                                }
+                            }
+                            for (i in 0 until jsonStr.toString().length) {
+                                if (jsonStr[i] == '>')
+                                    lastApp = i
+                            }
+                            jsonStr = jsonStr.removeRange(firstApp, lastApp + 1)
+                        }
+                        if (jsonStr == "1")
+                            Toast.makeText(this, "Toto meno už používa niekto iný", Toast.LENGTH_LONG).show()
+                        else {
+
+                            var digest: MessageDigest
+                            digest = MessageDigest.getInstance("SHA-256")
+                            digest.update(passRegister.text.toString().toByteArray())
+                            var hash = hexMethods.bytesToHexString(digest.digest())
+
+                            val sql =
+                                "http://letsdream.xf.cz/index.php?username=" + userRegister.text + "&password=" + hash +
+                                        "&email=" + emailRegister.text + "&name=" + surnameRegister.text + ",_" +
+                                        nameRegister.text + "&mod=register&rest=post"
+
+                            try {
+                                var jsonStr: String = URL(sql).readText()
+                                var firstApp: Int = 0
+                                var lastApp: Int = 0
+                                if (jsonStr.toString().contains("<") || jsonStr.toString().contains(">")) {
+                                    for (i in 0 until jsonStr.toString().length) {
+                                        if (jsonStr[i] == '<') {
+                                            firstApp = i
+                                            break
+                                        }
+                                    }
+                                    for (i in 0 until jsonStr.toString().length) {
+                                        if (jsonStr[i] == '>')
+                                            lastApp = i
+                                    }
+                                    jsonStr = jsonStr.removeRange(firstApp, lastApp + 1)
+                                }
+                                if (jsonStr.contains("1")) {
+                                    Toast.makeText(this, "Používateľ úspešne registrovaný!", Toast.LENGTH_LONG).show()
+                                    val intent = Intent(this, LoginActivity::class.java)
+                                    startActivity(intent)
+                                } else {
+                                    Toast.makeText(this, "Hups, niečo je zlé!", Toast.LENGTH_LONG).show()
+                                }
+
+                            } catch (e: Exception) {
+                                throw Exception(e)
+                            }
+                        }
+                    } catch (e: Exception) {
+                        throw Exception(e)
+                    }
+                }
+            }
+            back.setOnClickListener {
+                mAlertDialog.cancel()
+            }
+
         }
-
-
 
         loginBtn.setOnClickListener{
 

@@ -118,7 +118,7 @@ class ChartMethods{
         val dbMethods: DBConnection = DBConnection()
         val request: String = dbMethods.getStatistics(4)
         var arrayList: ArrayList<PieEntry> = ArrayList()
-        var typedArrayList = request.split(",").toTypedArray()
+        var typedArrayList = request.split("?").toTypedArray()
         typedArrayList = typedArrayList.dropLast(1).toTypedArray()
         var items = arrayOf<Array<String>>()
         var xAxisValues = ArrayList<String>()
@@ -128,6 +128,12 @@ class ChartMethods{
         {
             var helper : String = String()
             items  += typedArrayList[i].split("-").toTypedArray()
+            if(items[i][0].contains(","))
+            {
+                var temp = items[i][0].split(",")
+                items[i][0] = temp[1] + " " + temp[0]
+            }
+
             if(items[i][1].contains(":")) {
                 helper = items[i][1].substring(0, items[i][1].indexOf(":", 0, true)) + "." +
                         ((items[i][1].substring(items[i][1].indexOf(":", 0, true)+1)
