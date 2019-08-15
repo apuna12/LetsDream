@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/sky"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".StatistikyActivity"
+    tools:showIn="@layout/app_bar_vybermena">
+
+    <ImageView
+        android:id="@+id/logo_letsdream"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:src="@mipmap/ic_letsdream"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.03" />
+
+    <TextView
+        android:id="@+id/full_dateTW"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:layout_marginLeft="52dp"
+        android:layout_marginTop="40dp"
+        android:text="dd.MM.YYYY"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo_letsdream" />
+
+    <TextView
+        android:id="@+id/timeTW"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="56dp"
+        android:layout_marginRight="56dp"
+        android:text="HH:MM"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo_letsdream" />
+
+    <TextView
+        android:id="@+id/vybermenaLABEL_VM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:text="Výber používateľa"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintStart_toStartOf="@+id/full_dateTW"
+        app:layout_constraintTop_toBottomOf="@+id/full_dateTW" />
+
+    <ImageButton
+        android:id="@+id/vybermenaSPINNER_VM"
+        android:layout_width="30dp"
+        android:layout_height="27dp"
+        android:background="@drawable/back_w_arrow"
+        app:layout_constraintBottom_toBottomOf="@+id/vybermenaLABEL_VM"
+        app:layout_constraintStart_toEndOf="@+id/vybermenaLABEL_VM"
+        app:layout_constraintTop_toTopOf="@+id/vybermenaLABEL_VM" />
+
+    <TextView
+        android:id="@+id/nameFromSpinner_VM"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/back"
+        android:hint="Vyberte meno"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"
+        android:textColorHint="@color/colorWhite"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@+id/vybermenaSPINNER_VM"
+        app:layout_constraintEnd_toEndOf="@+id/timeTW"
+        app:layout_constraintStart_toEndOf="@+id/vybermenaSPINNER_VM"
+        app:layout_constraintTop_toTopOf="@+id/vybermenaSPINNER_VM" />
+
+    <TextView
+        android:id="@+id/adminUserTW_VM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="340dp"
+        android:text="Používateľ"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/vybermenaLABEL_VM" />
+
+    <ImageView
+        android:id="@+id/changePriv_VM"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/ic_sync_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/adminUserTW_VM"
+        app:layout_constraintStart_toStartOf="@+id/vybermenaSPINNER_VM"
+        app:layout_constraintTop_toTopOf="@+id/adminUserTW_VM" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Povýšiť na správcu"
+        android:textColor="@color/yellow"
+        app:layout_constraintBottom_toBottomOf="@+id/changePriv_VM"
+        app:layout_constraintEnd_toEndOf="@+id/nameFromSpinner_VM"
+        app:layout_constraintTop_toTopOf="@+id/changePriv_VM" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="284dp"
+        android:text="Spravovať registrácie ("
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/adminUserTW_VM" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="nové: 1"
+        android:textColor="@color/yellow"
+        app:layout_constraintBottom_toBottomOf="@+id/textView16"
+        app:layout_constraintStart_toEndOf="@+id/textView16"
+        app:layout_constraintTop_toTopOf="@+id/textView16" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=")"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="@+id/textView17"
+        app:layout_constraintStart_toEndOf="@+id/textView17"
+        app:layout_constraintTop_toTopOf="@+id/textView17" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="224dp"
+        android:text="Celkový počet hodín:"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView16" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:text="30 h"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="@+id/textView18"
+        app:layout_constraintEnd_toEndOf="@+id/textView19"
+        app:layout_constraintStart_toEndOf="@+id/textView18"
+        app:layout_constraintTop_toTopOf="@+id/textView18"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="60dp"
+        android:text="História akcií"
+        android:textColor="@color/yellow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="540dp" />
+
+</android.support.constraint.ConstraintLayout>
