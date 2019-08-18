@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/sky"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".StatistikyActivity"
+    tools:context=".VyberMenaActivity"
     tools:showIn="@layout/app_bar_vybermena">
 
     <ImageView
@@ -62,6 +62,7 @@
         android:id="@+id/vybermenaSPINNER_VM"
         android:layout_width="30dp"
         android:layout_height="27dp"
+        android:layout_marginStart="8dp"
         android:background="@drawable/back_w_arrow"
         app:layout_constraintBottom_toBottomOf="@+id/vybermenaLABEL_VM"
         app:layout_constraintStart_toEndOf="@+id/vybermenaLABEL_VM"
@@ -100,12 +101,16 @@
         android:id="@+id/changePriv_VM"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/ic_sync_black_24dp"
         app:layout_constraintBottom_toBottomOf="@+id/adminUserTW_VM"
-        app:layout_constraintStart_toStartOf="@+id/vybermenaSPINNER_VM"
+        app:layout_constraintEnd_toStartOf="@+id/textView20"
+        app:layout_constraintStart_toEndOf="@+id/adminUserTW_VM"
         app:layout_constraintTop_toTopOf="@+id/adminUserTW_VM" />
 
     <TextView
+        android:id="@+id/textView20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Povýšiť na správcu"
@@ -177,5 +182,53 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+    <TableLayout
+        android:id="@+id/table"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:scrollbars="vertical"
+        android:stretchColumns="*"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView19">
+        app:layout_constrainedWidth="true">
+
+        <TableRow>
+
+            <TextView
+                android:height="35dp"
+                android:text="Názov: "
+                android:textColor="@color/colorWhite" />
+
+            <TextView
+                android:height="35dp"
+                android:text="Dátum: "
+                android:textColor="@color/colorWhite" />
+
+            <TextView
+                android:height="35dp"
+                android:text="Čas od: "
+                android:textColor="@color/colorWhite" />
+
+            <TextView
+                android:height="35dp"
+                android:text="Čas do: "
+                android:textColor="@color/colorWhite" />
+
+            <TextView
+                android:height="35dp"
+                android:text="Upraviť"
+                android:textColor="@color/colorWhite" />
+
+        </TableRow>
+
+    </TableLayout>
 
 </android.support.constraint.ConstraintLayout>

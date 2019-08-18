@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivity(intent)
         }
         meno.setOnClickListener{
-            val intent = Intent(this@MainActivity, DochadzkaActivity::class.java)
+            val intent = Intent(this@MainActivity, VyberMenaActivity::class.java)
             intent.putExtra("privileges", privileges)
             startActivity(intent)
         }

@@ -82,7 +82,6 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         val meno: TextView = findViewById(R.id.nameFromSpinner)
         val spinnerMeno: ImageButton = findViewById(R.id.vybermenaSPINNER)
 
-        var list_of_items = arrayOf("Patvaros Nigel", "Fero Pokuta", "Vikina Migova")
         var namesList: Array<String>
         namesList = arrayOf<String>()
 
