@@ -119,7 +119,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         registerBtn.setOnClickListener {
             val emailMethods: EmailMethods = EmailMethods()
             val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_register, null)
-            val mBuilder = AlertDialog.Builder(this).setView(dialogView).setTitle("Registrácia")
+            val mBuilder = AlertDialog.Builder(this).setView(dialogView)
             val mAlertDialog = mBuilder.show()
             val userRegister = dialogView.userEdt
             val passRegister = dialogView.passwordRegEdt
@@ -127,7 +127,6 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val emailRegister = dialogView.emailRegEdt
             val nameRegister = dialogView.nameRegEdt
             val surnameRegister = dialogView.surnameRegEdt
-            val submit = dialogView.registrujBtn
             val back = dialogView.backRegBtn
             val gdprCHB = dialogView.gdprCHB
             userRegister.setOnFocusChangeListener { v, hasFocus ->

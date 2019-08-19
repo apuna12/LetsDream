@@ -26,7 +26,6 @@ import kotlinx.android.synthetic.main.content_dochadzka.view.*
 import kotlinx.android.synthetic.main.content_login.*
 import kotlinx.android.synthetic.main.dialog_addnewaction.view.*
 import kotlinx.android.synthetic.main.dialog_fullpoznamka.view.*
-import kotlinx.android.synthetic.main.dialog_poznamka.view.*
 import org.w3c.dom.Text
 import sk.letsdream.dbMethods.DBConnection
 import sk.letsdream.helperMethods.*
@@ -92,7 +91,6 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val upravitCas: TextView = findViewById(R.id.upravitCas)
         val upravitPozn: TextView = findViewById(R.id.upravitPozn)
         val adminUserLabel: TextView = findViewById(R.id.adminUserTW)
-        val poznamkaLabel: TextView = findViewById(R.id.poznLABEL)
         val deleteAction: TextView = findViewById(R.id.deleteAction)
 
 
@@ -200,8 +198,6 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         upravitDatum.visibility = View.INVISIBLE
         upravitCas.visibility = View.INVISIBLE
         upravitPozn.visibility = View.INVISIBLE
-        poznamkaLabel.visibility = View.INVISIBLE
-        poznamka.visibility = View.INVISIBLE
         deleteAction.visibility = View.INVISIBLE
 
         if(privileges.toLowerCase()=="11" || privileges.toLowerCase()=="111")
@@ -233,8 +229,6 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 upravitCas.visibility = View.VISIBLE
                 upravitPozn.visibility = View.VISIBLE
                 adminUserLabel.text = "Administrátor"
-                poznamkaLabel.visibility = View.VISIBLE
-                poznamka.visibility = View.VISIBLE
                 deleteAction.visibility = View.VISIBLE
                 adminUserLabel.visibility = View.VISIBLE
                 changePrivileges.visibility = View.VISIBLE
@@ -250,8 +244,6 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 upravitCas.visibility = View.INVISIBLE
                 upravitPozn.visibility = View.INVISIBLE
                 adminUserLabel.text = "Používateľ"
-                poznamkaLabel.visibility = View.INVISIBLE
-                poznamka.visibility = View.INVISIBLE
                 deleteAction.visibility = View.INVISIBLE
             }
             else
@@ -263,8 +255,6 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 upravitDatum.visibility = View.INVISIBLE
                 upravitCas.visibility = View.INVISIBLE
                 adminUserLabel.text = "Používateľ"
-                poznamkaLabel.visibility = View.INVISIBLE
-                poznamka.visibility = View.INVISIBLE
                 deleteAction.visibility = View.INVISIBLE
                 adminUserLabel.visibility = View.INVISIBLE
                 changePrivileges.visibility = View.INVISIBLE
@@ -294,7 +284,7 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         poznamka.setOnClickListener {
             vibrate.vibrate(70)
             val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_fullpoznamka, null)
-            val mBuilder = AlertDialog.Builder(this).setView(dialogView).setTitle("Poznámka")
+            val mBuilder = AlertDialog.Builder(this).setView(dialogView)
             dialogView.fullPoznDialog.filters =
                 arrayOf(*dialogView.fullPoznDialog.filters, InputFilter.LengthFilter(100))
             dialogView.fullPoznDialog.text = poznamka.text
@@ -306,7 +296,7 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         vytvoritAkciu.setOnClickListener{
             vibrate.vibrate(70)
             val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_addnewaction, null)
-            val mBuilder = AlertDialog.Builder(this).setView(dialogView).setTitle("Pridať novú akciu")
+            val mBuilder = AlertDialog.Builder(this).setView(dialogView)
             dialogView.actionNameAddAction.filters =
                 arrayOf(*dialogView.actionNameAddAction.filters, InputFilter.LengthFilter(100))
             dialogView.poznamkaAddAction.filters =

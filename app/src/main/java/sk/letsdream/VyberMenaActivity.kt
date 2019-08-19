@@ -54,24 +54,36 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
 
 
 
+
+
         var dbMethods:DBConnection = DBConnection()
         var table: TableLayout = findViewById(R.id.table)
         val spinnerMeno: ImageButton = findViewById(R.id.vybermenaSPINNER_VM)
         val meno: TextView = findViewById(R.id.nameFromSpinner_VM)
         val promoteDemote: TextView = findViewById(R.id.textView20)
+        val leftBracket : TextView = findViewById(R.id.leftBracket)
+        val rightBracket : TextView = findViewById(R.id.rightBracket)
+        val newRegistrations : TextView = findViewById(R.id.newRegistrations)
 
-        /*if(privileges == "1")
+        if(privileges == "1")
         {
-            promoteDemote.visibility = View.INVISIBLE
+            leftBracket.visibility = View.INVISIBLE
+            rightBracket.visibility = View.INVISIBLE
+            newRegistrations.visibility = View.INVISIBLE
         }
         else if(privileges == "11" || privileges =="111")
         {
-            promoteDemote.visibility = View.VISIBLE
+            leftBracket.visibility = View.VISIBLE
+            rightBracket.visibility = View.VISIBLE
+            newRegistrations.visibility = View.VISIBLE
+            newRegistrations.text = "Nové: " + dbMethods.getNewRegistrations()
         }
         else
         {
-            promoteDemote.visibility = View.INVISIBLE
-        }*/
+            leftBracket.visibility = View.INVISIBLE
+            rightBracket.visibility = View.INVISIBLE
+            newRegistrations.visibility = View.INVISIBLE
+        }
         promoteDemote.visibility = View.INVISIBLE
 
         var namesList: Array<String>
@@ -175,6 +187,12 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
             }
         }
 
+        newRegistrations.setOnClickListener{
+            // dorobit tabulku, kde budu stlpce: Meno, login, Potvrdenie
+            // kliknutim na potvrdenie sa vymaze riadok a zmeni New_User z 1 na 0
+            // vratenim sa mimo dialogu sa refresne cely intent
+            // skontrolovať pravdivosť "Nové: 3"
+        }
 
         var tableRow: TableRow = TableRow(this)
         var lp : TableRow.LayoutParams = TableRow.LayoutParams(TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT))

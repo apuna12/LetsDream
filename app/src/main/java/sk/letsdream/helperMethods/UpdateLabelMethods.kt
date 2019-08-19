@@ -161,7 +161,7 @@ class UpdateLabelMethods {
     fun updatePoznLabels(context: Context, textView: TextView, action: TextView) {
         val dbMethods: DBConnection = DBConnection()
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_poznamka, null)
-        val mBuilder = AlertDialog.Builder(context).setView(dialogView).setTitle("Upravte poznámku")
+        val mBuilder = AlertDialog.Builder(context).setView(dialogView)
         dialogView.poznDialogET.filters = arrayOf(*dialogView.poznDialogET.filters, InputFilter.LengthFilter(100))
         if (dialogView.parent != null)
             (dialogView.parent as ViewGroup).removeView(dialogView)

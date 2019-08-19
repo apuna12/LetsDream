@@ -128,6 +128,9 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 odchodTimePicker.text == "Čas"
             )
                 Toast.makeText(this, "Prosím vyplňte všetky potrebné informácie", Toast.LENGTH_LONG).show()
+
+            else if(meno.text.toString() == "Vyberte meno")
+                Toast.makeText(this, "Nevybrali ste meno", Toast.LENGTH_LONG).show()
             else {
                 var timeParser = SimpleDateFormat("HH:mm")
                 var timeFormatter = SimpleDateFormat("HH:mm")
@@ -138,7 +141,7 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 var casOdTIME = timeFormatter.format(timeParser.parse(prichodTimePicker.text.toString()))
                 var casDoTIME = timeFormatter.format(timeParser.parse(odchodTimePicker.text.toString()))
                 if (dateOdTIME <= dateDoTIME) {
-                    if (casOdTIME <= casDoTIME) {
+                    if ((casOdTIME <= casDoTIME && dateOdTIME == dateDoTIME) || (casOdTIME > casDoTIME && dateOdTIME < dateDoTIME)) {
                         var timeDifference = timeMethod.dateDifference(
                             prichodDatePicker.text.toString(), prichodTimePicker.text.toString(),
                             odchodDatePicker.text.toString(), odchodTimePicker.text.toString()
