@@ -21,12 +21,16 @@ import kotlinx.android.synthetic.main.dialog_fullpoznamka.view.*
 import kotlinx.android.synthetic.main.dialog_fullpoznamka.view.buttonSpatDialog
 import kotlinx.android.synthetic.main.dialog_newregistrations.view.*
 import kotlinx.android.synthetic.main.nav_header_main.*
+import org.w3c.dom.Text
 import sk.letsdream.dbMethods.DBConnection
 import sk.letsdream.helperMethods.ButtonEffects
 import sk.letsdream.helperMethods.TimeMethods
 import java.lang.Exception
 
 class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+
+
     var privileges: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,30 +71,43 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
         val leftBracket : TextView = findViewById(R.id.leftBracket)
         val rightBracket : TextView = findViewById(R.id.rightBracket)
         val newRegistrations : TextView = findViewById(R.id.newRegistrations)
+        val spravovatRegistracie: TextView = findViewById(R.id.textView16)
+        val pocetHodin: TextView = findViewById(R.id.pocetHodin)
 
         if(privileges == "1")
         {
             leftBracket.visibility = View.INVISIBLE
             rightBracket.visibility = View.INVISIBLE
             newRegistrations.visibility = View.INVISIBLE
+            spravovatRegistracie.visibility = View.INVISIBLE
         }
         else if(privileges == "11" || privileges =="111")
         {
             leftBracket.visibility = View.VISIBLE
             rightBracket.visibility = View.VISIBLE
             newRegistrations.visibility = View.VISIBLE
-            newRegistrations.text = "Nové: " + dbMethods.getNewRegistrations()
+            spravovatRegistracie.visibility = View.VISIBLE
+            var newRegs: String = dbMethods.getNewRegistrations()
+            if(newRegs != "0")
+                newRegistrations.text = "Nové: " + newRegs
+            else
+            {
+                leftBracket.visibility = View.INVISIBLE
+                rightBracket.visibility = View.INVISIBLE
+                newRegistrations.visibility = View.INVISIBLE
+                spravovatRegistracie.visibility = View.INVISIBLE
+            }
         }
         else
         {
             leftBracket.visibility = View.INVISIBLE
             rightBracket.visibility = View.INVISIBLE
             newRegistrations.visibility = View.INVISIBLE
+            spravovatRegistracie.visibility = View.INVISIBLE
         }
         promoteDemote.visibility = View.INVISIBLE
 
         var namesList: Array<String>
-        namesList = arrayOf<String>()
 
         namesList = dbMethods.getAllApprovedNames().split("?").toTypedArray()
 
@@ -103,6 +120,8 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                 }
             }
         }
+        else
+            Toast.makeText(this,"Hups! Neexistujú žiadne mená v databáze", Toast.LENGTH_LONG).show()
 
         spinnerMeno.setOnClickListener {
             popUpMenu.setOnMenuItemClickListener {
@@ -133,7 +152,9 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                         promoteDemote.visibility = View.INVISIBLE
                     }
 
+                    var pocetHod = dbMethods.getAllHoursForUser(meno.text.toString())
 
+                    pocetHodin.text = pocetHod
                 }
                 true
             }
@@ -235,24 +256,82 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                 tableRowAllRegistered.addView(textViewPotvrd)
                 tableRowAllRegistered.addView(textViewOdstran)
                 regTable.addView(tableRowAllRegistered, i+1)
+
+
             }
 
-            /*var tableRow: TableRow = TableRow(this)
-            var lp : TableRow.LayoutParams = TableRow.LayoutParams(TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT))
-            tableRow.layoutParams = lp
-            var textViewMeno : TextView = TextView(this)
-            var textViewLogin : TextView = TextView(this)
-            textView.setTextColor(Color.WHITE)
+            var count = regTable.childCount
+            for(i in 0 until count)
+            {
+                val v: View = regTable.getChildAt(i)
+                if(v is TableRow)
+                {
+                    var row: TableRow = v as TableRow
+                    var rowCount = row.childCount
+                    for(j in 0 until rowCount)
+                    {
+                        val v2: View = row.getChildAt(j)
+                        if(v2 is TextView)
+                        {
+                            var potvrdit = v2 as TextView
+                            potvrdit.setOnClickListener{
+                                if(it is TextView)
+                                {
+                                    if(it.text == "Potvrdiť")
+                                    {
+                                        val login = row.getChildAt(j-1) as TextView
+                                        val name = row.getChildAt(j-2) as TextView
 
-            textViewMeno.setText(allNewRegistrations[0][0])
-            textViewMeno.setTextColor(Color.BLACK)
-            textViewMeno.height = ViewGroup.LayoutParams.WRAP_CONTENT
-            textViewLogin.setText(allNewRegistrations[0][1])
-            textViewLogin.setTextColor(Color.BLACK)
-            textViewLogin.height = ViewGroup.LayoutParams.WRAP_CONTENT
-            tableRow.addView(textViewMeno)
-            tableRow.addView(textViewLogin)
-            regTable.addView(tableRow, 1)*/
+                                        val alertDialog = android.app.AlertDialog.Builder(this)
+                                            .setIcon(android.R.drawable.ic_dialog_alert)
+                                            .setTitle("Potvrdiť?")
+                                            .setMessage("Naozaj si prajete potvrdiť používateľa '" + name.text + "' ?")
+                                            .setPositiveButton("Áno", DialogInterface.OnClickListener{ dialog, i ->
+                                                if(dbMethods.acknowledgeUser(login.text.toString()) == "1") {
+                                                    Toast.makeText(this, "Používateľ potvrdený", Toast.LENGTH_LONG)
+                                                        .show()
+                                                    finish()
+                                                    startActivity(intent)
+                                                }
+                                                else
+                                                    Toast.makeText(this, "Hups! Niečo je zlé. Skúste neskôr", Toast.LENGTH_LONG).show()
+
+                                            })
+                                            .setNegativeButton("Nie", DialogInterface.OnClickListener{ dialog, i ->
+                                                dialog.cancel()
+                                            }).show()
+
+                                    }
+                                    else if(it.text == "Odstrániť")
+                                    {
+                                        val login = row.getChildAt(j-2) as TextView
+                                        val name = row.getChildAt(j-3) as TextView
+
+                                        val alertDialog = android.app.AlertDialog.Builder(this)
+                                            .setIcon(android.R.drawable.ic_dialog_alert)
+                                            .setTitle("Odstrániť?")
+                                            .setMessage("Naozaj si prajete odstrániť používateľa '" + name.text + "' ?")
+                                            .setPositiveButton("Áno", DialogInterface.OnClickListener{ dialog, i ->
+                                                if(dbMethods.deleteUser(login.text.toString()) == "1") {
+                                                    Toast.makeText(this, "Používateľ odstránený", Toast.LENGTH_LONG)
+                                                        .show()
+                                                    finish()
+                                                    startActivity(intent)
+                                                }
+                                                else
+                                                    Toast.makeText(this, "Hups! Niečo je zlé. Skúste neskôr", Toast.LENGTH_LONG).show()
+                                            })
+                                            .setNegativeButton("Nie", DialogInterface.OnClickListener{ dialog, i ->
+                                                dialog.cancel()
+                                            }).show()
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
 
             dialogView.buttonSpatDialog.setOnClickListener {
                 mAlertDialog.dismiss()
@@ -277,6 +356,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
         table.addView(tableRow, 1)*/
 
     }
+
 
 
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
