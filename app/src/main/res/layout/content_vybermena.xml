@@ -9,6 +9,16 @@
     tools:context=".VyberMenaActivity"
     tools:showIn="@layout/app_bar_vybermena">
 
+    <ImageButton
+        android:id="@+id/vybermenaSPINNER_VM"
+        android:layout_width="30dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/back_w_arrow"
+        app:layout_constraintBottom_toBottomOf="@+id/vybermenaLABEL_VM"
+        app:layout_constraintStart_toEndOf="@+id/vybermenaLABEL_VM"
+        app:layout_constraintTop_toTopOf="@+id/vybermenaLABEL_VM" />
+
     <ImageView
         android:id="@+id/logo_letsdream"
         android:layout_width="170dp"
@@ -23,6 +33,78 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.03" />
+
+    <ImageView
+        android:id="@+id/changePriv_VM"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/ic_sync_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/adminUserTW_VM"
+        app:layout_constraintEnd_toStartOf="@+id/textView20"
+        app:layout_constraintStart_toEndOf="@+id/adminUserTW_VM"
+        app:layout_constraintTop_toTopOf="@+id/adminUserTW_VM" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="1"
+        android:scrollbars="none"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView19">
+
+        <TableLayout
+            android:id="@+id/table"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:isScrollContainer="true"
+            android:stretchColumns="*">
+
+            <TableRow>
+
+                <TextView
+                    android:height="35dp"
+                    android:text="Názov: "
+                    android:textStyle="bold"
+                    android:textColor="@color/colorWhite" />
+
+                <TextView
+                    android:height="35dp"
+                    android:text="Dátum: "
+                    android:textStyle="bold"
+                    android:textColor="@color/colorWhite" />
+
+                <TextView
+                    android:height="35dp"
+                    android:text="Čas od: "
+                    android:textStyle="bold"
+                    android:textColor="@color/colorWhite" />
+
+                <TextView
+                    android:height="35dp"
+                    android:text="Čas do: "
+                    android:textStyle="bold"
+                    android:textColor="@color/colorWhite" />
+
+                <TextView
+                    android:height="35dp"
+                    android:text=""
+                    android:textStyle="bold"
+                    android:textColor="@color/colorWhite" />
+
+            </TableRow>
+
+        </TableLayout>
+
+    </ScrollView>
 
     <TextView
         android:id="@+id/full_dateTW"
@@ -58,16 +140,6 @@
         app:layout_constraintStart_toStartOf="@+id/full_dateTW"
         app:layout_constraintTop_toBottomOf="@+id/full_dateTW" />
 
-    <ImageButton
-        android:id="@+id/vybermenaSPINNER_VM"
-        android:layout_width="30dp"
-        android:layout_height="27dp"
-        android:layout_marginStart="8dp"
-        android:background="@drawable/back_w_arrow"
-        app:layout_constraintBottom_toBottomOf="@+id/vybermenaLABEL_VM"
-        app:layout_constraintStart_toEndOf="@+id/vybermenaLABEL_VM"
-        app:layout_constraintTop_toTopOf="@+id/vybermenaLABEL_VM" />
-
     <TextView
         android:id="@+id/nameFromSpinner_VM"
         android:layout_width="0dp"
@@ -96,18 +168,6 @@
         android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/vybermenaLABEL_VM" />
-
-    <ImageView
-        android:id="@+id/changePriv_VM"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/ic_sync_black_24dp"
-        app:layout_constraintBottom_toBottomOf="@+id/adminUserTW_VM"
-        app:layout_constraintEnd_toStartOf="@+id/textView20"
-        app:layout_constraintStart_toEndOf="@+id/adminUserTW_VM"
-        app:layout_constraintTop_toTopOf="@+id/adminUserTW_VM" />
 
     <TextView
         android:id="@+id/textView20"
@@ -196,53 +256,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView18" />
-
-    <TableLayout
-        android:id="@+id/table"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:scrollbars="vertical"
-        android:stretchColumns="*"
-        app:layout_constrainedHeight="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView19">
-        app:layout_constrainedWidth="true">
-
-        <TableRow>
-
-            <TextView
-                android:height="35dp"
-                android:text="Názov: "
-                android:textColor="@color/colorWhite" />
-
-            <TextView
-                android:height="35dp"
-                android:text="Dátum: "
-                android:textColor="@color/colorWhite" />
-
-            <TextView
-                android:height="35dp"
-                android:text="Čas od: "
-                android:textColor="@color/colorWhite" />
-
-            <TextView
-                android:height="35dp"
-                android:text="Čas do: "
-                android:textColor="@color/colorWhite" />
-
-            <TextView
-                android:height="35dp"
-                android:text="Upraviť"
-                android:textColor="@color/colorWhite" />
-
-        </TableRow>
-
-    </TableLayout>
 
 </android.support.constraint.ConstraintLayout>

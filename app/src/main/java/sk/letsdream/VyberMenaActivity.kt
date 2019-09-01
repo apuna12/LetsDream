@@ -25,6 +25,7 @@ import org.w3c.dom.Text
 import sk.letsdream.dbMethods.DBConnection
 import sk.letsdream.helperMethods.ButtonEffects
 import sk.letsdream.helperMethods.TimeMethods
+import sk.letsdream.helperMethods.UpdateLabelMethods
 import java.lang.Exception
 
 class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -342,6 +343,10 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
             // kliknutim na potvrdenie sa vymaze riadok a zmeni New_User z 1 na 0
             // vratenim sa mimo dialogu sa refresne cely intent
         }
+
+        var updateLabelMethods: UpdateLabelMethods = UpdateLabelMethods()
+
+        updateLabelMethods.allActions(this, table)
 
 
 
