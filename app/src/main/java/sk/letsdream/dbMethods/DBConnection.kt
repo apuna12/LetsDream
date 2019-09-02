@@ -1,5 +1,6 @@
 package sk.letsdream.dbMethods
 
+import android.content.Context
 import android.database.SQLException
 import android.widget.Toast
 import kotlinx.android.synthetic.main.content_dochadzka.*
@@ -553,6 +554,41 @@ class DBConnection {
                 jsonStr = jsonStr.removeRange(firstApp, lastApp + 1)
                 if (jsonStr != "0") {
                     return jsonStr
+                } else {
+                    return "0"
+                }
+            }
+
+        }
+        catch (e: Exception) {
+            throw Exception(e)
+        }
+        return "0"
+    }
+
+    fun editAction(context: Context, action: String, date: String, from: String, until: String, original: String): String
+    {
+        val sql = "http://letsdream.xf.cz/index.php?action=" + action + "&date=" + date +
+                "&from=" + from + "&until=" + until + "&original=" + original + "&mod=editAction&rest=post"
+
+        try {
+            var jsonStr: String = URL(sql).readText()
+            var firstApp: Int = 0
+            var lastApp: Int = 0
+            if (jsonStr.toString().contains("<") || jsonStr.toString().contains(">")) {
+                for (i in 0 until jsonStr.toString().length) {
+                    if (jsonStr[i] == '<') {
+                        firstApp = i
+                        break
+                    }
+                }
+                for (i in 0 until jsonStr.toString().length) {
+                    if (jsonStr[i] == '>')
+                        lastApp = i
+                }
+                jsonStr = jsonStr.removeRange(firstApp, lastApp + 1)
+                if (jsonStr != "0") {
+                    return "1"
                 } else {
                     return "0"
                 }

@@ -155,7 +155,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
 
                     var pocetHod = dbMethods.getAllHoursForUser(meno.text.toString())
 
-                    pocetHodin.text = pocetHod
+                    pocetHodin.text = pocetHod + " h"
                 }
                 true
             }
@@ -346,7 +346,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
 
         var updateLabelMethods: UpdateLabelMethods = UpdateLabelMethods()
 
-        updateLabelMethods.allActions(this, table)
+        updateLabelMethods.allActions(this, table, intent, privileges)
 
 
 

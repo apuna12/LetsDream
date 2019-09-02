@@ -6,18 +6,30 @@ import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Color
 import android.os.Vibrator
+import android.support.v4.content.ContextCompat.startActivity
 import android.text.InputFilter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import kotlinx.android.synthetic.main.dialog_changeaction.view.*
+import kotlinx.android.synthetic.main.dialog_fullaction.view.*
+import kotlinx.android.synthetic.main.dialog_fullaction.view.casDoAkcieDialog
+import kotlinx.android.synthetic.main.dialog_fullaction.view.casOdAkcieDialog
+import kotlinx.android.synthetic.main.dialog_fullaction.view.datumAkcieDialog
+import kotlinx.android.synthetic.main.dialog_fullaction.view.nazovAkcieDialog
+import kotlinx.android.synthetic.main.dialog_fullpoznamka.view.*
 import kotlinx.android.synthetic.main.dialog_newregistrations.view.*
+import kotlinx.android.synthetic.main.dialog_newregistrations.view.buttonSpatDialog
+import kotlinx.android.synthetic.main.dialog_newregistrations.view.fullPoznDialog
 import kotlinx.android.synthetic.main.dialog_poznamka.view.*
 import org.w3c.dom.Text
 import sk.letsdream.MainActivity
 import sk.letsdream.R
+import sk.letsdream.VyberMenaActivity
 import sk.letsdream.dbMethods.DBConnection
 import java.sql.Time
 import java.util.*
@@ -244,7 +256,7 @@ class UpdateLabelMethods {
 
     }
 
-    fun allActions(context: Context, table: TableLayout) {
+    fun allActions(context: Context, table: TableLayout, intent: Intent, privileges: String) {
 
         var dbMethods: DBConnection = DBConnection()
         var actionTable = table
@@ -288,17 +300,19 @@ class UpdateLabelMethods {
                 textViewCasDo.setText(allActions[i][3])
                 textViewCasDo.setTextColor(Color.WHITE)
                 textViewCasDo.height = 70
-                textViewUprav.setText("Upraviť")
-                textViewUprav.setTextColor(Color.YELLOW)
-                textViewUprav.height = 70
-
 
                 tableRowAllActions.addView(textViewNazov)
                 tableRowAllActions.addView(textViewDatum)
                 tableRowAllActions.addView(textViewCasOd)
                 tableRowAllActions.addView(textViewCasDo)
-                tableRowAllActions.addView(textViewUprav)
+                if(privileges == "11" || privileges == "111") {
+                    textViewUprav.setText("Upraviť")
+                    textViewUprav.setTextColor(Color.YELLOW)
+                    textViewUprav.height = 70
+                }
+
                 actionTable.addView(tableRowAllActions, i + 1)
+
 
 
             }
@@ -312,16 +326,60 @@ class UpdateLabelMethods {
                     for (j in 0 until rowCount) {
                         val v2: View = row.getChildAt(j)
                         if (v2 is TextView) {
-                            var potvrdit = v2 as TextView
-                            potvrdit.setOnClickListener {
+                            var cell = v2 as TextView
+                            cell.setOnClickListener {
                                 if (it is TextView) {
                                     if (it.text == "Upraviť") {
-                                        //zobrazit dialog kde budem môcť jednotlive veci meniť
                                         //nastaviť aby sa upraviť nezobrazoval ak som obycajny pouzivatel
+                                        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_changeaction, null)
+                                        val mBuilder = AlertDialog.Builder(context).setView(dialogView)
+                                        val nazov = row.getChildAt(0) as TextView
+                                        val datum = row.getChildAt(1) as TextView
+                                        val casOd = row.getChildAt(2) as TextView
+                                        val casDo = row.getChildAt(3) as TextView
+                                        dialogView.nazovAkcieDialog.text = nazov.text
+                                        dialogView.datumAkcieDialog.text = datum.text
+                                        dialogView.casOdAkcieDialog.text = casOd.text
+                                        dialogView.casDoAkcieDialog.text = casDo.text
+                                        val mAlertDialog = mBuilder.show()
+                                        dialogView.buttonSpatDialog.setOnClickListener {
+                                            mAlertDialog.dismiss()
+                                        }
+                                        dialogView.buttonPotvrditDialog.setOnClickListener{
+                                            if(dbMethods.editAction(context, dialogView.nazovAkcieDialog.text.toString(),
+                                                    dialogView.datumAkcieDialog.text.toString(),
+                                                    dialogView.casOdAkcieDialog.text.toString(),
+                                                    dialogView.casDoAkcieDialog.text.toString(),
+                                                    nazov.text.toString()) == "1")
+                                            {
+                                                Toast.makeText(context, "Akcia zmenená", Toast.LENGTH_LONG).show()
+                                                val activity: VyberMenaActivity = context as VyberMenaActivity
+                                                startActivity(context, intent, null)
+                                                activity.finish()
+                                            }
+                                            else
+                                            {
+                                                Toast.makeText(context, "Hups! Niečo je zlé. Skúste neskôr", Toast.LENGTH_LONG).show()
+                                            }
+                                        }
+
                                     }
                                     else
                                     {
-                                        //dorobit zobrazenie celeho riadku po klinuti na hocico okrem "Upraviť"
+                                        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_fullaction, null)
+                                        val mBuilder = AlertDialog.Builder(context).setView(dialogView)
+                                        val nazov = row.getChildAt(0) as TextView
+                                        val datum = row.getChildAt(1) as TextView
+                                        val casOd = row.getChildAt(2) as TextView
+                                        val casDo = row.getChildAt(3) as TextView
+                                        dialogView.nazovAkcieDialog.text = nazov.text
+                                        dialogView.datumAkcieDialog.text = datum.text
+                                        dialogView.casOdAkcieDialog.text = casOd.text
+                                        dialogView.casDoAkcieDialog.text = casDo.text
+                                        val mAlertDialog = mBuilder.show()
+                                        dialogView.buttonSpatDialog.setOnClickListener {
+                                            mAlertDialog.dismiss()
+                                        }
                                     }
                                 }
                             }
