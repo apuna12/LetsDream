@@ -14,9 +14,6 @@ Statistics
     - try to adjust second statistic
     - add first statistic
 Vyber mena
-    - Add "Upraviť" back into the table
-    - Add Privileges changing into the button
-    - Stretch a table if the user is not an admin
     - Add button for showing all activity for every user in admin mode and current logged user for non admin user
     
 BONUS
