@@ -9,6 +9,16 @@
     tools:context=".AkcieActivity"
     tools:showIn="@layout/app_bar_akcie">
 
+    <ImageButton
+        android:id="@+id/vyberakcieSPINNER"
+        android:layout_width="30dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/back_w_arrow"
+        app:layout_constraintBottom_toBottomOf="@+id/historiaakciiLABEL"
+        app:layout_constraintStart_toEndOf="@+id/historiaakciiLABEL"
+        app:layout_constraintTop_toTopOf="@+id/historiaakciiLABEL" />
+
     <ImageView
         android:id="@+id/logo_letsdream"
         android:layout_width="170dp"
@@ -23,6 +33,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.03" />
+
+    <ImageView
+        android:id="@+id/changePriv"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/ic_sync_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/adminUserTW"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/vyberakcieSPINNER"
+        app:layout_constraintTop_toTopOf="@+id/adminUserTW" />
 
     <TextView
         android:id="@+id/full_dateTW"
@@ -52,21 +73,11 @@
         android:id="@+id/historiaakciiLABEL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="40dp"
         android:text="História akcií"
         android:textColor="@color/colorWhite"
         app:layout_constraintStart_toStartOf="@+id/full_dateTW"
         app:layout_constraintTop_toBottomOf="@+id/full_dateTW" />
-
-    <ImageButton
-        android:id="@+id/vyberakcieSPINNER"
-        android:layout_width="30dp"
-        android:layout_height="27dp"
-        android:layout_marginStart="8dp"
-        android:background="@drawable/back_w_arrow"
-        app:layout_constraintBottom_toBottomOf="@+id/historiaakciiLABEL"
-        app:layout_constraintStart_toEndOf="@+id/historiaakciiLABEL"
-        app:layout_constraintTop_toTopOf="@+id/historiaakciiLABEL" />
 
     <TextView
         android:id="@+id/akciaFromSpinner"
@@ -91,24 +102,11 @@
         android:id="@+id/adminUserTW"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="320dp"
+        android:layout_marginTop="24dp"
         android:text="Používateľ"
         android:textColor="@color/colorWhite"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/historiaakciiLABEL"
         app:layout_constraintTop_toBottomOf="@+id/historiaakciiLABEL" />
-
-    <ImageView
-        android:id="@+id/changePriv"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@drawable/ic_sync_black_24dp"
-        app:layout_constraintBottom_toBottomOf="@+id/adminUserTW"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/vyberakcieSPINNER"
-        app:layout_constraintTop_toTopOf="@+id/adminUserTW" />
 
     <TextView
         android:id="@+id/makeNewAction"
@@ -185,10 +183,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
+        android:layout_marginBottom="24dp"
         android:text="Poznámka:"
         android:textColor="@color/colorWhite"
         app:layout_constraintStart_toStartOf="@+id/textView13"
-        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+        app:layout_constraintTop_toBottomOf="@+id/textView13"
+        app:layout_constraintVertical_bias="0.225" />
 
     <TextView
         android:id="@+id/poznamkaET"

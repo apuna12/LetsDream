@@ -74,6 +74,8 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
         val newRegistrations : TextView = findViewById(R.id.newRegistrations)
         val spravovatRegistracie: TextView = findViewById(R.id.textView16)
         val pocetHodin: TextView = findViewById(R.id.pocetHodin)
+        val changePrivileges: ImageView = findViewById(R.id.changePriv_VM)
+        val userTW: TextView = findViewById(R.id.adminUserTW_VM)
 
         if(privileges == "1")
         {
@@ -81,6 +83,8 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
             rightBracket.visibility = View.INVISIBLE
             newRegistrations.visibility = View.INVISIBLE
             spravovatRegistracie.visibility = View.INVISIBLE
+            userTW.visibility = View.INVISIBLE
+            changePrivileges.visibility = View.INVISIBLE
         }
         else if(privileges == "11" || privileges =="111")
         {
@@ -88,6 +92,8 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
             rightBracket.visibility = View.VISIBLE
             newRegistrations.visibility = View.VISIBLE
             spravovatRegistracie.visibility = View.VISIBLE
+            userTW.visibility = View.VISIBLE
+            changePrivileges.visibility = View.VISIBLE
             var newRegs: String = dbMethods.getNewRegistrations()
             if(newRegs != "0")
                 newRegistrations.text = "Nové: " + newRegs
@@ -346,8 +352,35 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
 
         var updateLabelMethods: UpdateLabelMethods = UpdateLabelMethods()
 
-        updateLabelMethods.allActions(this, table, intent, privileges)
+        updateLabelMethods.allActions(this, table, intent, "1")
 
+        changePrivileges.setOnClickListener{
+            if(privileges.toLowerCase()=="1" && userTW.text == "Používateľ")
+            {
+                Toast.makeText(this,"K tejto funkcii ma prístup iba administrátor!", Toast.LENGTH_SHORT).show()
+                updateLabelMethods.allActions(this, table, intent, "1")
+            }
+            else if((privileges.toLowerCase() == "11" || privileges.toLowerCase()=="111") && userTW.text == "Používateľ")
+            {
+                Toast.makeText(this,"Zapnutý admin mód!", Toast.LENGTH_SHORT).show()
+                userTW.text = "Administrátor"
+                changePrivileges.visibility = View.VISIBLE
+                updateLabelMethods.allActions(this, table, intent, "11")
+            }
+            else if((privileges.toLowerCase() == "11" || privileges.toLowerCase()=="111") && userTW.text == "Administrátor")
+            {
+                Toast.makeText(this,"Zapnutý používateľský mód!", Toast.LENGTH_SHORT).show()
+                userTW.text = "Používateľ"
+                updateLabelMethods.allActions(this, table, intent, "1")
+            }
+            else
+            {
+                Toast.makeText(this,"Nastala chyba! Nerozpoznaná rola používateľa", Toast.LENGTH_SHORT).show()
+                userTW.visibility = View.INVISIBLE
+                changePrivileges.visibility = View.INVISIBLE
+                updateLabelMethods.allActions(this, table, intent, "1")
+            }
+        }
 
 
         /*var tableRow: TableRow = TableRow(this)

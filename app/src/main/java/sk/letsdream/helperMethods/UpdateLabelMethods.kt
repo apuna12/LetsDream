@@ -11,6 +11,7 @@ import android.graphics.Color
 import android.os.Vibrator
 import android.support.v4.content.ContextCompat.startActivity
 import android.text.InputFilter
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,9 @@ import sk.letsdream.VyberMenaActivity
 import sk.letsdream.dbMethods.DBConnection
 import java.sql.Time
 import java.util.*
+import android.widget.LinearLayout
+
+
 
 
 
@@ -288,18 +292,24 @@ class UpdateLabelMethods {
                 var textViewCasDo: TextView = TextView(context)
                 var textViewUprav: TextView = TextView(context)
 
+
+
                 textViewNazov.setText(allActions[i][0])
                 textViewNazov.setTextColor(Color.WHITE)
                 textViewNazov.height = 70
+                textViewNazov.gravity = Gravity.LEFT
                 textViewDatum.setText(allActions[i][1])
                 textViewDatum.setTextColor(Color.WHITE)
                 textViewDatum.height = 70
+                textViewDatum.gravity = Gravity.LEFT
                 textViewCasOd.setText(allActions[i][2])
                 textViewCasOd.setTextColor(Color.WHITE)
                 textViewCasOd.height = 70
+                textViewCasOd.gravity = Gravity.LEFT
                 textViewCasDo.setText(allActions[i][3])
                 textViewCasDo.setTextColor(Color.WHITE)
                 textViewCasDo.height = 70
+                textViewCasDo.gravity = Gravity.LEFT
 
                 tableRowAllActions.addView(textViewNazov)
                 tableRowAllActions.addView(textViewDatum)
@@ -309,6 +319,14 @@ class UpdateLabelMethods {
                     textViewUprav.setText("Upraviť")
                     textViewUprav.setTextColor(Color.YELLOW)
                     textViewUprav.height = 70
+                    textViewUprav.gravity = Gravity.CENTER
+                    tableRowAllActions.addView(textViewUprav)
+                }
+                else
+                {
+                    textViewUprav.setText("")
+                    textViewUprav.height = 70
+                    tableRowAllActions.addView(textViewUprav)
                 }
 
                 actionTable.addView(tableRowAllActions, i + 1)
@@ -389,6 +407,7 @@ class UpdateLabelMethods {
 
                 }
             }
+
         } else {
             actionTable.visibility = View.INVISIBLE
         }

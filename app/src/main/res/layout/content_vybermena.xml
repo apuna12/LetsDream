@@ -73,32 +73,31 @@
                 <TextView
                     android:height="35dp"
                     android:text="Názov: "
+                    android:layout_gravity="left"
                     android:textStyle="bold"
                     android:textColor="@color/colorWhite" />
 
                 <TextView
                     android:height="35dp"
                     android:text="Dátum: "
+                    android:layout_gravity="left"
                     android:textStyle="bold"
                     android:textColor="@color/colorWhite" />
 
                 <TextView
                     android:height="35dp"
                     android:text="Čas od: "
+                    android:layout_gravity="left"
                     android:textStyle="bold"
                     android:textColor="@color/colorWhite" />
 
                 <TextView
                     android:height="35dp"
                     android:text="Čas do: "
+                    android:layout_gravity="left"
                     android:textStyle="bold"
                     android:textColor="@color/colorWhite" />
 
-                <TextView
-                    android:height="35dp"
-                    android:text=""
-                    android:textStyle="bold"
-                    android:textColor="@color/colorWhite" />
 
             </TableRow>
 
