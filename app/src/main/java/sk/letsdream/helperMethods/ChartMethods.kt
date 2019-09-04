@@ -50,10 +50,6 @@ class ChartMethods{
             bds.setColor(Color.CYAN, 100)
         else if (chart == 3)
             bds.setColor(Color.GREEN, 100)
-        else if (chart == 4)
-        {
-            bds.colors = CUSTOM_COLORS.toList()
-        }
 
         else
             bds.setColor(Color.RED, 100)
@@ -190,7 +186,7 @@ class ChartMethods{
 
 
         var bds: BarDataSet = BarDataSet(arrayList, "")
-        bds.colors = CUSTOM_COLORS.toList()
+        bds.setColors(CUSTOM_COLORS, 170)
         bds.valueTextSize = 10f
         var barData: BarData = BarData(bds)
         barData.barWidth = 0.5f
