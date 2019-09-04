@@ -10,7 +10,6 @@ Initial setup
     - initial DB creation
 
 Statistics
-    - try to adjust statistics
     - add first statistic
 Vyber mena
     - Add button for showing all activity for every user in admin mode and current logged user for non admin user
