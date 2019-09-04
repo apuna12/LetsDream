@@ -43,6 +43,7 @@ class ChartMethods{
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.granularity = 1f
         xAxis.isGranularityEnabled = true
+        xAxis.labelRotationAngle = 0.toFloat()
 
         var bds: BarDataSet = BarDataSet(arrayList, "")
         if (chart == 2)
@@ -94,6 +95,7 @@ class ChartMethods{
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.granularity = 1f
         xAxis.isGranularityEnabled = true
+        xAxis.labelRotationAngle = 90.toFloat()
 
         var lds: LineDataSet = LineDataSet(arrayList, "")
         lds.lineWidth = 2f
@@ -179,13 +181,17 @@ class ChartMethods{
         }
 
         val xAxis = barChart2.xAxis
+
         xAxis.setValueFormatter(IndexAxisValueFormatter(xAxisValues))
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.granularity = 1f
         xAxis.isGranularityEnabled = true
+        xAxis.labelRotationAngle = 90.toFloat()
+
 
         var bds: BarDataSet = BarDataSet(arrayList, "")
         bds.colors = CUSTOM_COLORS.toList()
+        bds.valueTextSize = 10f
         var barData: BarData = BarData(bds)
         barData.barWidth = 0.5f
         barChart2.data = barData
