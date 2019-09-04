@@ -71,32 +71,40 @@
             <TableRow>
 
                 <TextView
-                    android:height="35dp"
-                    android:text="Názov: "
                     android:layout_gravity="left"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorWhite" />
+                    android:height="35dp"
+                    android:ellipsize="end"
+                    android:maxEms="15"
+                    android:text="Názov"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold" />
 
                 <TextView
-                    android:height="35dp"
-                    android:text="Dátum: "
                     android:layout_gravity="left"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorWhite" />
+                    android:height="35dp"
+                    android:ellipsize="end"
+                    android:maxEms="15"
+                    android:text="Dátum"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold" />
 
                 <TextView
-                    android:height="35dp"
-                    android:text="Čas od: "
                     android:layout_gravity="left"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorWhite" />
+                    android:height="35dp"
+                    android:ellipsize="end"
+                    android:maxEms="15"
+                    android:text="Čas od"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold" />
 
                 <TextView
-                    android:height="35dp"
-                    android:text="Čas do: "
                     android:layout_gravity="left"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorWhite" />
+                    android:height="35dp"
+                    android:ellipsize="end"
+                    android:maxEms="15"
+                    android:text="Čas do"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold" />
 
 
             </TableRow>
@@ -182,7 +190,7 @@
         android:id="@+id/textView16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="284dp"
+        android:layout_marginBottom="264dp"
         android:text="Spravovať registrácie "
         android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -219,6 +227,18 @@
         app:layout_constraintBottom_toBottomOf="@+id/newRegistrations"
         app:layout_constraintStart_toEndOf="@+id/newRegistrations"
         app:layout_constraintTop_toTopOf="@+id/newRegistrations" />
+
+    <TextView
+        android:id="@+id/showDochadzka"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="Zobraziť dochádzku"
+        android:textColor="@color/yellow"
+        app:layout_constraintBottom_toTopOf="@+id/textView16"
+        app:layout_constraintStart_toStartOf="@+id/adminUserTW_VM"
+        app:layout_constraintTop_toBottomOf="@+id/adminUserTW_VM"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/textView18"

@@ -76,6 +76,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
         val pocetHodin: TextView = findViewById(R.id.pocetHodin)
         val changePrivileges: ImageView = findViewById(R.id.changePriv_VM)
         val userTW: TextView = findViewById(R.id.adminUserTW_VM)
+        val showDochadzka: TextView = findViewById(R.id.showDochadzka)
 
         if(privileges == "1")
         {
@@ -383,15 +384,26 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
         }
 
 
-        /*var tableRow: TableRow = TableRow(this)
-        var lp : TableRow.LayoutParams = TableRow.LayoutParams(TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT))
-        tableRow.layoutParams = lp
-        var textView : TextView = TextView(this)
-        textView.setTextColor(Color.WHITE)*/
+        showDochadzka.setOnClickListener{
+            if(privileges == "11" || privileges == "111")
+            {
+                if(dbMethods.getDochadzka(privileges) != "0")
+                {
 
-        /*textView.setText("daco")
-        tableRow.addView(textView)
-        table.addView(tableRow, 1)*/
+                }
+                else
+                    Toast.makeText(this, "Hups! Niečo je zlé. Skúste neskôr", Toast.LENGTH_LONG).show()
+            }
+            else
+            {
+                if(dbMethods.getDochadzka(privileges, meno.text.toString()) != "0")
+                {
+
+                }
+                else
+                    Toast.makeText(this, "Hups! Niečo je zlé. Skúste neskôr", Toast.LENGTH_LONG).show()
+            }
+        }
 
     }
 

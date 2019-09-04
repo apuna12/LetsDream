@@ -11,6 +11,7 @@ import android.graphics.Color
 import android.os.Vibrator
 import android.support.v4.content.ContextCompat.startActivity
 import android.text.InputFilter
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -293,22 +294,28 @@ class UpdateLabelMethods {
 
 
 
+                textViewNazov.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(15)))
                 textViewNazov.setText(allActions[i][0])
                 textViewNazov.setTextColor(Color.WHITE)
                 textViewNazov.height = 70
                 textViewNazov.gravity = Gravity.LEFT
+                textViewDatum.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(15)))
                 textViewDatum.setText(allActions[i][1])
                 textViewDatum.setTextColor(Color.WHITE)
                 textViewDatum.height = 70
                 textViewDatum.gravity = Gravity.LEFT
+                textViewCasOd.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(15)))
                 textViewCasOd.setText(allActions[i][2])
                 textViewCasOd.setTextColor(Color.WHITE)
                 textViewCasOd.height = 70
                 textViewCasOd.gravity = Gravity.LEFT
+                textViewCasDo.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(15)))
                 textViewCasDo.setText(allActions[i][3])
                 textViewCasDo.setTextColor(Color.WHITE)
                 textViewCasDo.height = 70
                 textViewCasDo.gravity = Gravity.LEFT
+                textViewCasDo.ellipsize = TextUtils.TruncateAt.END
+
 
                 tableRowAllActions.addView(textViewNazov)
                 tableRowAllActions.addView(textViewDatum)
@@ -347,7 +354,6 @@ class UpdateLabelMethods {
                             cell.setOnClickListener {
                                 if (it is TextView) {
                                     if (it.text == "Upraviť") {
-                                        //nastaviť aby sa upraviť nezobrazoval ak som obycajny pouzivatel
                                         val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_changeaction, null)
                                         val mBuilder = AlertDialog.Builder(context).setView(dialogView)
                                         val nazov = row.getChildAt(0) as TextView
@@ -385,14 +391,170 @@ class UpdateLabelMethods {
                                     {
                                         val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_fullaction, null)
                                         val mBuilder = AlertDialog.Builder(context).setView(dialogView)
-                                        val nazov = row.getChildAt(0) as TextView
-                                        val datum = row.getChildAt(1) as TextView
-                                        val casOd = row.getChildAt(2) as TextView
-                                        val casDo = row.getChildAt(3) as TextView
-                                        dialogView.nazovAkcieDialog.text = nazov.text
-                                        dialogView.datumAkcieDialog.text = datum.text
-                                        dialogView.casOdAkcieDialog.text = casOd.text
-                                        dialogView.casDoAkcieDialog.text = casDo.text
+                                        dialogView.nazovAkcieDialog.text = allActions[i-1][0]
+                                        dialogView.datumAkcieDialog.text = allActions[i-1][1]
+                                        dialogView.casOdAkcieDialog.text = allActions[i-1][2]
+                                        dialogView.casDoAkcieDialog.text = allActions[i-1][3]
+                                        val mAlertDialog = mBuilder.show()
+                                        dialogView.buttonSpatDialog.setOnClickListener {
+                                            mAlertDialog.dismiss()
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+
+                }
+            }
+
+        } else {
+            actionTable.visibility = View.INVISIBLE
+        }
+    }
+
+
+    fun processDochadzka(context: Context, table: TableLayout, intent: Intent, privileges: String, name: String? = null) {
+
+        var dbMethods: DBConnection = DBConnection()
+        var dochadzkaTable = table
+        var childCount = dochadzkaTable.childCount
+        if (childCount > 1)
+            dochadzkaTable.removeViews(1, childCount - 1)
+        val dbValue = dbMethods.getDochadzka(privileges, name)
+        if (dbValue != "0") {
+            dochadzkaTable.visibility = View.VISIBLE
+            var splittedDbValue = dbValue.split("?").toTypedArray()
+
+            var allActions = arrayOf<Array<String>>()
+            for (i in 0 until splittedDbValue.size) {
+                allActions += splittedDbValue[i].split("-").toTypedArray()
+            }
+            allActions = allActions.dropLast(1).toTypedArray()
+
+            for (i in 0 until allActions.size) {
+                var tableRowAllActions: TableRow = TableRow(context)
+                var lp: TableRow.LayoutParams = TableRow.LayoutParams(
+                    TableRow.LayoutParams(
+                        TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT
+                    )
+                )
+                tableRowAllActions.layoutParams = lp
+                var textViewMeno: TextView = TextView(context)
+                var textViewPrichod: TextView = TextView(context)
+                var textViewOdchod: TextView = TextView(context)
+                var textViewHodiny: TextView = TextView(context)
+                var textViewPoznamka: TextView = TextView(context)
+                var textViewUprav: TextView = TextView(context)
+
+
+
+                textViewMeno.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(15)))
+                textViewMeno.setText(allActions[i][0])
+                textViewMeno.setTextColor(Color.WHITE)
+                textViewMeno.height = 70
+                textViewMeno.gravity = Gravity.LEFT
+                textViewPrichod.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(15)))
+                textViewPrichod.setText(allActions[i][1])
+                textViewPrichod.setTextColor(Color.WHITE)
+                textViewPrichod.height = 70
+                textViewPrichod.gravity = Gravity.LEFT
+                textViewOdchod.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(15)))
+                textViewOdchod.setText(allActions[i][2])
+                textViewOdchod.setTextColor(Color.WHITE)
+                textViewOdchod.height = 70
+                textViewOdchod.gravity = Gravity.LEFT
+                textViewHodiny.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(15)))
+                textViewHodiny.setText(allActions[i][3])
+                textViewHodiny.setTextColor(Color.WHITE)
+                textViewHodiny.height = 70
+                textViewHodiny.gravity = Gravity.LEFT
+                textViewPoznamka.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(15)))
+                textViewPoznamka.setText(allActions[i][3])
+                textViewPoznamka.setTextColor(Color.WHITE)
+                textViewPoznamka.height = 70
+                textViewPoznamka.gravity = Gravity.LEFT
+
+
+                tableRowAllActions.addView(textViewMeno)
+                tableRowAllActions.addView(textViewPrichod)
+                tableRowAllActions.addView(textViewOdchod)
+                tableRowAllActions.addView(textViewHodiny)
+                tableRowAllActions.addView(textViewPoznamka)
+                if(privileges == "11" || privileges == "111") {
+                    textViewUprav.setText("Upraviť")
+                    textViewUprav.setTextColor(Color.YELLOW)
+                    textViewUprav.height = 70
+                    textViewUprav.gravity = Gravity.CENTER
+                    tableRowAllActions.addView(textViewUprav)
+                }
+                else
+                {
+                    textViewUprav.setText("")
+                    textViewUprav.height = 70
+                    tableRowAllActions.addView(textViewUprav)
+                }
+
+                dochadzkaTable.addView(tableRowAllActions, i + 1)
+
+
+
+            }
+
+            var count = dochadzkaTable.childCount
+            for (i in 0 until count) {
+                val v: View = dochadzkaTable.getChildAt(i)
+                if (v is TableRow) {
+                    var row: TableRow = v as TableRow
+                    var rowCount = row.childCount
+                    for (j in 0 until rowCount) {
+                        val v2: View = row.getChildAt(j)
+                        if (v2 is TextView) {
+                            var cell = v2 as TextView
+                            cell.setOnClickListener {
+                                if (it is TextView) {
+                                    if (it.text == "Upraviť") {
+                                        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_changeaction, null)
+                                        val mBuilder = AlertDialog.Builder(context).setView(dialogView)
+                                        val meno = row.getChildAt(0) as TextView
+                                        val prichod = row.getChildAt(1) as TextView
+                                        val odchod = row.getChildAt(2) as TextView
+                                        val hodiny = row.getChildAt(3) as TextView
+                                        val poznamka = row.getChildAt(3) as TextView
+                                        dialogView.nazovAseDialog.text = meno.text
+                                        dialogView.datumAkcieDialog.text = prichod.text
+                                        dialogView.casOdAkcieDialog.text = odchod.text
+                                        dialogView.casDoAkcieDialog.text = hodiny.text
+                                        dialogView.casDoAkcieDialog.text = poznamka.text
+                                        val mAlertDialog = mBuilder.show()
+                                        dialogView.buttonSpatDialog.setOnClickListener {
+                                            mAlertDialog.dismiss()
+                                        }
+                                        dialogView.buttonPotvrditDialog.setOnClickListener{
+                                            if(//vytvoriť update dochadzky)
+                                            {
+                                                Toast.makeText(context, "Akcia zmenená", Toast.LENGTH_LONG).show()
+                                                val activity: VyberMenaActivity = context as VyberMenaActivity
+                                                startActivity(context, intent, null)
+                                                activity.finish()
+                                            }
+                                            else
+                                            {
+                                                Toast.makeText(context, "Hups! Niečo je zlé. Skúste neskôr", Toast.LENGTH_LONG).show()
+                                            }
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        //prisposobiť náhľad
+                                        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_fullaction, null)
+                                        val mBuilder = AlertDialog.Builder(context).setView(dialogView)
+                                        dialogView.nazovAkcieDialog.text = allActions[i-1][0]
+                                        dialogView.datumAkcieDialog.text = allActions[i-1][1]
+                                        dialogView.casOdAkcieDialog.text = allActions[i-1][2]
+                                        dialogView.casDoAkcieDialog.text = allActions[i-1][3]
                                         val mAlertDialog = mBuilder.show()
                                         dialogView.buttonSpatDialog.setOnClickListener {
                                             mAlertDialog.dismiss()
