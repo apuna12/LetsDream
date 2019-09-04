@@ -197,7 +197,6 @@ class UpdateLabelMethods {
             DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
                 vibrate.vibrate(70)
-                // Display Selected date in textbox
                 textView.setText("" + dayOfMonth + "." + monthOfYear + "." + year)
             }, year, month, day
         )

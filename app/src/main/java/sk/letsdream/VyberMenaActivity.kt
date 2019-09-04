@@ -363,11 +363,11 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
             else if((privileges.toLowerCase() == "11" || privileges.toLowerCase()=="111") && userTW.text == "Používateľ")
             {
                 Toast.makeText(this,"Zapnutý admin mód!", Toast.LENGTH_SHORT).show()
-                userTW.text = "Administrátor"
+                userTW.text = "Admin"
                 changePrivileges.visibility = View.VISIBLE
                 updateLabelMethods.allActions(this, table, intent, "11")
             }
-            else if((privileges.toLowerCase() == "11" || privileges.toLowerCase()=="111") && userTW.text == "Administrátor")
+            else if((privileges.toLowerCase() == "11" || privileges.toLowerCase()=="111") && userTW.text == "Admin")
             {
                 Toast.makeText(this,"Zapnutý používateľský mód!", Toast.LENGTH_SHORT).show()
                 userTW.text = "Používateľ"

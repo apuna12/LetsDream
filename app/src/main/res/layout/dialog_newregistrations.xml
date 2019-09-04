@@ -13,6 +13,8 @@
             android:id="@+id/newRegistrationsTable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:divider="?android:attr/dividerHorizontal"
+            android:showDividers="middle"
             android:scrollbars="vertical"
             android:stretchColumns="*">
 
@@ -20,21 +22,25 @@
                 <TextView
                     android:text="Meno"
                     android:height="35dp"
+                    android:background="@drawable/border"
                     android:textStyle="bold"
                     android:textColor="#000"/>
                 <TextView
                     android:text="Login"
                     android:height="35dp"
+                    android:background="@drawable/border"
                     android:textStyle="bold"
                     android:textColor="#000"/>
                 <TextView
                     android:text=""
                     android:height="35dp"
+                    android:background="@drawable/border"
                     android:textStyle="bold"
                     android:textColor="#000"/>
                 <TextView
                     android:text=""
                     android:height="35dp"
+                    android:background="@drawable/border"
                     android:textStyle="bold"
                     android:textColor="#000"/>
             </TableRow>

@@ -24,8 +24,7 @@ import kotlin.random.Random
 
 class ChartMethods{
 
-    fun barChart(context: Context, chart: Int, barChart: BarChart)
-    {
+    fun barChart(context: Context, chart: Int, barChart: BarChart) {
         val dbMethods: DBConnection = DBConnection()
         val request: String = dbMethods.getStatistics(chart)
         var arrayList: ArrayList<BarEntry> = ArrayList()
@@ -34,9 +33,8 @@ class ChartMethods{
         var items = arrayOf<Array<String>>()
         var xAxisValues = ArrayList<String>()
 
-        for (i in 0 until typedArrayList.size)
-        {
-            items  += typedArrayList[i].split("-").toTypedArray()
+        for (i in 0 until typedArrayList.size) {
+            items += typedArrayList[i].split("-").toTypedArray()
             arrayList.add(BarEntry(i.toFloat(), items[i][1].toFloat()))
             xAxisValues.add(items[i][0])
         }
@@ -47,12 +45,18 @@ class ChartMethods{
         xAxis.isGranularityEnabled = true
 
         var bds: BarDataSet = BarDataSet(arrayList, "")
-        if(chart == 2)
+        if (chart == 2)
             bds.setColor(Color.CYAN, 100)
-        else if(chart == 3)
+        else if (chart == 3)
             bds.setColor(Color.GREEN, 100)
+        else if (chart == 4)
+        {
+            bds.colors = CUSTOM_COLORS.toList()
+        }
+
         else
             bds.setColor(Color.RED, 100)
+
         bds.valueTextSize = 10f
         var barData: BarData = BarData(bds)
         barData.barWidth = 0.5f
@@ -113,11 +117,11 @@ class ChartMethods{
         lineChart.refreshDrawableState()
     }
 
-    fun pieChart(context: Context, pieChart: PieChart)
+    fun volunteerPerformance(context: Context, barChart2: BarChart)
     {
         val dbMethods: DBConnection = DBConnection()
         val request: String = dbMethods.getStatistics(4)
-        var arrayList: ArrayList<PieEntry> = ArrayList()
+        var arrayList: ArrayList<BarEntry> = ArrayList()
         var typedArrayList = request.split("?").toTypedArray()
         typedArrayList = typedArrayList.dropLast(1).toTypedArray()
         var items = arrayOf<Array<String>>()
@@ -146,7 +150,6 @@ class ChartMethods{
                 items[i][1] = helper
             }
 
-            xAxisValues.add(items[i][0])
         }
         var clearedNameList: ArrayList<String> = ArrayList()
         for (i in 0 until typedArrayList.size)
@@ -168,32 +171,33 @@ class ChartMethods{
                 }
             }
         }
-        var tempString: String = String()
-        var legendLabels: List<LegendEntry> = ArrayList<LegendEntry>()
+        fullCountedList = fullCountedList.dropLast(1).toTypedArray()
         for(i in 0 until fullCountedList.size)
         {
-            arrayList.add(PieEntry(fullCountedList[i][1].toFloat(), fullCountedList[i][1].toFloat()))
-            val entry = LegendEntry()
-            entry.formColor = CUSTOM_COLORS.get(i)
-
-            entry.label = fullCountedList[i][0]
-            legendLabels += entry
+            arrayList.add(BarEntry(i.toFloat(), fullCountedList[i][1].toFloat()))
+            xAxisValues.add(fullCountedList[i][0])
         }
 
-        var pds: PieDataSet = PieDataSet(arrayList, "")
-        pds.colors = CUSTOM_COLORS.toList()
-        pds.valueTextSize = 10f
-        var pieData: PieData = PieData(pds)
-        pieChart.data = pieData
-        pieChart.description.text = ""
-        pieChart.legend.isEnabled = true
-        pieChart.legend.setCustom(legendLabels)
-        pieChart.legend.position = Legend.LegendPosition.LEFT_OF_CHART_CENTER
-        pieChart.legend.textColor = Color.WHITE
-        pieChart.data.setValueTextColor(Color.WHITE)
-        pieChart.isEnabled = true
-        pieChart.invalidate()
-        pieChart.refreshDrawableState()
+        val xAxis = barChart2.xAxis
+        xAxis.setValueFormatter(IndexAxisValueFormatter(xAxisValues))
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.granularity = 1f
+        xAxis.isGranularityEnabled = true
+
+        var bds: BarDataSet = BarDataSet(arrayList, "")
+        bds.colors = CUSTOM_COLORS.toList()
+        var barData: BarData = BarData(bds)
+        barData.barWidth = 0.5f
+        barChart2.data = barData
+        barChart2.xAxis.textColor = Color.WHITE
+        barChart2.axisLeft.textColor = Color.WHITE
+        barChart2.description.text = ""
+        barChart2.axisRight.textColor = Color.WHITE
+        barChart2.legend.isEnabled = false
+        barChart2.data.setValueTextColor(Color.WHITE)
+        barChart2.isEnabled = true
+        barChart2.invalidate()
+        barChart2.refreshDrawableState()
     }
 
     val CUSTOM_COLORS = intArrayOf(Color.rgb(65, 236, 186), Color.rgb(120, 100, 0),

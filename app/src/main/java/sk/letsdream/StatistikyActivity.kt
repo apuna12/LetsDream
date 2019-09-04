@@ -108,7 +108,7 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                 else if(itemId == R.id.menu_item_2) {
                     val lineChart: LineChart = findViewById(R.id.lineChart)
                     barChart.visibility = View.INVISIBLE
-                    pieChart.visibility = View.INVISIBLE
+                    //pieChart.visibility = View.INVISIBLE
                     lineChart.visibility = View.VISIBLE
                     chartMethods.lineChart(this,2,lineChart)
 
@@ -117,7 +117,7 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                 {
                     val barChart: BarChart = findViewById(R.id.barChart)
                     lineChart.visibility = View.INVISIBLE
-                    pieChart.visibility = View.INVISIBLE
+                    //pieChart.visibility = View.INVISIBLE
                     barChart.visibility = View.VISIBLE
                     chartMethods.barChart(this,3,barChart)
                 }
@@ -125,10 +125,9 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                 {
                     val pieChart: PieChart = findViewById(R.id.pieChart)
                     lineChart.visibility = View.INVISIBLE
-                    pieChart.visibility = View.VISIBLE
-                    barChart.visibility = View.INVISIBLE
-                    chartMethods.pieChart(this,pieChart)
-                    pieChart.setExtraBottomOffset(20f);
+                    //pieChart.visibility = View.VISIBLE
+                    barChart.visibility = View.VISIBLE
+                    chartMethods.volunteerPerformance(this, barChart)
                 }
                 true
             }
