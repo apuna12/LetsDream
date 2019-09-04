@@ -10,7 +10,6 @@ Initial setup
     - initial DB creation
 
 Statistics
-    - change the fourth statistic chart to another style
     - try to adjust statistics
     - add first statistic
 Vyber mena
