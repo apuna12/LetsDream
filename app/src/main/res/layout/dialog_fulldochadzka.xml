@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_back">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Detail dochádzky"
+            android:textColor="#000"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:paddingBottom="20dp"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Meno"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:paddingStart="20dp"
+        android:textSize="16dp"
+        android:paddingBottom="5dp"/>
+    <TextView
+        android:id="@+id/menoDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="akcia"
+        android:textColor="#000"
+        android:paddingStart="20dp"
+        android:paddingBottom="25dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Príchod"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:paddingStart="20dp"
+        android:textSize="16dp"
+        android:paddingBottom="5dp"/>
+    <TextView
+        android:id="@+id/prichodDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="datum"
+        android:textColor="#000"
+        android:paddingStart="20dp"
+        android:paddingBottom="25dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Odchod"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:paddingStart="20dp"
+        android:textSize="16dp"
+        android:paddingBottom="5dp"/>
+    <TextView
+        android:id="@+id/odchodDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="cas"
+        android:textColor="#000"
+        android:paddingStart="20dp"
+        android:paddingBottom="25dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hodiny"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:paddingStart="20dp"
+        android:textSize="16dp"
+        android:paddingBottom="5dp"/>
+    <TextView
+        android:id="@+id/hodinyDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="hodiny"
+        android:textColor="#000"
+        android:paddingStart="20dp"
+        android:paddingBottom="25dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Poznámka"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:paddingStart="20dp"
+        android:textSize="16dp"
+        android:paddingBottom="5dp"/>
+    <TextView
+        android:id="@+id/poznDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="cas"
+        android:textColor="#000"
+        android:paddingStart="20dp"
+        android:paddingBottom="25dp"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp">
+        <Button
+            android:id="@+id/buttonSpatDialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Späť"/>
+    </LinearLayout>
+
+</LinearLayout>

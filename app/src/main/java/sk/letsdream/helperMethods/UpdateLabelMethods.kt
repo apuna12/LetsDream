@@ -39,7 +39,11 @@ import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.content_akcie.view.*
 import kotlinx.android.synthetic.main.dialog_changeaction.view.buttonPotvrditDialog
 import kotlinx.android.synthetic.main.dialog_changedochadzka.view.*
+import kotlinx.android.synthetic.main.dialog_changedochadzka.view.menoDialog
+import kotlinx.android.synthetic.main.dialog_changedochadzka.view.poznamkaDialog
+import kotlinx.android.synthetic.main.dialog_fulldochadzka.view.*
 import kotlinx.android.synthetic.main.dialog_getdochadzka.view.*
+import java.text.SimpleDateFormat
 
 
 class UpdateLabelMethods {
@@ -321,22 +325,19 @@ class UpdateLabelMethods {
                 tableRowAllActions.addView(textViewDatum)
                 tableRowAllActions.addView(textViewCasOd)
                 tableRowAllActions.addView(textViewCasDo)
-                if(privileges == "11" || privileges == "111") {
+                if (privileges == "11" || privileges == "111") {
                     textViewUprav.setText("Upraviť")
                     textViewUprav.setTextColor(Color.YELLOW)
                     textViewUprav.height = 70
                     textViewUprav.gravity = Gravity.CENTER
                     tableRowAllActions.addView(textViewUprav)
-                }
-                else
-                {
+                } else {
                     textViewUprav.setText("")
                     textViewUprav.height = 70
                     tableRowAllActions.addView(textViewUprav)
                 }
 
                 actionTable.addView(tableRowAllActions, i + 1)
-
 
 
             }
@@ -354,8 +355,10 @@ class UpdateLabelMethods {
                             cell.setOnClickListener {
                                 if (it is TextView) {
                                     if (it.text == "Upraviť") {
-                                        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_changeaction, null)
-                                        val mBuilder = AlertDialog.Builder(context).setView(dialogView)
+                                        val dialogView = LayoutInflater.from(context)
+                                            .inflate(R.layout.dialog_changeaction, null)
+                                        val mBuilder =
+                                            AlertDialog.Builder(context).setView(dialogView)
                                         val nazov = row.getChildAt(0) as TextView
                                         val datum = row.getChildAt(1) as TextView
                                         val casOd = row.getChildAt(2) as TextView
@@ -368,33 +371,43 @@ class UpdateLabelMethods {
                                         dialogView.buttonSpatDialog.setOnClickListener {
                                             mAlertDialog.dismiss()
                                         }
-                                        dialogView.buttonPotvrditDialog.setOnClickListener{
-                                            if(dbMethods.editAction(context, dialogView.nazovAkcieDialog.text.toString(),
+                                        dialogView.buttonPotvrditDialog.setOnClickListener {
+                                            if (dbMethods.editAction(
+                                                    context,
+                                                    dialogView.nazovAkcieDialog.text.toString(),
                                                     dialogView.datumAkcieDialog.text.toString(),
                                                     dialogView.casOdAkcieDialog.text.toString(),
                                                     dialogView.casDoAkcieDialog.text.toString(),
-                                                    nazov.text.toString()) == "1")
-                                            {
-                                                Toast.makeText(context, "Akcia zmenená", Toast.LENGTH_LONG).show()
-                                                val activity: VyberMenaActivity = context as VyberMenaActivity
+                                                    nazov.text.toString()
+                                                ) == "1"
+                                            ) {
+                                                Toast.makeText(
+                                                    context,
+                                                    "Akcia zmenená",
+                                                    Toast.LENGTH_LONG
+                                                ).show()
+                                                val activity: VyberMenaActivity =
+                                                    context as VyberMenaActivity
                                                 startActivity(context, intent, null)
                                                 activity.finish()
-                                            }
-                                            else
-                                            {
-                                                Toast.makeText(context, "Hups! Niečo je zlé. Skúste neskôr", Toast.LENGTH_LONG).show()
+                                            } else {
+                                                Toast.makeText(
+                                                    context,
+                                                    "Hups! Niečo je zlé. Skúste neskôr",
+                                                    Toast.LENGTH_LONG
+                                                ).show()
                                             }
                                         }
 
-                                    }
-                                    else
-                                    {
-                                        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_fullaction, null)
-                                        val mBuilder = AlertDialog.Builder(context).setView(dialogView)
-                                        dialogView.nazovAkcieDialog.text = allActions[i-1][0]
-                                        dialogView.datumAkcieDialog.text = allActions[i-1][1]
-                                        dialogView.casOdAkcieDialog.text = allActions[i-1][2]
-                                        dialogView.casDoAkcieDialog.text = allActions[i-1][3]
+                                    } else {
+                                        val dialogView = LayoutInflater.from(context)
+                                            .inflate(R.layout.dialog_fullaction, null)
+                                        val mBuilder =
+                                            AlertDialog.Builder(context).setView(dialogView)
+                                        dialogView.nazovAkcieDialog.text = allActions[i - 1][0]
+                                        dialogView.datumAkcieDialog.text = allActions[i - 1][1]
+                                        dialogView.casOdAkcieDialog.text = allActions[i - 1][2]
+                                        dialogView.casDoAkcieDialog.text = allActions[i - 1][3]
                                         val mAlertDialog = mBuilder.show()
                                         dialogView.buttonSpatDialog.setOnClickListener {
                                             mAlertDialog.dismiss()
@@ -415,14 +428,20 @@ class UpdateLabelMethods {
     }
 
 
-    fun processDochadzka(context: Context, intent: Intent, privileges: String, name: String? = null) {
+    fun processDochadzka(
+        context: Context,
+        intent: Intent,
+        privileges: String,
+        name: String? = null
+    ) {
 
         var dbMethods: DBConnection = DBConnection()
 
         val dbValue = dbMethods.getDochadzka(privileges, name)
         if (dbValue != "0") {
             //dochadzkaTable.visibility = View.VISIBLE
-            val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_getdochadzka, null)
+            val dialogView =
+                LayoutInflater.from(context).inflate(R.layout.dialog_getdochadzka, null)
             val mBuilder = AlertDialog.Builder(context).setView(dialogView)
             val mAlertDialog = mBuilder.show()
             var dochadzkaTable = dialogView.getDochadzkaTable
@@ -459,36 +478,36 @@ class UpdateLabelMethods {
                 textViewMeno.setTextColor(Color.BLACK)
                 textViewMeno.height = 70
                 textViewMeno.gravity = Gravity.LEFT
-                textViewMeno.setPadding(20,0,20,0)
+                textViewMeno.setPadding(20, 0, 20, 0)
                 textViewPrichod.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(15)))
                 textViewPrichod.setText(allDochadzka[i][1])
                 textViewPrichod.setTextColor(Color.BLACK)
                 textViewPrichod.height = 70
                 textViewPrichod.gravity = Gravity.LEFT
-                textViewPrichod.setPadding(20,0,20,0)
+                textViewPrichod.setPadding(20, 0, 20, 0)
                 textViewOdchod.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(15)))
                 textViewOdchod.setText(allDochadzka[i][2])
                 textViewOdchod.setTextColor(Color.BLACK)
                 textViewOdchod.height = 70
                 textViewOdchod.gravity = Gravity.LEFT
-                textViewOdchod.setPadding(20,0,20,0)
+                textViewOdchod.setPadding(20, 0, 20, 0)
                 textViewHodiny.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(15)))
                 textViewHodiny.setText(allDochadzka[i][3])
                 textViewHodiny.setTextColor(Color.BLACK)
                 textViewHodiny.height = 70
                 textViewHodiny.gravity = Gravity.LEFT
-                textViewHodiny.setPadding(20,0,20,0)
+                textViewHodiny.setPadding(20, 0, 20, 0)
                 textViewPoznamka.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(15)))
                 textViewPoznamka.setText(allDochadzka[i][4])
                 textViewPoznamka.setTextColor(Color.BLACK)
                 textViewPoznamka.height = 70
                 textViewPoznamka.gravity = Gravity.LEFT
-                textViewPoznamka.setPadding(20,0,20,0)
+                textViewPoznamka.setPadding(20, 0, 20, 0)
                 textViewUprav.setText("Upraviť")
                 textViewUprav.setTextColor(Color.GREEN)
                 textViewUprav.height = 70
                 textViewUprav.gravity = Gravity.CENTER
-                textViewUprav.setPadding(20,0,20,0)
+                textViewUprav.setPadding(20, 0, 20, 0)
 
 
                 tableRowAllActions.addView(textViewMeno)
@@ -500,7 +519,6 @@ class UpdateLabelMethods {
 
 
                 dochadzkaTable.addView(tableRowAllActions, i + 1)
-
 
 
             }
@@ -518,14 +536,20 @@ class UpdateLabelMethods {
                             cell.setOnClickListener {
                                 if (it is TextView) {
                                     if (it.text == "Upraviť") {
-                                        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_changedochadzka, null)
-                                        val mBuilder = AlertDialog.Builder(context).setView(dialogView)
+                                        val dialogView = LayoutInflater.from(context)
+                                            .inflate(R.layout.dialog_changedochadzka, null)
+                                        val mBuilder =
+                                            AlertDialog.Builder(context).setView(dialogView)
 
                                         val meno = row.getChildAt(0) as TextView
-                                        val casPrichodu = ((row.getChildAt(1) as TextView).text.toString().split(" ").toTypedArray()[0])
-                                        val datumPrichodu = (row.getChildAt(1) as TextView).text.toString().split(" ").toTypedArray()[1]
-                                        val casOdchodu = (row.getChildAt(2) as TextView).text.toString().split(" ").toTypedArray()[0]
-                                        val datumOdchodu = (row.getChildAt(2) as TextView).text.toString().split(" ").toTypedArray()[1]
+                                        val casPrichodu =
+                                            ((row.getChildAt(1) as TextView).text.toString().split(" ").toTypedArray()[0])
+                                        val datumPrichodu =
+                                            (row.getChildAt(1) as TextView).text.toString().split(" ").toTypedArray()[1]
+                                        val casOdchodu =
+                                            (row.getChildAt(2) as TextView).text.toString().split(" ").toTypedArray()[0]
+                                        val datumOdchodu =
+                                            (row.getChildAt(2) as TextView).text.toString().split(" ").toTypedArray()[1]
                                         val poznamka = row.getChildAt(4) as TextView
 
                                         dialogView.menoDialog.text = meno.text
@@ -539,72 +563,138 @@ class UpdateLabelMethods {
 
 
 
-                                        dialogView.casPrichoduDialog.setOnClickListener{
+                                        dialogView.casPrichoduDialog.setOnClickListener {
                                             val timeMethods: TimeMethods = TimeMethods()
-                                            timeMethods.SetTimePicker(dialogView.context, dialogView.casPrichoduDialog)
+                                            timeMethods.SetTimePicker(
+                                                dialogView.context,
+                                                dialogView.casPrichoduDialog
+                                            )
                                         }
-                                        dialogView.datumPrichoduDialog.setOnClickListener{
+                                        dialogView.datumPrichoduDialog.setOnClickListener {
                                             val timeMethods: TimeMethods = TimeMethods()
-                                            timeMethods.SetDatePicker(dialogView.context, dialogView.datumPrichoduDialog)
+                                            timeMethods.SetDatePicker(
+                                                dialogView.context,
+                                                dialogView.datumPrichoduDialog
+                                            )
                                         }
-                                        dialogView.casOdchoduDialog.setOnClickListener{
+                                        dialogView.casOdchoduDialog.setOnClickListener {
                                             val timeMethods: TimeMethods = TimeMethods()
-                                            timeMethods.SetTimePicker(dialogView.context, dialogView.casOdchoduDialog)
+                                            timeMethods.SetTimePicker(
+                                                dialogView.context,
+                                                dialogView.casOdchoduDialog
+                                            )
                                         }
-                                        dialogView.datumOdchoduDialog.setOnClickListener{
+                                        dialogView.datumOdchoduDialog.setOnClickListener {
                                             val timeMethods: TimeMethods = TimeMethods()
-                                            timeMethods.SetDatePicker(dialogView.context, dialogView.datumOdchoduDialog)
+                                            timeMethods.SetDatePicker(
+                                                dialogView.context,
+                                                dialogView.datumOdchoduDialog
+                                            )
                                         }
 
                                         val mAlertDialog = mBuilder.show()
                                         dialogView.buttonSpatDialog.setOnClickListener {
                                             mAlertDialog.dismiss()
                                         }
-                                        dialogView.buttonPotvrditDialog.setOnClickListener{
-                                            if(dbMethods.updateDochadzka(dialogView.context, meno.text.toString(),datumPrichodu,datumOdchodu,casPrichodu,casOdchodu, poznamka.text.toString()) != "0")
-                                            {
-                                                Toast.makeText(context, "Dochádzka zmenená", Toast.LENGTH_LONG).show()
-                                                startActivity(context, intent, null)
-                                                mAlertDialog.dismiss()
+                                        dialogView.buttonPotvrditDialog.setOnClickListener {
+
+                                            var timeParser = SimpleDateFormat("HH:mm")
+                                            var timeFormatter = SimpleDateFormat("HH:mm")
+                                            var dateParser = SimpleDateFormat("dd.MM.yyyy")
+                                            var dateFormatter = SimpleDateFormat("dd.MM.yyyy")
+                                            var dateOdTIME =
+                                                dateFormatter.format(dateParser.parse(dialogView.datumPrichoduDialog.text.toString()))
+                                            var dateDoTIME =
+                                                dateFormatter.format(dateParser.parse(dialogView.datumOdchoduDialog.text.toString()))
+                                            var casOdTIME =
+                                                timeFormatter.format(timeParser.parse(dialogView.casPrichoduDialog.text.toString()))
+                                            var casDoTIME =
+                                                timeFormatter.format(timeParser.parse(dialogView.casOdchoduDialog.text.toString()))
+                                            val timeMethod: TimeMethods = TimeMethods()
+                                            if (dateOdTIME <= dateDoTIME) {
+                                                if ((casOdTIME <= casDoTIME && dateOdTIME <= dateDoTIME) || (casOdTIME > casDoTIME && dateOdTIME < dateDoTIME)) {
+                                                    var timeDifference = timeMethod.dateDifference(
+                                                        dateOdTIME,
+                                                        casOdTIME,
+                                                        dateDoTIME,
+                                                        casDoTIME
+                                                    )
+
+
+                                                    var updateResult = dbMethods.updateDochadzka(
+                                                        dialogView.context,
+                                                        meno.text.toString(),
+                                                        datumPrichodu,
+                                                        datumOdchodu,
+                                                        casPrichodu,
+                                                        casOdchodu,
+                                                        timeDifference,
+                                                        poznamka.text.toString()
+                                                    )
+                                                    if (updateResult == "1") {
+                                                        Toast.makeText(
+                                                            context,
+                                                            "Dochádzka zmenená",
+                                                            Toast.LENGTH_LONG
+                                                        ).show()
+                                                        startActivity(context, intent, null)
+                                                        mAlertDialog.dismiss()
+                                                    } else {
+                                                        Toast.makeText(
+                                                            context,
+                                                            "Hups! Niečo je zlé. Skúste neskôr",
+                                                            Toast.LENGTH_LONG
+                                                        ).show()
+                                                    }
+                                                }
+                                                else
+                                                    Toast.makeText(
+                                                        context,
+                                                        "Hups! Niečo je zlé. Skontrolujte čas!",
+                                                        Toast.LENGTH_LONG
+                                                    ).show()
+
                                             }
                                             else
-                                            {
-                                                Toast.makeText(context, "Hups! Niečo je zlé. Skúste neskôr", Toast.LENGTH_LONG).show()
-                                            }
+                                                Toast.makeText(
+                                                    context,
+                                                    "Hups! Niečo je zlé. Skontrolujte dátumy!",
+                                                    Toast.LENGTH_LONG
+                                                ).show()
                                         }
+                                    }
+                                    else {
+                                        //prisposobiť náhľad
+                                        val dialogView = LayoutInflater.from(context)
+                                            .inflate(R.layout.dialog_fulldochadzka, null)
+                                        val mBuilder =
+                                            AlertDialog.Builder(context).setView(dialogView)
+                                        dialogView.menoDialog.text =
+                                            allDochadzka[i - 1][0]
+                                        dialogView.prichodDialog.text =
+                                            allDochadzka[i - 1][1]
+                                        dialogView.odchodDialog.text =
+                                            allDochadzka[i - 1][2]
+                                        dialogView.hodinyDialog.text =
+                                            allDochadzka[i - 1][3]
+                                        dialogView.poznDialog.text =
+                                            allDochadzka[i - 1][4]
+                                        val mAlertDialog = mBuilder.show()
+                                        dialogView.buttonSpatDialog.setOnClickListener {
+                                            mAlertDialog.dismiss()
+                                        }
+                                    }
 
-                                    }
-                                    else
-                                    {
-                                            //prisposobiť náhľad
-                                            val dialogView = LayoutInflater.from(context)
-                                                .inflate(R.layout.dialog_fullaction, null)
-                                            val mBuilder =
-                                                AlertDialog.Builder(context).setView(dialogView)
-                                            dialogView.nazovAkcieDialog.text =
-                                                allDochadzka[i - 1][0]
-                                            dialogView.datumAkcieDialog.text =
-                                                allDochadzka[i - 1][1]
-                                            dialogView.casOdAkcieDialog.text =
-                                                allDochadzka[i - 1][2]
-                                            dialogView.casDoAkcieDialog.text =
-                                                allDochadzka[i - 1][3]
-                                            val mAlertDialog = mBuilder.show()
-                                            dialogView.buttonSpatDialog.setOnClickListener {
-                                                mAlertDialog.dismiss()
-                                            }
-                                    }
                                 }
                             }
 
                         }
                     }
 
+                } else {
+                    //actionTable.visibility = View.INVISIBLE
                 }
             }
-
-        } else {
-            //actionTable.visibility = View.INVISIBLE
         }
     }
 }

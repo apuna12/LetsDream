@@ -660,23 +660,13 @@ class DBConnection {
         datumDo: String,
         casOd: String,
         casDo: String,
+        timeDifference: String,
         poznamka: String
     ): String {
 
         //nastavit kontrolu vonku mimo tejto funkcie... napriklad ak je zly cas tak hodit return "5"
 
-        var timeParser = SimpleDateFormat("HH:mm")
-        var timeFormatter = SimpleDateFormat("HH:mm")
-        var dateParser = SimpleDateFormat("dd.MM.yyyy")
-        var dateFormatter = SimpleDateFormat("dd.MM.yyyy")
-        var dateOdTIME = dateFormatter.format(dateParser.parse(datumOd.toString()))
-        var dateDoTIME = dateFormatter.format(dateParser.parse(datumDo.toString()))
-        var casOdTIME = timeFormatter.format(timeParser.parse(casOd.toString()))
-        var casDoTIME = timeFormatter.format(timeParser.parse(casDo.toString()))
-        val timeMethod: TimeMethods = TimeMethods()
-        if (dateOdTIME <= dateDoTIME) {
-            if ((casOdTIME <= casDoTIME && dateOdTIME == dateDoTIME) || (casOdTIME > casDoTIME && dateOdTIME < dateDoTIME)) {
-                var timeDifference = timeMethod.dateDifference(dateOdTIME, casOdTIME, dateDoTIME, casDoTIME)
+
                 val sql = "http://letsdream.xf.cz/index.php?name=" + name.replace(" ","_") + "&datumOd=" + datumOd +
                         "&datumDo=" + datumDo + "&casOd=" + casOd + "&casDo=" + casDo + "&hodiny=" +
                         timeDifference + "&poznamka=" + poznamka.replace(" ","_") +
@@ -708,17 +698,6 @@ class DBConnection {
                     throw Exception(e)
                 }
                 return "0"
-
-
-            } else {
-                Toast.makeText(context, "Prosím opravte si čas!", Toast.LENGTH_LONG).show()
-                return "0"
-            }
-
-        } else {
-            Toast.makeText(context, "Prosím opravte si dátum!", Toast.LENGTH_LONG).show()
-            return "0"
-        }
     }
 }
 

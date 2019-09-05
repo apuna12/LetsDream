@@ -53,7 +53,7 @@ class TimeMethods {
             context, R.style.DialogTheme,
             DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
-                textView.setText("" + dayOfMonth + "." + monthOfYear + "." + year)
+                textView.setText("" + dayOfMonth + "." + (monthOfYear+1) + "." + year)
             }, year, month, day
         )
         dpd.show()

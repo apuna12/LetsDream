@@ -141,7 +141,7 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 var casOdTIME = timeFormatter.format(timeParser.parse(prichodTimePicker.text.toString()))
                 var casDoTIME = timeFormatter.format(timeParser.parse(odchodTimePicker.text.toString()))
                 if (dateOdTIME <= dateDoTIME) {
-                    if ((casOdTIME <= casDoTIME && dateOdTIME == dateDoTIME) || (casOdTIME > casDoTIME && dateOdTIME < dateDoTIME)) {
+                    if ((casOdTIME <= casDoTIME && dateOdTIME <= dateDoTIME) || (casOdTIME > casDoTIME && dateOdTIME < dateDoTIME)) {
                         var timeDifference = timeMethod.dateDifference(
                             prichodDatePicker.text.toString(), prichodTimePicker.text.toString(),
                             odchodDatePicker.text.toString(), odchodTimePicker.text.toString()
