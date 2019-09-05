@@ -36,10 +36,10 @@ import sk.letsdream.dbMethods.DBConnection
 import java.sql.Time
 import java.util.*
 import android.widget.LinearLayout
-
-
-
-
+import kotlinx.android.synthetic.main.content_akcie.view.*
+import kotlinx.android.synthetic.main.dialog_changeaction.view.buttonPotvrditDialog
+import kotlinx.android.synthetic.main.dialog_changedochadzka.view.*
+import kotlinx.android.synthetic.main.dialog_getdochadzka.view.*
 
 
 class UpdateLabelMethods {
@@ -342,7 +342,7 @@ class UpdateLabelMethods {
             }
 
             var count = actionTable.childCount
-            for (i in 0 until count) {
+            for (i in 1 until count) {
                 val v: View = actionTable.getChildAt(i)
                 if (v is TableRow) {
                     var row: TableRow = v as TableRow
@@ -415,25 +415,29 @@ class UpdateLabelMethods {
     }
 
 
-    fun processDochadzka(context: Context, table: TableLayout, intent: Intent, privileges: String, name: String? = null) {
+    fun processDochadzka(context: Context, intent: Intent, privileges: String, name: String? = null) {
 
         var dbMethods: DBConnection = DBConnection()
-        var dochadzkaTable = table
-        var childCount = dochadzkaTable.childCount
-        if (childCount > 1)
-            dochadzkaTable.removeViews(1, childCount - 1)
+
         val dbValue = dbMethods.getDochadzka(privileges, name)
         if (dbValue != "0") {
-            dochadzkaTable.visibility = View.VISIBLE
+            //dochadzkaTable.visibility = View.VISIBLE
+            val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_getdochadzka, null)
+            val mBuilder = AlertDialog.Builder(context).setView(dialogView)
+            val mAlertDialog = mBuilder.show()
+            var dochadzkaTable = dialogView.getDochadzkaTable
+            var childCount = dochadzkaTable.childCount
+            if (childCount > 1)
+                dochadzkaTable.removeViews(1, childCount - 1)
             var splittedDbValue = dbValue.split("?").toTypedArray()
 
-            var allActions = arrayOf<Array<String>>()
+            var allDochadzka = arrayOf<Array<String>>()
             for (i in 0 until splittedDbValue.size) {
-                allActions += splittedDbValue[i].split("-").toTypedArray()
+                allDochadzka += splittedDbValue[i].split("-").toTypedArray()
             }
-            allActions = allActions.dropLast(1).toTypedArray()
+            allDochadzka = allDochadzka.dropLast(1).toTypedArray()
 
-            for (i in 0 until allActions.size) {
+            for (i in 0 until allDochadzka.size) {
                 var tableRowAllActions: TableRow = TableRow(context)
                 var lp: TableRow.LayoutParams = TableRow.LayoutParams(
                     TableRow.LayoutParams(
@@ -451,30 +455,40 @@ class UpdateLabelMethods {
 
 
                 textViewMeno.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(15)))
-                textViewMeno.setText(allActions[i][0])
-                textViewMeno.setTextColor(Color.WHITE)
+                textViewMeno.setText(allDochadzka[i][0])
+                textViewMeno.setTextColor(Color.BLACK)
                 textViewMeno.height = 70
                 textViewMeno.gravity = Gravity.LEFT
+                textViewMeno.setPadding(20,0,20,0)
                 textViewPrichod.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(15)))
-                textViewPrichod.setText(allActions[i][1])
-                textViewPrichod.setTextColor(Color.WHITE)
+                textViewPrichod.setText(allDochadzka[i][1])
+                textViewPrichod.setTextColor(Color.BLACK)
                 textViewPrichod.height = 70
                 textViewPrichod.gravity = Gravity.LEFT
+                textViewPrichod.setPadding(20,0,20,0)
                 textViewOdchod.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(15)))
-                textViewOdchod.setText(allActions[i][2])
-                textViewOdchod.setTextColor(Color.WHITE)
+                textViewOdchod.setText(allDochadzka[i][2])
+                textViewOdchod.setTextColor(Color.BLACK)
                 textViewOdchod.height = 70
                 textViewOdchod.gravity = Gravity.LEFT
+                textViewOdchod.setPadding(20,0,20,0)
                 textViewHodiny.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(15)))
-                textViewHodiny.setText(allActions[i][3])
-                textViewHodiny.setTextColor(Color.WHITE)
+                textViewHodiny.setText(allDochadzka[i][3])
+                textViewHodiny.setTextColor(Color.BLACK)
                 textViewHodiny.height = 70
                 textViewHodiny.gravity = Gravity.LEFT
+                textViewHodiny.setPadding(20,0,20,0)
                 textViewPoznamka.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(15)))
-                textViewPoznamka.setText(allActions[i][3])
-                textViewPoznamka.setTextColor(Color.WHITE)
+                textViewPoznamka.setText(allDochadzka[i][4])
+                textViewPoznamka.setTextColor(Color.BLACK)
                 textViewPoznamka.height = 70
                 textViewPoznamka.gravity = Gravity.LEFT
+                textViewPoznamka.setPadding(20,0,20,0)
+                textViewUprav.setText("Upraviť")
+                textViewUprav.setTextColor(Color.GREEN)
+                textViewUprav.height = 70
+                textViewUprav.gravity = Gravity.CENTER
+                textViewUprav.setPadding(20,0,20,0)
 
 
                 tableRowAllActions.addView(textViewMeno)
@@ -482,19 +496,8 @@ class UpdateLabelMethods {
                 tableRowAllActions.addView(textViewOdchod)
                 tableRowAllActions.addView(textViewHodiny)
                 tableRowAllActions.addView(textViewPoznamka)
-                if(privileges == "11" || privileges == "111") {
-                    textViewUprav.setText("Upraviť")
-                    textViewUprav.setTextColor(Color.YELLOW)
-                    textViewUprav.height = 70
-                    textViewUprav.gravity = Gravity.CENTER
-                    tableRowAllActions.addView(textViewUprav)
-                }
-                else
-                {
-                    textViewUprav.setText("")
-                    textViewUprav.height = 70
-                    tableRowAllActions.addView(textViewUprav)
-                }
+                tableRowAllActions.addView(textViewUprav)
+
 
                 dochadzkaTable.addView(tableRowAllActions, i + 1)
 
@@ -503,7 +506,7 @@ class UpdateLabelMethods {
             }
 
             var count = dochadzkaTable.childCount
-            for (i in 0 until count) {
+            for (i in 1 until count) {
                 val v: View = dochadzkaTable.getChildAt(i)
                 if (v is TableRow) {
                     var row: TableRow = v as TableRow
@@ -515,29 +518,54 @@ class UpdateLabelMethods {
                             cell.setOnClickListener {
                                 if (it is TextView) {
                                     if (it.text == "Upraviť") {
-                                        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_changeaction, null)
+                                        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_changedochadzka, null)
                                         val mBuilder = AlertDialog.Builder(context).setView(dialogView)
+
                                         val meno = row.getChildAt(0) as TextView
-                                        val prichod = row.getChildAt(1) as TextView
-                                        val odchod = row.getChildAt(2) as TextView
-                                        val hodiny = row.getChildAt(3) as TextView
-                                        val poznamka = row.getChildAt(3) as TextView
-                                        dialogView.nazovAseDialog.text = meno.text
-                                        dialogView.datumAkcieDialog.text = prichod.text
-                                        dialogView.casOdAkcieDialog.text = odchod.text
-                                        dialogView.casDoAkcieDialog.text = hodiny.text
-                                        dialogView.casDoAkcieDialog.text = poznamka.text
+                                        val casPrichodu = ((row.getChildAt(1) as TextView).text.toString().split(" ").toTypedArray()[0])
+                                        val datumPrichodu = (row.getChildAt(1) as TextView).text.toString().split(" ").toTypedArray()[1]
+                                        val casOdchodu = (row.getChildAt(2) as TextView).text.toString().split(" ").toTypedArray()[0]
+                                        val datumOdchodu = (row.getChildAt(2) as TextView).text.toString().split(" ").toTypedArray()[1]
+                                        val poznamka = row.getChildAt(4) as TextView
+
+                                        dialogView.menoDialog.text = meno.text
+                                        dialogView.casPrichoduDialog.setText(casPrichodu)
+                                        dialogView.datumPrichoduDialog.setText(datumPrichodu)
+                                        dialogView.casOdchoduDialog.setText(casOdchodu)
+                                        dialogView.datumOdchoduDialog.setText(datumOdchodu)
+                                        dialogView.poznamkaDialog.setText(poznamka.text)
+
+
+
+
+
+                                        dialogView.casPrichoduDialog.setOnClickListener{
+                                            val timeMethods: TimeMethods = TimeMethods()
+                                            timeMethods.SetTimePicker(dialogView.context, dialogView.casPrichoduDialog)
+                                        }
+                                        dialogView.datumPrichoduDialog.setOnClickListener{
+                                            val timeMethods: TimeMethods = TimeMethods()
+                                            timeMethods.SetDatePicker(dialogView.context, dialogView.datumPrichoduDialog)
+                                        }
+                                        dialogView.casOdchoduDialog.setOnClickListener{
+                                            val timeMethods: TimeMethods = TimeMethods()
+                                            timeMethods.SetTimePicker(dialogView.context, dialogView.casOdchoduDialog)
+                                        }
+                                        dialogView.datumOdchoduDialog.setOnClickListener{
+                                            val timeMethods: TimeMethods = TimeMethods()
+                                            timeMethods.SetDatePicker(dialogView.context, dialogView.datumOdchoduDialog)
+                                        }
+
                                         val mAlertDialog = mBuilder.show()
                                         dialogView.buttonSpatDialog.setOnClickListener {
                                             mAlertDialog.dismiss()
                                         }
                                         dialogView.buttonPotvrditDialog.setOnClickListener{
-                                            if(//vytvoriť update dochadzky)
+                                            if(dbMethods.updateDochadzka(dialogView.context, meno.text.toString(),datumPrichodu,datumOdchodu,casPrichodu,casOdchodu, poznamka.text.toString()) != "0")
                                             {
-                                                Toast.makeText(context, "Akcia zmenená", Toast.LENGTH_LONG).show()
-                                                val activity: VyberMenaActivity = context as VyberMenaActivity
+                                                Toast.makeText(context, "Dochádzka zmenená", Toast.LENGTH_LONG).show()
                                                 startActivity(context, intent, null)
-                                                activity.finish()
+                                                mAlertDialog.dismiss()
                                             }
                                             else
                                             {
@@ -548,17 +576,23 @@ class UpdateLabelMethods {
                                     }
                                     else
                                     {
-                                        //prisposobiť náhľad
-                                        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_fullaction, null)
-                                        val mBuilder = AlertDialog.Builder(context).setView(dialogView)
-                                        dialogView.nazovAkcieDialog.text = allActions[i-1][0]
-                                        dialogView.datumAkcieDialog.text = allActions[i-1][1]
-                                        dialogView.casOdAkcieDialog.text = allActions[i-1][2]
-                                        dialogView.casDoAkcieDialog.text = allActions[i-1][3]
-                                        val mAlertDialog = mBuilder.show()
-                                        dialogView.buttonSpatDialog.setOnClickListener {
-                                            mAlertDialog.dismiss()
-                                        }
+                                            //prisposobiť náhľad
+                                            val dialogView = LayoutInflater.from(context)
+                                                .inflate(R.layout.dialog_fullaction, null)
+                                            val mBuilder =
+                                                AlertDialog.Builder(context).setView(dialogView)
+                                            dialogView.nazovAkcieDialog.text =
+                                                allDochadzka[i - 1][0]
+                                            dialogView.datumAkcieDialog.text =
+                                                allDochadzka[i - 1][1]
+                                            dialogView.casOdAkcieDialog.text =
+                                                allDochadzka[i - 1][2]
+                                            dialogView.casDoAkcieDialog.text =
+                                                allDochadzka[i - 1][3]
+                                            val mAlertDialog = mBuilder.show()
+                                            dialogView.buttonSpatDialog.setOnClickListener {
+                                                mAlertDialog.dismiss()
+                                            }
                                     }
                                 }
                             }
@@ -570,7 +604,7 @@ class UpdateLabelMethods {
             }
 
         } else {
-            actionTable.visibility = View.INVISIBLE
+            //actionTable.visibility = View.INVISIBLE
         }
     }
 }

@@ -389,7 +389,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
             {
                 if(dbMethods.getDochadzka(privileges) != "0")
                 {
-
+                    updateLabelMethods.processDochadzka(this, intent ,privileges)
                 }
                 else
                     Toast.makeText(this, "Hups! Niečo je zlé. Skúste neskôr", Toast.LENGTH_LONG).show()
@@ -398,7 +398,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
             {
                 if(dbMethods.getDochadzka(privileges, meno.text.toString()) != "0")
                 {
-
+                    updateLabelMethods.processDochadzka(this, intent ,privileges)
                 }
                 else
                     Toast.makeText(this, "Hups! Niečo je zlé. Skúste neskôr", Toast.LENGTH_LONG).show()

@@ -4,6 +4,7 @@ import android.content.Context
 import android.database.SQLException
 import android.widget.Toast
 import kotlinx.android.synthetic.main.content_dochadzka.*
+import sk.letsdream.helperMethods.TimeMethods
 import java.lang.Exception
 import java.net.URL
 import java.nio.charset.Charset
@@ -11,12 +12,16 @@ import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.ResultSet
 import java.sql.Statement
+import java.text.SimpleDateFormat
 import java.util.*
 
 class DBConnection {
 
     fun getLabelStatistics(actionName: String): Array<String> {
-        val sql = "http://letsdream.xf.cz/index.php?action=" + actionName.replace(" ", "_") + "&mod=getAction&rest=get"
+        val sql = "http://letsdream.xf.cz/index.php?action=" + actionName.replace(
+            " ",
+            "_"
+        ) + "&mod=getAction&rest=get"
 
         try {
             var jsonStr: String = URL(sql).readText()
@@ -47,8 +52,9 @@ class DBConnection {
     }
 
     fun setLabelStatistics(action: String, setting: String, value: String): String {
-        val sql = "http://letsdream.xf.cz/index.php?action=" + action.replace(" ", "_") + "&setting=" +
-                setting + "&value=" + value.replace(" ", "_") + "&mod=updateAction&rest=post"
+        val sql =
+            "http://letsdream.xf.cz/index.php?action=" + action.replace(" ", "_") + "&setting=" +
+                    setting + "&value=" + value.replace(" ", "_") + "&mod=updateAction&rest=post"
 
         try {
             var jsonStr: String = URL(sql).readText()
@@ -88,9 +94,13 @@ class DBConnection {
         casDo: String,
         poznamka: String
     ): String {
-        val sql = "http://letsdream.xf.cz/index.php?action=" + action.replace(" ", "_") + "&pocDobr=" +
-                pocDobr + "&pocNavs=" + pocNavs + "&datum=" + datum + "&casOd=" + casOd +
-                "&casDo=" + casDo + "&poznamka=" + poznamka.replace(" ", "_") + "&mod=addNewAction&rest=post"
+        val sql =
+            "http://letsdream.xf.cz/index.php?action=" + action.replace(" ", "_") + "&pocDobr=" +
+                    pocDobr + "&pocNavs=" + pocNavs + "&datum=" + datum + "&casOd=" + casOd +
+                    "&casDo=" + casDo + "&poznamka=" + poznamka.replace(
+                " ",
+                "_"
+            ) + "&mod=addNewAction&rest=post"
 
         try {
             var jsonStr: String = URL(sql).readText()
@@ -122,7 +132,10 @@ class DBConnection {
 
     fun deleteAction(action: String): String {
         val sql =
-            "http://letsdream.xf.cz/index.php?action=" + action.replace(" ", "_") + "&mod=deleteAction&rest=delete"
+            "http://letsdream.xf.cz/index.php?action=" + action.replace(
+                " ",
+                "_"
+            ) + "&mod=deleteAction&rest=delete"
 
         try {
             var jsonStr: String = URL(sql).readText()
@@ -153,7 +166,8 @@ class DBConnection {
     }
 
     fun getStatistics(stat: Int): String {
-        val sql = "http://letsdream.xf.cz/index.php?statistic=" + stat + "&mod=getStatistics&rest=get"
+        val sql =
+            "http://letsdream.xf.cz/index.php?statistic=" + stat + "&mod=getStatistics&rest=get"
 
         try {
             var jsonStr: String = URL(sql).readText()
@@ -195,7 +209,10 @@ class DBConnection {
         val sql = "http://letsdream.xf.cz/index.php?meno=" + meno.replace(" ", "_") +
                 "&prichoddatum=" + prichodDatePicker + "&prichodcas=" + prichodTimePicker + "&odchoddatum=" +
                 odchodDatePicker + "&odchodcas=" + odchodTimePicker + "&hodiny=" + timeDifference + "&poznamka=" +
-                poznamkaET.toString().replace(" ", "_") + "&mod=insertDochadzka&table=dochadzka&rest=post"
+                poznamkaET.toString().replace(
+                    " ",
+                    "_"
+                ) + "&mod=insertDochadzka&table=dochadzka&rest=post"
 
         try {
             var jsonStr: String = URL(sql).readText()
@@ -412,7 +429,8 @@ class DBConnection {
     }
 
     fun acknowledgeUser(login: String): String {
-        val sql = "http://letsdream.xf.cz/index.php?login=" + login + "&mod=acknowledgeUser&rest=post"
+        val sql =
+            "http://letsdream.xf.cz/index.php?login=" + login + "&mod=acknowledgeUser&rest=post"
 
         try {
             var jsonStr: String = URL(sql).readText()
@@ -437,8 +455,7 @@ class DBConnection {
                 }
             }
 
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             throw Exception(e)
         }
         return "0"
@@ -470,17 +487,18 @@ class DBConnection {
                 }
             }
 
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             throw Exception(e)
         }
         return "0"
     }
+
     fun getAllHoursForUser(name: String): String {
         var meno = name
-        if(name.contains(" "))
-            meno = name.replace(" ","_")
-        val sql = "http://letsdream.xf.cz/index.php?name=" + meno + "&mod=getAllHoursForUser&rest=get"
+        if (name.contains(" "))
+            meno = name.replace(" ", "_")
+        val sql =
+            "http://letsdream.xf.cz/index.php?name=" + meno + "&mod=getAllHoursForUser&rest=get"
 
         try {
             var jsonStr: String = URL(sql).readText()
@@ -498,25 +516,23 @@ class DBConnection {
                         lastApp = i
                 }
                 jsonStr = jsonStr.removeRange(firstApp, lastApp + 1)
-                if (jsonStr!="0") {
+                if (jsonStr != "0") {
                     var list = jsonStr.split(",").toTypedArray()
                     list = list.dropLast(1).toTypedArray()
                     var hoursMinutes = arrayOf<Array<String>>()
                     var hours = 0
                     var minutes = 0
-                    for(i in 0 until list.size)
-                    {
+                    for (i in 0 until list.size) {
                         hoursMinutes += list[i].split(":").toTypedArray()
                         hours += hoursMinutes[i][0].toInt()
                         minutes += hoursMinutes[i][1].toInt()
                     }
 
-                    if(minutes>59)
-                    {
-                        hours += minutes/60
-                        minutes -= (minutes/60)*60
+                    if (minutes > 59) {
+                        hours += minutes / 60
+                        minutes -= (minutes / 60) * 60
                     }
-                    if(minutes<10)
+                    if (minutes < 10)
                         return hours.toString() + ":0" + minutes.toString()
                     else
                         return hours.toString() + ":" + minutes.toString()
@@ -525,15 +541,13 @@ class DBConnection {
                 }
             }
 
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             throw Exception(e)
         }
         return "0"
     }
 
-    fun getAllActions(): String
-    {
+    fun getAllActions(): String {
         val sql = "http://letsdream.xf.cz/index.php?mod=getAllActionsForTable&rest=get"
 
         try {
@@ -559,15 +573,20 @@ class DBConnection {
                 }
             }
 
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             throw Exception(e)
         }
         return "0"
     }
 
-    fun editAction(context: Context, action: String, date: String, from: String, until: String, original: String): String
-    {
+    fun editAction(
+        context: Context,
+        action: String,
+        date: String,
+        from: String,
+        until: String,
+        original: String
+    ): String {
         val sql = "http://letsdream.xf.cz/index.php?action=" + action + "&date=" + date +
                 "&from=" + from + "&until=" + until + "&original=" + original + "&mod=editAction&rest=post"
 
@@ -594,16 +613,15 @@ class DBConnection {
                 }
             }
 
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             throw Exception(e)
         }
         return "0"
     }
 
-    fun getDochadzka(role: String, name: String? = null): String
-    {
-        val sql = "http://letsdream.xf.cz/index.php?role=" + role + "&name=" + name + "&mod=getDochadzka&rest=get"
+    fun getDochadzka(role: String, name: String? = null): String {
+        val sql =
+            "http://letsdream.xf.cz/index.php?role=" + role + "&name=" + name + "&mod=getDochadzka&rest=get"
 
         try {
             var jsonStr: String = URL(sql).readText()
@@ -628,10 +646,83 @@ class DBConnection {
                 }
             }
 
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             throw Exception(e)
         }
         return "0"
     }
+
+
+    fun updateDochadzka(
+        context: Context,
+        name: String,
+        datumOd: String,
+        datumDo: String,
+        casOd: String,
+        casDo: String,
+        poznamka: String
+    ): String {
+
+        //nastavit kontrolu vonku mimo tejto funkcie... napriklad ak je zly cas tak hodit return "5"
+
+        var timeParser = SimpleDateFormat("HH:mm")
+        var timeFormatter = SimpleDateFormat("HH:mm")
+        var dateParser = SimpleDateFormat("dd.MM.yyyy")
+        var dateFormatter = SimpleDateFormat("dd.MM.yyyy")
+        var dateOdTIME = dateFormatter.format(dateParser.parse(datumOd.toString()))
+        var dateDoTIME = dateFormatter.format(dateParser.parse(datumDo.toString()))
+        var casOdTIME = timeFormatter.format(timeParser.parse(casOd.toString()))
+        var casDoTIME = timeFormatter.format(timeParser.parse(casDo.toString()))
+        val timeMethod: TimeMethods = TimeMethods()
+        if (dateOdTIME <= dateDoTIME) {
+            if ((casOdTIME <= casDoTIME && dateOdTIME == dateDoTIME) || (casOdTIME > casDoTIME && dateOdTIME < dateDoTIME)) {
+                var timeDifference = timeMethod.dateDifference(dateOdTIME, casOdTIME, dateDoTIME, casDoTIME)
+                val sql = "http://letsdream.xf.cz/index.php?name=" + name.replace(" ","_") + "&datumOd=" + datumOd +
+                        "&datumDo=" + datumDo + "&casOd=" + casOd + "&casDo=" + casDo + "&hodiny=" +
+                        timeDifference + "&poznamka=" + poznamka.replace(" ","_") +
+                        "&mod=updateDochadzka&rest=post"
+                try {
+                    var jsonStr: String = URL(sql).readText()
+                    var firstApp: Int = 0
+                    var lastApp: Int = 0
+                    if (jsonStr.toString().contains("<") || jsonStr.toString().contains(">")) {
+                        for (i in 0 until jsonStr.toString().length) {
+                            if (jsonStr[i] == '<') {
+                                firstApp = i
+                                break
+                            }
+                        }
+                        for (i in 0 until jsonStr.toString().length) {
+                            if (jsonStr[i] == '>')
+                                lastApp = i
+                        }
+                        jsonStr = jsonStr.removeRange(firstApp, lastApp + 1)
+                        if (jsonStr != "0") {
+                            return "1"
+                        } else {
+                            return "0"
+                        }
+                    }
+
+                } catch (e: Exception) {
+                    throw Exception(e)
+                }
+                return "0"
+
+
+            } else {
+                Toast.makeText(context, "Prosím opravte si čas!", Toast.LENGTH_LONG).show()
+                return "0"
+            }
+
+        } else {
+            Toast.makeText(context, "Prosím opravte si dátum!", Toast.LENGTH_LONG).show()
+            return "0"
+        }
+    }
 }
+
+
+
+
+
