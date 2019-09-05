@@ -622,14 +622,14 @@ class UpdateLabelMethods {
 
 
                                                     var updateResult = dbMethods.updateDochadzka(
-                                                        dialogView.context,
                                                         meno.text.toString(),
-                                                        datumPrichodu,
-                                                        datumOdchodu,
-                                                        casPrichodu,
-                                                        casOdchodu,
+                                                        dateOdTIME,
+                                                        dateDoTIME,
+                                                        casOdTIME,
+                                                        casDoTIME,
                                                         timeDifference,
-                                                        poznamka.text.toString()
+                                                        dialogView.poznamkaDialog.text.toString(),
+                                                        i.toString()
                                                     )
                                                     if (updateResult == "1") {
                                                         Toast.makeText(

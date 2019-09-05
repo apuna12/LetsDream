@@ -654,50 +654,86 @@ class DBConnection {
 
 
     fun updateDochadzka(
-        context: Context,
         name: String,
         datumOd: String,
         datumDo: String,
         casOd: String,
         casDo: String,
         timeDifference: String,
-        poznamka: String
+        poznamka: String,
+        id: String
     ): String {
 
         //nastavit kontrolu vonku mimo tejto funkcie... napriklad ak je zly cas tak hodit return "5"
 
 
-                val sql = "http://letsdream.xf.cz/index.php?name=" + name.replace(" ","_") + "&datumOd=" + datumOd +
-                        "&datumDo=" + datumDo + "&casOd=" + casOd + "&casDo=" + casDo + "&hodiny=" +
-                        timeDifference + "&poznamka=" + poznamka.replace(" ","_") +
-                        "&mod=updateDochadzka&rest=post"
-                try {
-                    var jsonStr: String = URL(sql).readText()
-                    var firstApp: Int = 0
-                    var lastApp: Int = 0
-                    if (jsonStr.toString().contains("<") || jsonStr.toString().contains(">")) {
-                        for (i in 0 until jsonStr.toString().length) {
-                            if (jsonStr[i] == '<') {
-                                firstApp = i
-                                break
-                            }
-                        }
-                        for (i in 0 until jsonStr.toString().length) {
-                            if (jsonStr[i] == '>')
-                                lastApp = i
-                        }
-                        jsonStr = jsonStr.removeRange(firstApp, lastApp + 1)
-                        if (jsonStr != "0") {
-                            return "1"
-                        } else {
-                            return "0"
-                        }
+        val sql = "http://letsdream.xf.cz/index.php?name=" + name.replace(
+            " ",
+            "_"
+        ) + "&datumOd=" + datumOd +
+                "&datumDo=" + datumDo + "&casOd=" + casOd + "&casDo=" + casDo + "&hodiny=" +
+                timeDifference + "&poznamka=" + poznamka.replace(" ", "_") +
+                "&id=" + id + "&mod=updateDochadzka&rest=post"
+        try {
+            var jsonStr: String = URL(sql).readText()
+            var firstApp: Int = 0
+            var lastApp: Int = 0
+            if (jsonStr.toString().contains("<") || jsonStr.toString().contains(">")) {
+                for (i in 0 until jsonStr.toString().length) {
+                    if (jsonStr[i] == '<') {
+                        firstApp = i
+                        break
                     }
-
-                } catch (e: Exception) {
-                    throw Exception(e)
                 }
-                return "0"
+                for (i in 0 until jsonStr.toString().length) {
+                    if (jsonStr[i] == '>')
+                        lastApp = i
+                }
+                jsonStr = jsonStr.removeRange(firstApp, lastApp + 1)
+                if (jsonStr != "0") {
+                    return "1"
+                } else {
+                    return "0"
+                }
+            }
+
+        } catch (e: Exception) {
+            throw Exception(e)
+        }
+        return "0"
+    }
+
+    fun checkSuperUser(): String {
+        val sql =
+            "http://letsdream.xf.cz/index.php?mod=checkSuperuser&rest=get"
+
+        try {
+            var jsonStr: String = URL(sql).readText()
+            var firstApp: Int = 0
+            var lastApp: Int = 0
+            if (jsonStr.toString().contains("<") || jsonStr.toString().contains(">")) {
+                for (i in 0 until jsonStr.toString().length) {
+                    if (jsonStr[i] == '<') {
+                        firstApp = i
+                        break
+                    }
+                }
+                for (i in 0 until jsonStr.toString().length) {
+                    if (jsonStr[i] == '>')
+                        lastApp = i
+                }
+                jsonStr = jsonStr.removeRange(firstApp, lastApp + 1)
+                if (jsonStr != "0") {
+                    return "1"
+                } else {
+                    return "0"
+                }
+            }
+
+        } catch (e: Exception) {
+            throw Exception(e)
+        }
+        return "0"
     }
 }
 
