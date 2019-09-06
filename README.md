@@ -6,7 +6,6 @@ O.Z.Let's dream
 TODO:
 
 Initial setup
-    - create first superuser
     - initial DB creation
 
 Statistics
