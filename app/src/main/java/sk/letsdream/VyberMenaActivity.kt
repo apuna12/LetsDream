@@ -94,6 +94,9 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
             vyberPouzivatelaTW.text = "Používateľ"
             spinnerMeno.visibility = View.INVISIBLE
             meno.text = dbMethods.getLoggedUserName(loginName)
+
+            var pocetHod = dbMethods.getAllHoursForUser(meno.text.toString())
+            pocetHodin.text = pocetHod + " h"
         }
         else if(privileges == "11" || privileges =="111")
         {

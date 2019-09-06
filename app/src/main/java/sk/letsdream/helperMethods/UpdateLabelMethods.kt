@@ -63,12 +63,20 @@ class UpdateLabelMethods {
             context,
             R.style.DialogTheme,
             TimePickerDialog.OnTimeSetListener(function = { view, h, m ->
-
-                if (m < 10)
-                    casOd.setText("" + h + ":0" + m)
-                else
-                    casOd.setText("" + h + ":" + m)
-
+                val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                vibrate.vibrate(70)
+                if (m < 10) {
+                    if (h > 9)
+                        casOd.setText("" + h + ":0" + m)
+                    else
+                        casOd.setText("0" + h + ":0" + m)
+                }
+                else {
+                    if(h>10)
+                        casOd.setText("" + h + ":" + m)
+                    else
+                        casOd.setText("0" + h + ":" + m)
+                }
             }),
             hour,
             minute,
@@ -87,10 +95,18 @@ class UpdateLabelMethods {
             TimePickerDialog.OnTimeSetListener(function = { view, h, m ->
                 val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
                 vibrate.vibrate(70)
-                if (m < 10)
-                    casDo.setText("" + h + ":0" + m)
-                else
-                    casDo.setText("" + h + ":" + m)
+                if (m < 10) {
+                    if (h > 9)
+                        casOd.setText("" + h + ":0" + m)
+                    else
+                        casOd.setText("0" + h + ":0" + m)
+                }
+                else {
+                    if(h>10)
+                        casOd.setText("" + h + ":" + m)
+                    else
+                        casOd.setText("0" + h + ":" + m)
+                }
 
             }),
             hour2,
@@ -353,6 +369,8 @@ class UpdateLabelMethods {
                         if (v2 is TextView) {
                             var cell = v2 as TextView
                             cell.setOnClickListener {
+                                val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                                vibrate.vibrate(70)
                                 if (it is TextView) {
                                     if (it.text == "Upraviť") {
                                         val dialogView = LayoutInflater.from(context)
@@ -369,9 +387,13 @@ class UpdateLabelMethods {
                                         dialogView.casDoAkcieDialog.text = casDo.text
                                         val mAlertDialog = mBuilder.show()
                                         dialogView.buttonSpatDialog.setOnClickListener {
+                                            val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                                            vibrate.vibrate(70)
                                             mAlertDialog.dismiss()
                                         }
                                         dialogView.buttonPotvrditDialog.setOnClickListener {
+                                            val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                                            vibrate.vibrate(70)
                                             if (dbMethods.editAction(
                                                     context,
                                                     dialogView.nazovAkcieDialog.text.toString(),
@@ -410,6 +432,8 @@ class UpdateLabelMethods {
                                         dialogView.casDoAkcieDialog.text = allActions[i - 1][3]
                                         val mAlertDialog = mBuilder.show()
                                         dialogView.buttonSpatDialog.setOnClickListener {
+                                            val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                                            vibrate.vibrate(70)
                                             mAlertDialog.dismiss()
                                         }
                                     }
@@ -535,6 +559,8 @@ class UpdateLabelMethods {
                         if (v2 is TextView) {
                             var cell = v2 as TextView
                             cell.setOnClickListener {
+                                val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                                vibrate.vibrate(70)
                                 if (it is TextView) {
                                     if (it.text == "Upraviť") {
                                         val dialogView = LayoutInflater.from(context)
@@ -565,6 +591,8 @@ class UpdateLabelMethods {
 
 
                                         dialogView.casPrichoduDialog.setOnClickListener {
+                                            val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                                            vibrate.vibrate(70)
                                             val timeMethods: TimeMethods = TimeMethods()
                                             timeMethods.SetTimePicker(
                                                 dialogView.context,
@@ -572,6 +600,8 @@ class UpdateLabelMethods {
                                             )
                                         }
                                         dialogView.datumPrichoduDialog.setOnClickListener {
+                                            val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                                            vibrate.vibrate(70)
                                             val timeMethods: TimeMethods = TimeMethods()
                                             timeMethods.SetDatePicker(
                                                 dialogView.context,
@@ -579,6 +609,8 @@ class UpdateLabelMethods {
                                             )
                                         }
                                         dialogView.casOdchoduDialog.setOnClickListener {
+                                            val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                                            vibrate.vibrate(70)
                                             val timeMethods: TimeMethods = TimeMethods()
                                             timeMethods.SetTimePicker(
                                                 dialogView.context,
@@ -586,6 +618,8 @@ class UpdateLabelMethods {
                                             )
                                         }
                                         dialogView.datumOdchoduDialog.setOnClickListener {
+                                            val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                                            vibrate.vibrate(70)
                                             val timeMethods: TimeMethods = TimeMethods()
                                             timeMethods.SetDatePicker(
                                                 dialogView.context,
@@ -595,10 +629,13 @@ class UpdateLabelMethods {
 
                                         val mAlertDialog = mBuilder.show()
                                         dialogView.buttonSpatDialog.setOnClickListener {
+                                            val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                                            vibrate.vibrate(70)
                                             mAlertDialog.dismiss()
                                         }
                                         dialogView.buttonPotvrditDialog.setOnClickListener {
-
+                                            val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                                            vibrate.vibrate(70)
                                             var timeParser = SimpleDateFormat("HH:mm")
                                             var timeFormatter = SimpleDateFormat("HH:mm")
                                             var dateParser = SimpleDateFormat("dd.MM.yyyy")
@@ -682,6 +719,8 @@ class UpdateLabelMethods {
                                             allDochadzka[i - 1][4]
                                         val mAlertDialog = mBuilder.show()
                                         dialogView.buttonSpatDialog.setOnClickListener {
+                                            val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                                            vibrate.vibrate(70)
                                             mAlertDialog.dismiss()
                                         }
                                     }

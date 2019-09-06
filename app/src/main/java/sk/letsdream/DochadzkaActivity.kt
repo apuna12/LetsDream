@@ -7,6 +7,7 @@ import android.database.SQLException
 import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
+import android.os.Vibrator
 import android.support.annotation.RequiresApi
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
@@ -39,9 +40,13 @@ import javax.xml.datatype.DatatypeConstants.MONTHS
 
 class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    var privileges = ""
+    var loginName = ""
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
+        privileges = intent.getStringExtra("privileges")
+        loginName = intent.getStringExtra("login")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dochadzka)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -78,9 +83,24 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         val prichodTimePicker: TextView = findViewById(R.id.prichodTimePicker)
         val odchodDatePicker: TextView = findViewById(R.id.odchodDatePicker)
         val odchodTimePicker: TextView = findViewById(R.id.odchodTimePicker)
+        val vybermenaLABEL: TextView = findViewById(R.id.vybermenaLABEL)
         val poznamka: EditText = findViewById(R.id.poznamkaET)
         val meno: TextView = findViewById(R.id.nameFromSpinner)
         val spinnerMeno: ImageButton = findViewById(R.id.vybermenaSPINNER)
+        val vibrate = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+
+
+        if(privileges == "1")
+        {
+            meno.text = dbMethods.getLoggedUserName(loginName)
+            spinnerMeno.visibility = View.INVISIBLE
+            vybermenaLABEL.text = "Používateľ"
+        }
+        else
+        {
+            spinnerMeno.visibility = View.VISIBLE
+            vybermenaLABEL.text = "Výber mena"
+        }
 
         var namesList: Array<String>
         namesList = arrayOf<String>()
@@ -98,7 +118,9 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         }
 
         spinnerMeno.setOnClickListener {
+            vibrate.vibrate(70)
             popUpMenu.setOnMenuItemClickListener {
+                vibrate.vibrate(70)
                 if (popUpMenu.menu.size() == 0) {
                     Toast.makeText(this, "Hups! V Databáze sa nenachádza žiadne meno!", Toast.LENGTH_LONG).show()
                 } else {
@@ -110,20 +132,28 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         }
 
         prichodDatePicker.setOnClickListener {
+            vibrate.vibrate(70)
             timeMethod.SetDatePicker(this, prichodDatePicker)
         }
         odchodDatePicker.setOnClickListener {
+            vibrate.vibrate(70)
             timeMethod.SetDatePicker(this, odchodDatePicker)
         }
         prichodTimePicker.setOnClickListener {
+            vibrate.vibrate(70)
             timeMethod.SetTimePicker(this, prichodTimePicker)
         }
         odchodTimePicker.setOnClickListener {
+            vibrate.vibrate(70)
             timeMethod.SetTimePicker(this, odchodTimePicker)
+        }
+        poznamka.setOnClickListener {
+            vibrate.vibrate(70)
         }
 
 
         submit.setOnClickListener {
+            vibrate.vibrate(70)
             if (prichodDatePicker.text == "Dátum" || prichodTimePicker.text == "Čas" || odchodDatePicker.text == "Dátum" ||
                 odchodTimePicker.text == "Čas"
             )

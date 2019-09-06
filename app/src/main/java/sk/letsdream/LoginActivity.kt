@@ -19,10 +19,6 @@ import android.text.InputType
 import android.view.*
 import android.widget.*
 import kotlinx.android.synthetic.main.content_login.*
-import sk.letsdream.helperMethods.ButtonEffects
-import sk.letsdream.helperMethods.EmailMethods
-import sk.letsdream.helperMethods.HexMethods
-import sk.letsdream.helperMethods.TimeMethods
 import java.lang.Exception
 import java.net.URL
 import java.security.Key
@@ -33,6 +29,7 @@ import android.widget.EditText
 import kotlinx.android.synthetic.main.dialog_addnewaction.view.*
 import kotlinx.android.synthetic.main.dialog_register.view.*
 import sk.letsdream.dbMethods.DBConnection
+import sk.letsdream.helperMethods.*
 
 
 class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -64,20 +61,24 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         navView.setNavigationItemSelectedListener(this)
         val dbMethods: DBConnection = DBConnection()
+        val vibrate = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        val emailMethods: EmailMethods = EmailMethods()
+        val initialSetup: InitialSetup = InitialSetup()
 
-        if(dbMethods.checkSuperUser()=="0")
+        if(initialSetup.initialDBCreation() == "111")
         {
-            //pridanie registracie superadmina
+            if(dbMethods.checkSuperUser()=="0")
+                initialSetup.CreateSuperAdmin(this)
+            else
+                Toast.makeText(this,"Hups! Niečo sa stalo. Skúste neskôr",Toast.LENGTH_LONG).show()
         }
         else {
-
 
             val showPassChb: CheckBox = findViewById(R.id.showPassChb)
             var passwordEdt: EditText = findViewById(R.id.passwordEdt)
             var usernameEdt: EditText = findViewById(R.id.userEdt)
             val registerBtn: Button = findViewById(R.id.registraciaBtn)
             val loginBtn: Button = findViewById(R.id.prihlasBtn)
-            val vibrate = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
             usernameEdt.setOnFocusChangeListener { v, hasFocus ->
                 vibrate.vibrate(70)
@@ -127,7 +128,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             registerBtn.setOnClickListener {
                 vibrate.vibrate(70)
-                val emailMethods: EmailMethods = EmailMethods()
+
                 val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_register, null)
                 val mBuilder = AlertDialog.Builder(this).setView(dialogView)
                 val mAlertDialog = mBuilder.show()

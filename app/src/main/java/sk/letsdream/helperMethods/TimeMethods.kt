@@ -8,6 +8,7 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.os.AsyncTask
 import android.os.Handler
+import android.os.Vibrator
 import android.view.View
 import android.widget.TextView
 import sk.letsdream.MainActivity
@@ -52,6 +53,8 @@ class TimeMethods {
         val dpd = DatePickerDialog(
             context, R.style.DialogTheme,
             DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                vibrate.vibrate(70)
                 // Display Selected date in textbox
                 textView.setText("" + dayOfMonth + "." + (monthOfYear+1) + "." + year)
             }, year, month, day
@@ -67,7 +70,8 @@ class TimeMethods {
 
         val tpd =
             TimePickerDialog(context, R.style.DialogTheme, TimePickerDialog.OnTimeSetListener(function = { view, h, m ->
-
+                val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                vibrate.vibrate(70)
 
                 if (m < 10) {
                     if(h > 9)
