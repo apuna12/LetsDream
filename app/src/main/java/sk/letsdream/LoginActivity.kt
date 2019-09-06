@@ -65,14 +65,14 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val emailMethods: EmailMethods = EmailMethods()
         val initialSetup: InitialSetup = InitialSetup()
 
-        if(initialSetup.initialDBCreation() == "111")
+        if(initialSetup.initialDBCreation() != "111")
         {
             if(dbMethods.checkSuperUser()=="0")
                 initialSetup.CreateSuperAdmin(this)
             else
                 Toast.makeText(this,"Hups! Niečo sa stalo. Skúste neskôr",Toast.LENGTH_LONG).show()
         }
-        else {
+        else if (initialSetup.initialDBCreation() == "111"){
 
             val showPassChb: CheckBox = findViewById(R.id.showPassChb)
             var passwordEdt: EditText = findViewById(R.id.passwordEdt)
