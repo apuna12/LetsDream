@@ -16,5 +16,4 @@ BONUS
     - sending an emails
     - DB backup
     - DB delete
-    - add vibrations everywhere
  
