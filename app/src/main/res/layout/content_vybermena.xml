@@ -232,13 +232,14 @@
         android:id="@+id/showDochadzka"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="224dp"
+        android:layout_marginBottom="304dp"
         android:text="Zobraziť dochádzku"
         android:textColor="@color/yellow"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textView20"
-        app:layout_constraintTop_toBottomOf="@+id/textView20"
-        app:layout_constraintVertical_bias="0.195" />
+
+        app:layout_constraintStart_toStartOf="@+id/adminUserTW_VM"
+        app:layout_constraintTop_toBottomOf="@+id/adminUserTW_VM"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/textView18"

@@ -1,7 +1,9 @@
 package sk.letsdream
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Vibrator
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
@@ -20,9 +22,12 @@ import java.text.SimpleDateFormat
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     var privileges: String = ""
+    var loginName: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         privileges = intent.getStringExtra("privileges")
+        loginName = intent.getStringExtra("login")
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -35,6 +40,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val meno: ImageButton = findViewById(R.id.person_imageButton)
         val akcie: ImageButton = findViewById(R.id.star_imageButton)
         val statistika: ImageButton = findViewById(R.id.graph_imageButton)
+        val vibrate = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
         val timeMethod: TimeMethods = TimeMethods()
         val buttonEffects: ButtonEffects = ButtonEffects()
@@ -62,23 +68,31 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
         dochadzka.setOnClickListener{
+            vibrate.vibrate(70)
             val intent = Intent(this@MainActivity, DochadzkaActivity::class.java)
             intent.putExtra("privileges", privileges)
+            intent.putExtra("login", loginName)
             startActivity(intent)
         }
         meno.setOnClickListener{
+            vibrate.vibrate(70)
             val intent = Intent(this@MainActivity, VyberMenaActivity::class.java)
             intent.putExtra("privileges", privileges)
+            intent.putExtra("login", loginName)
             startActivity(intent)
         }
         akcie.setOnClickListener{
+            vibrate.vibrate(70)
             val intent = Intent(this@MainActivity, AkcieActivity::class.java)
             intent.putExtra("privileges", privileges)
+            intent.putExtra("login", loginName)
             startActivity(intent)
         }
         statistika.setOnClickListener{
+            vibrate.vibrate(70)
             val intent = Intent(this@MainActivity, StatistikyActivity::class.java)
             intent.putExtra("privileges", privileges)
+            intent.putExtra("login", loginName)
             startActivity(intent)
         }
 

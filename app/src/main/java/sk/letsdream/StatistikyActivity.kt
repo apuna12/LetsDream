@@ -10,6 +10,7 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
+import android.os.Vibrator
 import android.support.annotation.RequiresApi
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
@@ -86,6 +87,7 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         val textViewStatName: TextView = findViewById(R.id.statFromSpinner)
         val textViewStatNameLabel: TextView = findViewById(R.id.názovStatistikyLABEL)
         val dbMethods: DBConnection = DBConnection()
+        val vibrate = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
         val wrapper: Context = ContextThemeWrapper(this, R.style.popupMenuStyle)
         var popUpMenu: PopupMenu = PopupMenu(wrapper, imageButton)
@@ -95,9 +97,10 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         textViewStatNameLabel.setText(textViewStatName.text)
 
         imageButton.setOnClickListener{
-
+            vibrate.vibrate(70)
 
             popUpMenu.setOnMenuItemClickListener {
+                vibrate.vibrate(70)
                 textViewStatName.setText(it.title.toString())
                 textViewStatNameLabel.setText(it.title.toString())
                 val itemId= it.itemId

@@ -68,10 +68,20 @@ class TimeMethods {
         val tpd =
             TimePickerDialog(context, R.style.DialogTheme, TimePickerDialog.OnTimeSetListener(function = { view, h, m ->
 
-                if (m < 10)
-                    textView.setText("" + h + ":0" + m)
+
+                if (m < 10) {
+                    if(h > 9)
+                        textView.setText("" + h + ":0" + m)
+                    else
+                        textView.setText("0" + h + ":0" + m)
+                }
                 else
-                    textView.setText("" + h + ":" + m)
+                {
+                    if(h > 9)
+                        textView.setText("" + h + ":" + m)
+                    else
+                        textView.setText("0" + h + ":" + m)
+                }
 
             }), hour, minute, true)
 

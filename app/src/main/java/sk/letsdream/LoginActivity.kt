@@ -1,9 +1,11 @@
 package sk.letsdream
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
+import android.os.Vibrator
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
@@ -75,8 +77,10 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             var usernameEdt: EditText = findViewById(R.id.userEdt)
             val registerBtn: Button = findViewById(R.id.registraciaBtn)
             val loginBtn: Button = findViewById(R.id.prihlasBtn)
+            val vibrate = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
             usernameEdt.setOnFocusChangeListener { v, hasFocus ->
+                vibrate.vibrate(70)
                 if (hasFocus) {
                     usernameEdt.hint = ""
                 } else {
@@ -86,6 +90,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
             usernameEdt.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+                vibrate.vibrate(70)
                 if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                     passwordEdt.requestFocus()
                     return@OnKeyListener true
@@ -94,6 +99,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             })
 
             passwordEdt.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+                vibrate.vibrate(70)
                 if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
                     loginBtn.performClick()
                     return@OnKeyListener true
@@ -102,6 +108,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             })
 
             passwordEdt.setOnFocusChangeListener { v, hasFocus ->
+                vibrate.vibrate(70)
                 if (hasFocus) {
                     passwordEdt.hint = ""
                 } else {
@@ -111,6 +118,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
             showPassChb.setOnCheckedChangeListener { compoundButton: CompoundButton, b: Boolean ->
+                vibrate.vibrate(70)
                 if (b)
                     passwordEdt.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
                 else
@@ -118,6 +126,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
             registerBtn.setOnClickListener {
+                vibrate.vibrate(70)
                 val emailMethods: EmailMethods = EmailMethods()
                 val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_register, null)
                 val mBuilder = AlertDialog.Builder(this).setView(dialogView)
@@ -131,6 +140,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val back = dialogView.backRegBtn
                 val gdprCHB = dialogView.gdprCHB
                 userRegister.setOnFocusChangeListener { v, hasFocus ->
+                    vibrate.vibrate(70)
                     if (hasFocus) {
                         userRegister.hint = ""
                     } else {
@@ -139,6 +149,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
                 }
                 passRegister.setOnFocusChangeListener { v, hasFocus ->
+                    vibrate.vibrate(70)
                     if (hasFocus) {
                         passRegister.hint = ""
                     } else {
@@ -147,6 +158,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
                 }
                 passAgainRegister.setOnFocusChangeListener { v, hasFocus ->
+                    vibrate.vibrate(70)
                     if (hasFocus) {
                         passAgainRegister.hint = ""
                     } else {
@@ -155,6 +167,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
                 }
                 emailRegister.setOnFocusChangeListener { v, hasFocus ->
+                    vibrate.vibrate(70)
                     if (hasFocus) {
                         emailRegister.hint = ""
                     } else {
@@ -164,6 +177,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
 
                 nameRegister.setOnFocusChangeListener { v, hasFocus ->
+                    vibrate.vibrate(70)
                     if (hasFocus) {
                         emailRegister.hint = ""
                     } else {
@@ -172,6 +186,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
                 }
                 surnameRegister.setOnFocusChangeListener { v, hasFocus ->
+                    vibrate.vibrate(70)
                     if (hasFocus) {
                         emailRegister.hint = ""
                     } else {
@@ -181,6 +196,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
 
                 userRegister.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+                    vibrate.vibrate(70)
                     if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                         passRegister.requestFocus()
                         return@OnKeyListener true
@@ -188,6 +204,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     false
                 })
                 passRegister.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+                    vibrate.vibrate(70)
                     if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                         passAgainRegister.requestFocus()
                         return@OnKeyListener true
@@ -195,6 +212,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     false
                 })
                 passAgainRegister.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+                    vibrate.vibrate(70)
                     if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                         nameRegister.requestFocus()
                         return@OnKeyListener true
@@ -202,6 +220,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     false
                 })
                 nameRegister.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+                    vibrate.vibrate(70)
                     if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                         surnameRegister.requestFocus()
                         return@OnKeyListener true
@@ -209,6 +228,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     false
                 })
                 surnameRegister.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+                    vibrate.vibrate(70)
                     if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                         emailRegister.requestFocus()
                         return@OnKeyListener true
@@ -216,6 +236,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     false
                 })
                 surnameRegister.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+                    vibrate.vibrate(70)
                     if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                         emailRegister.requestFocus()
                         return@OnKeyListener true
@@ -223,6 +244,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     false
                 })
                 emailRegister.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+                    vibrate.vibrate(70)
                     if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                         gdprCHB.requestFocus()
                         return@OnKeyListener true
@@ -231,6 +253,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 })
 
                 dialogView.registrujBtn.setOnClickListener {
+                    vibrate.vibrate(70)
                     if (userRegister.text.toString() == "") {
                         Toast.makeText(this, "Prosím zadajte meno účtu!", Toast.LENGTH_LONG).show()
                     } else if (passRegister.text.toString() == "") {
@@ -345,13 +368,14 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
                 }
                 back.setOnClickListener {
+                    vibrate.vibrate(70)
                     mAlertDialog.cancel()
                 }
 
             }
 
             loginBtn.setOnClickListener {
-
+                vibrate.vibrate(70)
                 var digest: MessageDigest
                 digest = MessageDigest.getInstance("SHA-256")
                 digest.update(passwordEdt.text.toString().toByteArray())
@@ -383,18 +407,21 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             Toast.makeText(this, "Prihlásenie úspešné", Toast.LENGTH_LONG).show()
                             val intent = Intent(this@LoginActivity, MainActivity::class.java)
                             intent.putExtra("privileges", "1")
+                            intent.putExtra("login", usernameEdt.text.toString())
                             startActivity(intent)
                         } else if (jsonStr == "11") // Admin
                         {
                             Toast.makeText(this, "Prihlásenie úspešné", Toast.LENGTH_LONG).show()
                             val intent = Intent(this@LoginActivity, MainActivity::class.java)
                             intent.putExtra("privileges", "11")
+                            intent.putExtra("login", usernameEdt.text.toString())
                             startActivity(intent)
                         } else if (jsonStr == "111") // Super Admin
                         {
                             Toast.makeText(this, "Prihlásenie úspešné", Toast.LENGTH_LONG).show()
                             val intent = Intent(this@LoginActivity, MainActivity::class.java)
                             intent.putExtra("privileges", "111")
+                            intent.putExtra("login", usernameEdt.text.toString())
                             startActivity(intent)
                         } else if (jsonStr == "2") {
                             Toast.makeText(this, "Daný užívateľ neexistuje", Toast.LENGTH_LONG)

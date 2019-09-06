@@ -473,49 +473,50 @@ class UpdateLabelMethods {
 
 
 
-                textViewMeno.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(15)))
+                textViewMeno.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(20)))
                 textViewMeno.setText(allDochadzka[i][0])
                 textViewMeno.setTextColor(Color.BLACK)
                 textViewMeno.height = 70
                 textViewMeno.gravity = Gravity.LEFT
-                textViewMeno.setPadding(20, 0, 20, 0)
-                textViewPrichod.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(15)))
+                textViewMeno.setPadding(30, 0, 20, 0)
+                textViewPrichod.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(20)))
                 textViewPrichod.setText(allDochadzka[i][1])
                 textViewPrichod.setTextColor(Color.BLACK)
                 textViewPrichod.height = 70
                 textViewPrichod.gravity = Gravity.LEFT
-                textViewPrichod.setPadding(20, 0, 20, 0)
-                textViewOdchod.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(15)))
+                textViewPrichod.setPadding(30, 0, 20, 0)
+                textViewOdchod.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(20)))
                 textViewOdchod.setText(allDochadzka[i][2])
                 textViewOdchod.setTextColor(Color.BLACK)
                 textViewOdchod.height = 70
                 textViewOdchod.gravity = Gravity.LEFT
-                textViewOdchod.setPadding(20, 0, 20, 0)
-                textViewHodiny.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(15)))
+                textViewOdchod.setPadding(25, 0, 20, 0)
+                textViewHodiny.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(20)))
                 textViewHodiny.setText(allDochadzka[i][3])
                 textViewHodiny.setTextColor(Color.BLACK)
                 textViewHodiny.height = 70
                 textViewHodiny.gravity = Gravity.LEFT
-                textViewHodiny.setPadding(20, 0, 20, 0)
-                textViewPoznamka.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(15)))
+                textViewHodiny.setPadding(30, 0, 20, 0)
+                textViewPoznamka.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(20)))
                 textViewPoznamka.setText(allDochadzka[i][4])
                 textViewPoznamka.setTextColor(Color.BLACK)
                 textViewPoznamka.height = 70
                 textViewPoznamka.gravity = Gravity.LEFT
-                textViewPoznamka.setPadding(20, 0, 20, 0)
-                textViewUprav.setText("Upraviť")
-                textViewUprav.setTextColor(Color.GREEN)
-                textViewUprav.height = 70
-                textViewUprav.gravity = Gravity.CENTER
-                textViewUprav.setPadding(20, 0, 20, 0)
-
+                textViewPoznamka.setPadding(30, 0, 20, 0)
 
                 tableRowAllActions.addView(textViewMeno)
                 tableRowAllActions.addView(textViewPrichod)
                 tableRowAllActions.addView(textViewOdchod)
                 tableRowAllActions.addView(textViewHodiny)
                 tableRowAllActions.addView(textViewPoznamka)
-                tableRowAllActions.addView(textViewUprav)
+                if (privileges == "11" || privileges == "111") {
+                    textViewUprav.setText("Upraviť")
+                    textViewUprav.setTextColor(Color.GREEN)
+                    textViewUprav.height = 70
+                    textViewUprav.gravity = Gravity.CENTER
+                    textViewUprav.setPadding(30, 0, 20, 0)
+                    tableRowAllActions.addView(textViewUprav)
+                }
 
 
                 dochadzkaTable.addView(tableRowAllActions, i + 1)

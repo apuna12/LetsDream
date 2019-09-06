@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Vibrator
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
@@ -33,9 +34,11 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
 
 
     var privileges: String = ""
+    var loginName: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         privileges = intent.getStringExtra("privileges")
+        loginName = intent.getStringExtra("login")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_vybermena)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -77,6 +80,8 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
         val changePrivileges: ImageView = findViewById(R.id.changePriv_VM)
         val userTW: TextView = findViewById(R.id.adminUserTW_VM)
         val showDochadzka: TextView = findViewById(R.id.showDochadzka)
+        val vyberPouzivatelaTW: TextView = findViewById(R.id.vybermenaLABEL_VM)
+        val vibrate = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
         if(privileges == "1")
         {
@@ -86,6 +91,9 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
             spravovatRegistracie.visibility = View.INVISIBLE
             userTW.visibility = View.INVISIBLE
             changePrivileges.visibility = View.INVISIBLE
+            vyberPouzivatelaTW.text = "Používateľ"
+            spinnerMeno.visibility = View.INVISIBLE
+            meno.text = dbMethods.getLoggedUserName(loginName)
         }
         else if(privileges == "11" || privileges =="111")
         {
@@ -95,6 +103,8 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
             spravovatRegistracie.visibility = View.VISIBLE
             userTW.visibility = View.VISIBLE
             changePrivileges.visibility = View.VISIBLE
+            vyberPouzivatelaTW.text = "Výber používateľa"
+            spinnerMeno.visibility = View.VISIBLE
             var newRegs: String = dbMethods.getNewRegistrations()
             if(newRegs != "0")
                 newRegistrations.text = "Nové: " + newRegs
@@ -112,6 +122,8 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
             rightBracket.visibility = View.INVISIBLE
             newRegistrations.visibility = View.INVISIBLE
             spravovatRegistracie.visibility = View.INVISIBLE
+            vyberPouzivatelaTW.text = "Používateľ"
+            spinnerMeno.visibility = View.INVISIBLE
         }
         promoteDemote.visibility = View.INVISIBLE
 
@@ -132,7 +144,9 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
             Toast.makeText(this,"Hups! Neexistujú žiadne mená v databáze", Toast.LENGTH_LONG).show()
 
         spinnerMeno.setOnClickListener {
+            vibrate.vibrate(70)
             popUpMenu.setOnMenuItemClickListener {
+                vibrate.vibrate(70)
                 if (popUpMenu.menu.size() == 0) {
                     Toast.makeText(this, "Hups! V Databáze sa nenachádza žiadne meno!", Toast.LENGTH_LONG).show()
                 } else {
@@ -154,6 +168,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                     }
                     else if(privileges.toLowerCase() == "1")
                     {
+
                         promoteDemote.visibility = View.INVISIBLE
                     }
                     else{
@@ -170,6 +185,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
         }
 
         promoteDemote.setOnClickListener{
+            vibrate.vibrate(70)
             if(privileges.toLowerCase() == "111" || privileges.toLowerCase() == "11")
             {
                 if(meno.text != "Vyberte meno") {
@@ -220,7 +236,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
         }
 
         newRegistrations.setOnClickListener{
-
+            vibrate.vibrate(70)
             val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_newregistrations, null)
             val mBuilder = android.app.AlertDialog.Builder(this).setView(dialogView)
             val mAlertDialog = mBuilder.show()
@@ -342,6 +358,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
             }
 
             dialogView.buttonSpatDialog.setOnClickListener {
+                vibrate.vibrate(70)
                 mAlertDialog.dismiss()
             }
 
@@ -356,6 +373,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
         updateLabelMethods.allActions(this, table, intent, "1")
 
         changePrivileges.setOnClickListener{
+            vibrate.vibrate(70)
             if(privileges.toLowerCase()=="1" && userTW.text == "Používateľ")
             {
                 Toast.makeText(this,"K tejto funkcii ma prístup iba administrátor!", Toast.LENGTH_SHORT).show()
@@ -385,6 +403,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
 
 
         showDochadzka.setOnClickListener{
+            vibrate.vibrate(70)
             if(privileges == "11" || privileges == "111")
             {
                 if(dbMethods.getDochadzka(privileges) != "0")
@@ -398,7 +417,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
             {
                 if(dbMethods.getDochadzka(privileges, meno.text.toString()) != "0")
                 {
-                    updateLabelMethods.processDochadzka(this, intent ,privileges)
+                    updateLabelMethods.processDochadzka(this, intent ,privileges,  meno.text.toString())
                 }
                 else
                     Toast.makeText(this, "Hups! Niečo je zlé. Skúste neskôr", Toast.LENGTH_LONG).show()
