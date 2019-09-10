@@ -5,8 +5,6 @@ O.Z.Let's dream
 
 TODO:
 
-Initial setup
-    - initial DB creation
 
 Statistics
     - add first statistic
