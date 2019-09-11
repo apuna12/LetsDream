@@ -18,5 +18,11 @@
     <string name="main_layout_statistika">Štatistika</string>
     <string name="main_layout_vyber_mena">Výber mena</string>
     <string name="main_layout_prichod_odchod">Príchod / odchod</string>
+    <string name="backupdb">Táto funkcia slúži k zálohovaniu všetkých databáz, následnemu uloženiu
+        do excelovského súboru a odoslaniu databáz manažérovi O.Z. Pri tejto funkcii nedochádza k
+        vymazaniu celej databázy.</string>
+    <string name="deletedb">Táto funkcia slúži k vymazaniu celej databázy. Je potrebné si premyslieť
+        či naozaj chcete vymazať všetky hodnoty z databázy. Po spustení tejto funkcie budú záznamy
+        nenávratne zmazané.</string>
 
 </resources>

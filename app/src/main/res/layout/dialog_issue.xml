@@ -3,6 +3,7 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/dialog_back">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -10,7 +11,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Detail akcie"
+            android:text="Nahlásiť chybu"
             android:textColor="#000"
             android:textSize="25dp"
             android:gravity="center"
@@ -18,97 +19,83 @@
             android:paddingBottom="20dp"/>
     </LinearLayout>
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Názov akcie"
-        android:textStyle="bold"
-        android:textColor="#000"
-        android:paddingStart="20dp"
-        android:textSize="16dp"
-        android:paddingBottom="5dp"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="20dp">
-        <EditText
-            android:id="@+id/nazovAkcieDialog"
-            android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="akcia"
+            android:paddingStart="10dp"
+            android:gravity="center"
+            android:textSize="18dp"
+            android:textStyle="bold"
             android:textColor="#000"
-            android:paddingBottom="25dp"/>
+            android:paddingEnd="10dp"
+            android:text="Pripomienka stručne"/>
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dátum akcie"
-        android:textStyle="bold"
-        android:textColor="#000"
-        android:paddingStart="20dp"
-        android:textSize="16dp"
-        android:paddingBottom="5dp"/>
     <LinearLayout
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="20dp">
+        android:layout_height="wrap_content">
         <EditText
-            android:id="@+id/datumAkcieDialog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="datum"
-            android:textColor="#000"
-            android:paddingBottom="25dp"/>
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Čas od"
-        android:textStyle="bold"
-        android:textColor="#000"
-        android:paddingStart="20dp"
-        android:textSize="16dp"
-        android:paddingBottom="5dp"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="20dp">
-        <EditText
-            android:id="@+id/casOdAkcieDialog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="cas"
-            android:textColor="#000"
-            android:paddingBottom="25dp"/>
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Čas do"
-        android:textStyle="bold"
-        android:textColor="#000"
-        android:paddingStart="20dp"
-        android:textSize="16dp"
-        android:paddingBottom="5dp"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="20dp">
-        <EditText
-            android:id="@+id/casDoAkcieDialog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="cas"
-            android:textColor="#000"
-            android:paddingBottom="25dp"/>
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:gravity="left|top"
+            android:maxLines="1"
+            android:maxLength="40"
+            android:hint="max 40 znakov"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:background="@drawable/border" />
     </LinearLayout>
 
 
+
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="10dp"
+            android:gravity="center"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:textColor="#000"
+            android:paddingEnd="10dp"
+            android:text="Pripomienka detailne"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:gravity="left|top"
+            android:inputType="textMultiLine"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/border"
+            android:text=""/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:paddingTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <CheckBox
+            android:id="@+id/chkAck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Potvrdzujem, že rozumiem následkom tejto funkcie"/>
+    </LinearLayout>
+    <LinearLayout
+        android:paddingTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"

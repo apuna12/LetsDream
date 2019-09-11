@@ -800,6 +800,81 @@ class DBConnection {
         }
         return "0"
     }
+
+    fun getActions(): Array<String> {
+        val sql = "http://letsdream.xf.cz/index.php?mod=getActions&rest=get"
+
+        var ret = arrayOf(String())
+
+        try{
+            var jsonStr: String = URL(sql).readText()
+            var firstApp: Int = 0
+            var lastApp: Int = 0
+            if (jsonStr.toString().contains("<") || jsonStr.toString().contains(">")) {
+                for (i in 0 until jsonStr.toString().length) {
+                    if (jsonStr[i] == '<') {
+                        firstApp = i
+                        break
+                    }
+                }
+                for (i in 0 until jsonStr.toString().length) {
+                    if (jsonStr[i] == '>')
+                        lastApp = i
+                }
+                jsonStr = jsonStr.removeRange(firstApp, lastApp+1)
+                if(jsonStr=="0")
+                {
+                    return ret
+                }
+                else
+                {
+                    ret = jsonStr.split(",").toTypedArray()
+                    ret = ret.dropLast(1).toTypedArray()
+                    return ret
+                }
+            }
+        }
+        catch (e: Exception)
+        {
+            throw Exception(e)
+        }
+        return ret
+    }
+
+
+    fun sendEmail(recipients: String, subject: String, text: String, attachment: String): String {
+        val sql =
+            "http://letsdream.xf.cz/index.php?recipients=" + recipients + "&subject=" + subject +
+                    "&body=" + text + "&attachment=" + attachment + "&rest=email"
+
+        try {
+            var jsonStr: String = URL(sql).readText()
+            var firstApp: Int = 0
+            var lastApp: Int = 0
+            if (jsonStr.toString().contains("<") || jsonStr.toString().contains(">")) {
+                for (i in 0 until jsonStr.toString().length) {
+                    if (jsonStr[i] == '<') {
+                        firstApp = i
+                        break
+                    }
+                }
+                for (i in 0 until jsonStr.toString().length) {
+                    if (jsonStr[i] == '>')
+                        lastApp = i
+                }
+                jsonStr = jsonStr.removeRange(firstApp, lastApp + 1)
+                if (jsonStr != "0") {
+                    return jsonStr
+                } else {
+                    return "0"
+                }
+            }
+
+        } catch (e: Exception) {
+            throw Exception(e)
+        }
+        return "0"
+    }
 }
 
 

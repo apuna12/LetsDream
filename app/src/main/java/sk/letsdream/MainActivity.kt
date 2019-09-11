@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val meno: ImageButton = findViewById(R.id.person_imageButton)
         val akcie: ImageButton = findViewById(R.id.star_imageButton)
         val statistika: ImageButton = findViewById(R.id.graph_imageButton)
+        val admin: ImageButton = findViewById(R.id.adminButton)
         val vibrate = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
         val timeMethod: TimeMethods = TimeMethods()
@@ -50,6 +51,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         buttonEffects.ButtonClickEffect(findViewById(R.id.star_imageButton))
         buttonEffects.ButtonClickEffect(findViewById(R.id.person_imageButton))
         buttonEffects.ButtonClickEffect(findViewById(R.id.door_imageButton))
+        buttonEffects.ButtonClickEffect(findViewById(R.id.adminButton))
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
@@ -91,6 +93,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         statistika.setOnClickListener{
             vibrate.vibrate(70)
             val intent = Intent(this@MainActivity, StatistikyActivity::class.java)
+            intent.putExtra("privileges", privileges)
+            intent.putExtra("login", loginName)
+            startActivity(intent)
+        }
+        admin.setOnClickListener{
+            vibrate.vibrate(70)
+            val intent = Intent(this@MainActivity, AdminActivity::class.java)
             intent.putExtra("privileges", privileges)
             intent.putExtra("login", loginName)
             startActivity(intent)
