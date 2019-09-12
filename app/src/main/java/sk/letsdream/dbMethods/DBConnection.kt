@@ -828,7 +828,7 @@ class DBConnection {
                 }
                 else
                 {
-                    ret = jsonStr.split(",").toTypedArray()
+                    ret = jsonStr.split("Ł").toTypedArray()
                     ret = ret.dropLast(1).toTypedArray()
                     return ret
                 }

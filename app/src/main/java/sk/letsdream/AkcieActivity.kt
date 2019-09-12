@@ -140,10 +140,6 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     popUpMenu.menu.add(akcieList[i])
             }
         }
-        else
-        {
-
-        }
 
         try {
             var actionName: String = popUpMenu.menu.getItem(0).toString()

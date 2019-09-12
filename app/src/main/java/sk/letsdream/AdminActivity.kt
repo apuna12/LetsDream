@@ -1,13 +1,9 @@
 package sk.letsdream
 
-import android.app.DatePickerDialog
-import android.app.PendingIntent.getActivity
 import android.content.Context
-import android.database.SQLException
 import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
-import android.os.Vibrator
 import android.support.annotation.RequiresApi
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
@@ -19,26 +15,10 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.*
 import android.widget.*
-import kotlinx.android.synthetic.main.content_akcie.*
-import kotlinx.android.synthetic.main.content_dochadzka.*
-import kotlinx.android.synthetic.main.dialog_addnewaction.view.*
 import kotlinx.android.synthetic.main.dialog_sendemail.view.*
-import okhttp3.*
 import sk.letsdream.dbMethods.DBConnection
-import sk.letsdream.helperMethods.ButtonEffects
 import sk.letsdream.helperMethods.TimeMethods
-import java.io.IOException
-import java.lang.Exception
-import java.net.HttpURLConnection
-import java.net.URL
-import java.sql.Connection
-import java.sql.DriverManager
-import java.text.SimpleDateFormat
-import java.util.*
-import javax.xml.datatype.DatatypeConstants.MONTHS
 import kotlin.collections.ArrayList
-import StateVO
-import MyAdapter
 
 
 class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -98,6 +78,8 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             val buttonSubmit = dialogView.buttonPotvrditDialog
             val chkBox = dialogView.chkAck
             val recipients = dialogView.recipientSpinner
+            val spinnerRecipients = dialogView.recipientSpinner
+            val recipientsTW = dialogView.textView17
 
             var actions = dbMethods.getActions()
 
@@ -120,7 +102,7 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
             namesList = dbMethods.getAllApprovedNames().split("?").toTypedArray()
 
-            var list_of_names = arrayOf("Vyberte adresáta","Všetci")
+            var list_of_names = arrayOf("Všetci")
             if(namesList.size > 0)
             {
                 for(i in 0 until namesList.size-1)
@@ -129,18 +111,37 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 }
             }
 
-            var listVOs = ArrayList<StateVO>()
-
-            for(i in 0 until list_of_names.size)
-            {
-                var stateVO = StateVO()
-                stateVO.title = list_of_names[i]
-                stateVO.isSelected = false
-                listVOs.add(stateVO)
+            val wrapper: Context = ContextThemeWrapper(this, R.style.popupMenuStyle)
+            var popUpMenu: PopupMenu = PopupMenu(wrapper, spinnerRecipients)
+            //var popUpMenu: PopupMenu = PopupMenu(this, spinnerRecipients)
+            //popUpMenu.menuInflater.inflate(R.menu.menu_with_checkable_menu_item, popUpMenu.menu)
+            if(list_of_names.size > 0) {
+                for (i in 0 until namesList.size-1) {
+                    if(list_of_names[i] != null || list_of_names[i] != "") {
+                        popUpMenu.menu.add(list_of_names[i])
+                            .setCheckable(true)
+                            .isCheckable = true
+                    }
+                }
             }
 
-            val adapterRecipients = MyAdapter(this, 0, listVOs)
-            recipients!!.adapter = adapterRecipients
+            popUpMenu.setOnMenuItemClickListener {
+                if(popUpMenu.menu.getItem(0).isChecked)
+                {
+                    for(i in 0 until popUpMenu.menu.size())
+                    {
+                        popUpMenu.menu.getItem(i).isChecked = true
+                        recipientsTW.setText("<" + popUpMenu.menu.getItem(i) + ">,")
+                    }
+                }
+
+                true
+            }
+
+
+            spinnerRecipients.setOnClickListener{
+                popUpMenu.show()
+            }
 
 
 

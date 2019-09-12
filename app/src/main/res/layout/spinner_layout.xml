@@ -10,8 +10,10 @@
         android:gravity="left"
         android:text="text"
         android:textSize="16dp"
+        android:scrollbars="horizontal"
         android:textColor="#000"
         android:paddingStart="7dp"
+        android:ellipsize="end"
         android:textAlignment="gravity" />
 
     <CheckBox
