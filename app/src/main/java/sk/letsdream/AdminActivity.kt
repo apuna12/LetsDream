@@ -11,12 +11,14 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v4.widget.DrawerLayout
 import android.support.design.widget.NavigationView
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.*
 import android.widget.*
 import kotlinx.android.synthetic.main.dialog_sendemail.view.*
 import sk.letsdream.dbMethods.DBConnection
+import sk.letsdream.helperMethods.ProcessBackup
 import sk.letsdream.helperMethods.TimeMethods
 import kotlin.collections.ArrayList
 
@@ -111,6 +113,9 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 }
             }
 
+
+
+
             val wrapper: Context = ContextThemeWrapper(this, R.style.popupMenuStyle)
             var popUpMenu: PopupMenu = PopupMenu(wrapper, spinnerRecipients)
             //var popUpMenu: PopupMenu = PopupMenu(this, spinnerRecipients)
@@ -144,7 +149,6 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             }
 
 
-
             buttonSpat.setOnClickListener{
                 mAlertDialog.dismiss()
             }
@@ -166,6 +170,66 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 }
             }
         }
+
+
+        backupButton.setOnClickListener{
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_backupdb, null)
+            val mBuilder = android.app.AlertDialog.Builder(this).setView(dialogView)
+            val mAlertDialog = mBuilder.show()
+            val buttonSpat = dialogView.buttonSpatDialog
+            val buttonSubmit = dialogView.buttonPotvrditDialog
+
+            buttonSubmit.setOnClickListener{
+                val processBackup: ProcessBackup = ProcessBackup()
+
+                if(processBackup.backupLogintable(this) == "1")
+                {
+                    Toast.makeText(this, "Databaza zálohovaná", Toast.LENGTH_SHORT).show()
+                }
+                else
+                    Toast.makeText(this, "Niekde nastala chyba", Toast.LENGTH_SHORT).show()
+            }
+
+            buttonSpat.setOnClickListener{
+                mAlertDialog.dismiss()
+            }
+        }
+
+        deleteButton.setOnClickListener{
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_deletedb, null)
+            val mBuilder = android.app.AlertDialog.Builder(this).setView(dialogView)
+            val mAlertDialog = mBuilder.show()
+            val buttonSpat = dialogView.buttonSpatDialog
+            val buttonSubmit = dialogView.buttonPotvrditDialog
+
+            buttonSubmit.setOnClickListener{
+
+
+
+            }
+
+            buttonSpat.setOnClickListener{
+                mAlertDialog.dismiss()
+            }
+        }
+
+        issueButton.setOnClickListener{
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_issue, null)
+            val mBuilder = android.app.AlertDialog.Builder(this).setView(dialogView)
+            val mAlertDialog = mBuilder.show()
+            val buttonSpat = dialogView.buttonSpatDialog
+            val buttonSubmit = dialogView.buttonPotvrditDialog
+
+            buttonSubmit.setOnClickListener{
+
+            }
+
+            buttonSpat.setOnClickListener{
+                mAlertDialog.dismiss()
+            }
+        }
+
+
 
     }
 

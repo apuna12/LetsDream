@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="Den deti"
-        android:id="@+id/menu_item_1"/>
-    <item android:title="Mikulas"
-        android:id="@+id/menu_item_2"/>
-    <item android:title="Vianoce"
-        android:id="@+id/menu_item_3"/>
-</menu>
