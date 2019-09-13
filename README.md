@@ -14,4 +14,6 @@ BONUS
     - DB backup
     - DB delete
     - check the internet connection at the end
+    - edit the action name
+    
  
