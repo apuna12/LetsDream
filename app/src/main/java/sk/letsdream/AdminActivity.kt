@@ -119,7 +119,7 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             val wrapper: Context = ContextThemeWrapper(this, R.style.popupMenuStyle)
             var popUpMenu: PopupMenu = PopupMenu(wrapper, spinnerRecipients)
             //var popUpMenu: PopupMenu = PopupMenu(this, spinnerRecipients)
-            //popUpMenu.menuInflater.inflate(R.menu.menu_with_checkable_menu_item, popUpMenu.menu)
+            popUpMenu.menuInflater.inflate(R.menu.menu_with_checkable_menu_item, popUpMenu.menu)
             if(list_of_names.size > 0) {
                 for (i in 0 until namesList.size-1) {
                     if(list_of_names[i] != null || list_of_names[i] != "") {
@@ -143,11 +143,8 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 true
             }
 
-
-            spinnerRecipients.setOnClickListener{
-                popUpMenu.show()
-            }
-
+            spinnerRecipients.onItemSelectedListener =
+                AdapterView.OnItemSelectedListener{}
 
             buttonSpat.setOnClickListener{
                 mAlertDialog.dismiss()
@@ -180,14 +177,14 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             val buttonSubmit = dialogView.buttonPotvrditDialog
 
             buttonSubmit.setOnClickListener{
-                val processBackup: ProcessBackup = ProcessBackup()
+               /* val processBackup: ProcessBackup = ProcessBackup()
 
                 if(processBackup.backupLogintable(this) == "1")
                 {
                     Toast.makeText(this, "Databaza zálohovaná", Toast.LENGTH_SHORT).show()
                 }
                 else
-                    Toast.makeText(this, "Niekde nastala chyba", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Niekde nastala chyba", Toast.LENGTH_SHORT).show()*/
             }
 
             buttonSpat.setOnClickListener{
