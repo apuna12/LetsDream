@@ -1,9 +1,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/action_favorite"
-        android:checkable="true"
-        android:title=""
-        app:actionViewClass="android.widget.CheckBox"
-        app:showAsAction="ifRoom|withText" />
+    <TextView
+        android:id="@+id/textMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:text="text"
+        android:textSize="16dp"
+        android:scrollbars="horizontal"
+        android:textColor="#000"
+        android:paddingStart="7dp"
+        android:ellipsize="end"
+        android:textAlignment="gravity" />
+
+    <CheckBox
+        android:id="@+id/checkboxMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true" />
 </menu>

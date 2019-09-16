@@ -20,13 +20,13 @@
 
             <TableRow>
                 <TextView
-                    android:text="Meno"
+                    android:text=" Meno"
                     android:height="35dp"
                     android:background="@drawable/border"
                     android:textStyle="bold"
                     android:textColor="#000"/>
                 <TextView
-                    android:text="Login"
+                    android:text=" Login"
                     android:height="35dp"
                     android:background="@drawable/border"
                     android:textStyle="bold"
