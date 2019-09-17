@@ -1,6 +1,9 @@
 package sk.letsdream
 
 import android.content.Context
+import android.content.DialogInterface
+import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
@@ -11,12 +14,18 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v4.widget.DrawerLayout
 import android.support.design.widget.NavigationView
+import android.support.v4.view.ViewCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.util.LayoutDirection
 import android.view.*
 import android.widget.*
+import kotlinx.android.synthetic.main.dialog_newregistrations.view.*
+import kotlinx.android.synthetic.main.dialog_recipients.view.*
 import kotlinx.android.synthetic.main.dialog_sendemail.view.*
+import kotlinx.android.synthetic.main.dialog_sendemail.view.buttonSpatDialog
+import kotlinx.android.synthetic.main.spinner_layout.view.*
 import sk.letsdream.dbMethods.DBConnection
 import sk.letsdream.helperMethods.ProcessBackup
 import sk.letsdream.helperMethods.TimeMethods
@@ -143,15 +152,146 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 true
             }
 
-            spinnerRecipients.onItemSelectedListener =
-                AdapterView.OnItemSelectedListener{}
+
+            spinnerRecipients.setOnClickListener{
+
+                val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_recipients, null)
+                val mBuilder = android.app.AlertDialog.Builder(this).setView(dialogView)
+                val mAlertDialog = mBuilder.show()
+
+                var regTable = dialogView.recipientsTable
+                var childCount = regTable.childCount
+                if(childCount>1)
+                    regTable.removeViews(1,childCount-1)
+
+                var textView: TextView = TextView(this)
+                var textView2: TextView = TextView(this)
+                textView.setText("Meno")
+                textView.setTextColor(Color.BLACK)
+                textView.setPadding(10,5,0,0)
+                textView.setTypeface(null, Typeface.BOLD)
+                textView.textSize = 20.toFloat()
+
+                textView2.setText("Pridať")
+                textView2.setTextColor(Color.BLACK)
+                textView2.setPadding(0,5,30,0)
+                textView2.setTypeface(null, Typeface.BOLD)
+                textView2.textSize = 20.toFloat()
+                textView2.gravity = Gravity.RIGHT
+
+                var tableRowAllRegistered: TableRow = TableRow(this)
+                var lp: TableRow.LayoutParams = TableRow.LayoutParams(
+                    TableRow.LayoutParams(
+                        TableRow.LayoutParams.MATCH_PARENT,
+                        TableRow.LayoutParams.WRAP_CONTENT
+                    )
+                )
+                tableRowAllRegistered.layoutParams = lp
+
+                tableRowAllRegistered.addView(textView)
+                tableRowAllRegistered.addView(textView2)
+                tableRowAllRegistered.background = resources.getDrawable(R.drawable.border)
+                regTable.addView(tableRowAllRegistered, 0)
+
+                for(i in 1 until list_of_names.size) {
+                    var tableRowAllRegistered: TableRow = TableRow(this)
+                    var lp: TableRow.LayoutParams = TableRow.LayoutParams(
+                        TableRow.LayoutParams(
+                            TableRow.LayoutParams.MATCH_PARENT,
+                            TableRow.LayoutParams.WRAP_CONTENT
+                        )
+                    )
+                    tableRowAllRegistered.layoutParams = lp
+                    var textView: TextView = TextView(this)
+                    var checkbox: CheckBox = CheckBox(this)
+
+                    textView.setText(list_of_names[i-1])
+                    textView.setTextColor(Color.BLACK)
+                    textView.setPadding(10,5,0,0)
+                    checkbox.isChecked = false
+                    checkbox.gravity = Gravity.RIGHT
+                    checkbox.layoutDirection = View.LAYOUT_DIRECTION_RTL
+
+
+                    tableRowAllRegistered.addView(textView)
+                    tableRowAllRegistered.addView(checkbox)
+                    tableRowAllRegistered.background = resources.getDrawable(R.drawable.border)
+                    regTable.addView(tableRowAllRegistered, i)
+
+                }
+
+                var count = regTable.childCount
+                for(i in 0 until count)
+                {
+                    val v: View = regTable.getChildAt(i)
+                    if(v is TableRow)
+                    {
+                        var row: TableRow = v as TableRow
+                        var rowCount = row.childCount
+                        var recipientList = arrayOf(mutableListOf<Any>())
+                        for(j in 0 until rowCount)
+                        {
+                            val v2: View = row.getChildAt(j)
+                            if(v2 is CheckBox)
+                            {
+                                var potvrdit = v2 as CheckBox
+                                potvrdit.setOnClickListener{
+                                    if(it is CheckBox)
+                                    {
+                                        if(it.isChecked)
+                                        {
+                                            if(i==1)
+                                            {
+                                                for(k in 1 until count)
+                                                {
+
+                                                    val v3: View = regTable.getChildAt(k)
+                                                    var tempRow: TableRow = v3 as TableRow
+                                                    //recipientList += tempRow.getChildAt(0).text.toString()
+
+                                                    if(v3 is TableRow) {
+                                                        val v4: View = tempRow.getChildAt(1)
+                                                        if (v4 is CheckBox) {
+                                                            v4.isChecked = true
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else if(!it.isChecked)
+                                        {
+                                            if(i==1)
+                                            {
+                                                for(k in 1 until count)
+                                                {
+                                                    val v3: View = regTable.getChildAt(k)
+                                                    var tempRow: TableRow = v3 as TableRow
+                                                    if(v3 is TableRow) {
+                                                        val v4: View = tempRow.getChildAt(1)
+                                                        if (v4 is CheckBox) {
+                                                            v4.isChecked = false
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                }
+
+            }
+
 
             buttonSpat.setOnClickListener{
                 mAlertDialog.dismiss()
             }
 
             buttonSubmit.setOnClickListener {
-                var text = emailText.text.toString()
+                /*var text = emailText.text.toString()
 
                 if(text != null || (text.replace(" ", "")) != "")
                 {
@@ -164,7 +304,7 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 else
                 {
                     Toast.makeText(this, "Nie je možné poslať prázdnu správu", Toast.LENGTH_SHORT).show()
-                }
+                }*/
             }
         }
 
