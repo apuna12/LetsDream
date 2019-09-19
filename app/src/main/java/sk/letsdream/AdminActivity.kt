@@ -21,6 +21,8 @@ import android.support.v7.widget.Toolbar
 import android.util.LayoutDirection
 import android.view.*
 import android.widget.*
+import kotlinx.android.synthetic.main.dialog_fullrecipients.*
+import kotlinx.android.synthetic.main.dialog_fullrecipients.view.*
 import kotlinx.android.synthetic.main.dialog_newregistrations.view.*
 import kotlinx.android.synthetic.main.dialog_recipients.view.*
 import kotlinx.android.synthetic.main.dialog_sendemail.view.*
@@ -124,35 +126,6 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
 
 
-
-            val wrapper: Context = ContextThemeWrapper(this, R.style.popupMenuStyle)
-            var popUpMenu: PopupMenu = PopupMenu(wrapper, spinnerRecipients)
-            //var popUpMenu: PopupMenu = PopupMenu(this, spinnerRecipients)
-            popUpMenu.menuInflater.inflate(R.menu.menu_with_checkable_menu_item, popUpMenu.menu)
-            if(list_of_names.size > 0) {
-                for (i in 0 until namesList.size-1) {
-                    if(list_of_names[i] != null || list_of_names[i] != "") {
-                        popUpMenu.menu.add(list_of_names[i])
-                            .setCheckable(true)
-                            .isCheckable = true
-                    }
-                }
-            }
-
-            popUpMenu.setOnMenuItemClickListener {
-                if(popUpMenu.menu.getItem(0).isChecked)
-                {
-                    for(i in 0 until popUpMenu.menu.size())
-                    {
-                        popUpMenu.menu.getItem(i).isChecked = true
-                        recipientsTW.setText("<" + popUpMenu.menu.getItem(i) + ">,")
-                    }
-                }
-
-                true
-            }
-
-
             spinnerRecipients.setOnClickListener{
 
                 val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_recipients, null)
@@ -220,7 +193,15 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
                 }
 
+                var checkedRecipient = arrayOf<Boolean>()
+
+                var rec: HashMap<String, Boolean> = HashMap()
+
+
                 var count = regTable.childCount
+                for(i in 0 until count) {
+                    checkedRecipient += false
+                }
                 for(i in 0 until count)
                 {
                     val v: View = regTable.getChildAt(i)
@@ -228,7 +209,7 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                     {
                         var row: TableRow = v as TableRow
                         var rowCount = row.childCount
-                        var recipientList = arrayOf(mutableListOf<Any>())
+
                         for(j in 0 until rowCount)
                         {
                             val v2: View = row.getChildAt(j)
@@ -247,14 +228,25 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
                                                     val v3: View = regTable.getChildAt(k)
                                                     var tempRow: TableRow = v3 as TableRow
-                                                    //recipientList += tempRow.getChildAt(0).text.toString()
 
                                                     if(v3 is TableRow) {
-                                                        val v4: View = tempRow.getChildAt(1)
-                                                        if (v4 is CheckBox) {
-                                                            v4.isChecked = true
-                                                        }
+                                                        val v4Check: View = tempRow.getChildAt(1)
+                                                        val v4TW: View = tempRow.getChildAt(0)
+                                                        (v4Check as CheckBox).isChecked = true
+                                                        rec.put((v4TW as TextView).text.toString(), (v4Check as CheckBox).isChecked )
                                                     }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                val v3: View = regTable.getChildAt(i)
+                                                var tempRow: TableRow = v3 as TableRow
+
+                                                if(v3 is TableRow) {
+                                                    val v4Check: View = tempRow.getChildAt(1)
+                                                    val v4TW: View = tempRow.getChildAt(0)
+                                                    (v4Check as CheckBox).isChecked = true
+                                                    rec.put((v4TW as TextView).text.toString(), (v4Check as CheckBox).isChecked)
                                                 }
                                             }
                                         }
@@ -267,22 +259,64 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                                                     val v3: View = regTable.getChildAt(k)
                                                     var tempRow: TableRow = v3 as TableRow
                                                     if(v3 is TableRow) {
-                                                        val v4: View = tempRow.getChildAt(1)
-                                                        if (v4 is CheckBox) {
-                                                            v4.isChecked = false
-                                                        }
+                                                        val v4Check: View = tempRow.getChildAt(1)
+                                                        val v4TW: View = tempRow.getChildAt(0)
+                                                        (v4Check as CheckBox).isChecked = false
+                                                        rec.put((v4TW as TextView).text.toString(),(v4Check as CheckBox).isChecked)
                                                     }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                val v3: View = regTable.getChildAt(i)
+                                                val v3Vsetci: View = regTable.getChildAt(1)
+                                                val tempRowVsetci: TableRow = v3Vsetci as TableRow
+                                                var tempRow: TableRow = v3 as TableRow
+                                                if(v3 is TableRow) {
+                                                    val v4Check: View = tempRow.getChildAt(1)
+                                                    val v4TW: View = tempRow.getChildAt(0)
+                                                    (v4Check as CheckBox).isChecked = false
+                                                    (tempRowVsetci.getChildAt(1) as CheckBox).isChecked = false
+                                                    rec.put((v4TW as TextView).text.toString(),(v4Check as CheckBox).isChecked)
+                                                    rec.put("Všetci", false)
                                                 }
                                             }
                                         }
                                     }
                                 }
-
                             }
                         }
                     }
                 }
 
+                dialogView.buttonPotvrditDialogRec.setOnClickListener {
+                    mAlertDialog.dismiss()
+                    var allRecipients: String = String()
+                    for((name, checked) in rec)
+                    {
+                        if(checked && name != "Všetci")
+                            allRecipients = allRecipients.toString() + "<" + name + ">;"
+                    }
+                    if(allRecipients[allRecipients.lastIndex] == ';')
+                        allRecipients = allRecipients.dropLast(1)
+
+                    recipientsTW.text = allRecipients
+                }
+                dialogView.buttonSpatDialogRec.setOnClickListener {
+                    mAlertDialog.dismiss()
+                }
+
+                recipientsTW.setOnClickListener{
+                    val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_fullrecipients, null)
+                    val mBuilder = android.app.AlertDialog.Builder(this).setView(dialogView)
+                    val mAlertDialog = mBuilder.show()
+
+                    dialogView.fullRecDialog.text = recipientsTW.text.toString()
+
+                    mAlertDialog.buttonSpatDialog.setOnClickListener {
+                        mAlertDialog.dismiss()
+                    }
+                }
             }
 
 
@@ -291,12 +325,12 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             }
 
             buttonSubmit.setOnClickListener {
-                /*var text = emailText.text.toString()
+                var text = emailText.text.toString()
 
                 if(text != null || (text.replace(" ", "")) != "")
                 {
                     if(chkBox.isChecked) {
-                        //dbMethods.sendEmail() //dorobit vyber mien do dialog_sendemail
+                        dbMethods.sendEmail(recipientsTW.text.toString(), spinnerDovod.selectedItem.toString(), text, "0") //dorobit vyber mien do dialog_sendemail
                     }
                     else
                         Toast.makeText(this, "Nezaškrtli ste, že rozumiete ako táto funkcia funguje", Toast.LENGTH_SHORT).show()
@@ -304,7 +338,7 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 else
                 {
                     Toast.makeText(this, "Nie je možné poslať prázdnu správu", Toast.LENGTH_SHORT).show()
-                }*/
+                }
             }
         }
 

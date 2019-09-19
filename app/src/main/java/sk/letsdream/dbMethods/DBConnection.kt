@@ -828,7 +828,7 @@ class DBConnection {
                 }
                 else
                 {
-                    ret = jsonStr.split("Ł").toTypedArray()
+                    ret = jsonStr.split("/n").toTypedArray()
                     ret = ret.dropLast(1).toTypedArray()
                     return ret
                 }
@@ -843,6 +843,11 @@ class DBConnection {
 
 
     fun sendEmail(recipients: String, subject: String, text: String, attachment: String): String {
+
+        var recipients = recipients.replace(">","").replace("<","").replace(" ", "_")
+        var subject = subject.replace(" ", "_")
+        var text = text.replace(" ", "_")
+
         val sql =
             "http://letsdream.xf.cz/index.php?recipients=" + recipients + "&subject=" + subject +
                     "&body=" + text + "&attachment=" + attachment + "&rest=email"
