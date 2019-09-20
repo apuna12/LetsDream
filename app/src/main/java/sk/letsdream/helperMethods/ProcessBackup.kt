@@ -1,8 +1,6 @@
 package sk.letsdream.helperMethods
 
 import android.content.Context
-import org.apache.poi.ss.usermodel.IndexedColors
-import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import sk.letsdream.dbMethods.DBConnection
 import sk.letsdream.helperClasses.LoginTableClass
 import java.io.FileOutputStream
@@ -14,12 +12,12 @@ class ProcessBackup {
     {
         val dbMethods: DBConnection = DBConnection()
         val COLUMNs = arrayOf<String>("ID", "Username", "Name", "Email", "Privileges", "New_User")
-        val dbSplittedData = dbMethods.backupDB().split("Ł").toTypedArray()
+        val dbSplittedData = dbMethods.backUpLoginTable().split("-").toTypedArray()
         var rowsFromDB = arrayOf<Array<String>>()
 
         for(i in 0 until dbSplittedData.size)
         {
-            rowsFromDB += dbSplittedData[i].split("ł").toTypedArray()
+            rowsFromDB += dbSplittedData[i].split(";").toTypedArray()
         }
 
         if(rowsFromDB.size>0)
@@ -31,7 +29,7 @@ class ProcessBackup {
                 rows.add(LoginTableClass(i.toString(), rowsFromDB[0][0], rowsFromDB[0][1],
                     rowsFromDB[0][2], rowsFromDB[0][3], rowsFromDB[0][4], rowsFromDB[0][5]))
             }
-            val workbook: XSSFWorkbook = XSSFWorkbook()
+            /*val workbook: XSSFWorkbook = XSSFWorkbook()
             val createHelper = workbook.creationHelper
 
             val sheet = workbook.createSheet("logintable")
@@ -66,7 +64,7 @@ class ProcessBackup {
             val fileOut = FileOutputStream("logintable.xlsx")
             workbook.write(fileOut)
             fileOut.close()
-            workbook.close()
+            workbook.close()*/
             return "1"
         }
 

@@ -867,7 +867,8 @@ class DBConnection {
                     if (jsonStr[i] == '>')
                         lastApp = i
                 }
-                jsonStr = jsonStr.removeRange(firstApp, lastApp + 1)
+                jsonStr = jsonStr.removeRange(firstApp, lastApp + 1).trim()
+
                 if (jsonStr != "0") {
                     return jsonStr
                 } else {
@@ -881,9 +882,9 @@ class DBConnection {
         return "0"
     }
 
-    fun backupDB(): String {
+    fun backUpLoginTable(): String {
         val sql =
-            "http://letsdream.xf.cz/index.php?rest=backupDB"
+            "http://letsdream.xf.cz/index.php?rest=backUpLoginTable"
 
         try {
             var jsonStr: String = URL(sql).readText()

@@ -22,11 +22,14 @@ import android.util.LayoutDirection
 import android.view.*
 import android.widget.*
 import kotlinx.android.synthetic.main.dialog_fullrecipients.*
+import kotlinx.android.synthetic.main.dialog_fullrecipients.buttonSpatDialog
 import kotlinx.android.synthetic.main.dialog_fullrecipients.view.*
 import kotlinx.android.synthetic.main.dialog_newregistrations.view.*
 import kotlinx.android.synthetic.main.dialog_recipients.view.*
+import kotlinx.android.synthetic.main.dialog_sendemail.*
 import kotlinx.android.synthetic.main.dialog_sendemail.view.*
 import kotlinx.android.synthetic.main.dialog_sendemail.view.buttonSpatDialog
+import kotlinx.android.synthetic.main.dialog_sendemail.view.reasonEmail
 import kotlinx.android.synthetic.main.spinner_layout.view.*
 import sk.letsdream.dbMethods.DBConnection
 import sk.letsdream.helperMethods.ProcessBackup
@@ -330,7 +333,21 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 if(text != null || (text.replace(" ", "")) != "")
                 {
                     if(chkBox.isChecked) {
-                        dbMethods.sendEmail(recipientsTW.text.toString(), spinnerDovod.selectedItem.toString(), text, "0") //dorobit vyber mien do dialog_sendemail
+                        var resultFromMail = dbMethods.sendEmail(recipientsTW.text.toString(), spinnerDovod.selectedItem.toString(), text, "0")
+
+                        if(resultFromMail == "0")
+                            Toast.makeText(this, "Hups! Nieco je zlé. Máte zapnutý internet?", Toast.LENGTH_SHORT).show()
+                        else if(resultFromMail == "1")
+                        {
+                            Toast.makeText(this, "Email zaslaný!", Toast.LENGTH_SHORT).show()
+                            emailText.setText("")
+                            recipientsTW.setText("")
+                            spinnerDovod.setSelection(0)
+                        }
+                        else
+                        {
+                            emailText.setText(resultFromMail)
+                        }
                     }
                     else
                         Toast.makeText(this, "Nezaškrtli ste, že rozumiete ako táto funkcia funguje", Toast.LENGTH_SHORT).show()
@@ -351,14 +368,14 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             val buttonSubmit = dialogView.buttonPotvrditDialog
 
             buttonSubmit.setOnClickListener{
-               /* val processBackup: ProcessBackup = ProcessBackup()
+                val processBackup: ProcessBackup = ProcessBackup()
 
                 if(processBackup.backupLogintable(this) == "1")
                 {
                     Toast.makeText(this, "Databaza zálohovaná", Toast.LENGTH_SHORT).show()
                 }
                 else
-                    Toast.makeText(this, "Niekde nastala chyba", Toast.LENGTH_SHORT).show()*/
+                    Toast.makeText(this, "Niekde nastala chyba", Toast.LENGTH_SHORT).show()
             }
 
             buttonSpat.setOnClickListener{
