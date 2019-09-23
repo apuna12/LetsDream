@@ -1,7 +1,5 @@
 package sk.letsdream
 
-import android.content.Context
-import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Build
@@ -14,27 +12,18 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v4.widget.DrawerLayout
 import android.support.design.widget.NavigationView
-import android.support.v4.view.ViewCompat
-import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.util.LayoutDirection
 import android.view.*
 import android.widget.*
-import kotlinx.android.synthetic.main.dialog_fullrecipients.*
 import kotlinx.android.synthetic.main.dialog_fullrecipients.buttonSpatDialog
 import kotlinx.android.synthetic.main.dialog_fullrecipients.view.*
-import kotlinx.android.synthetic.main.dialog_newregistrations.view.*
 import kotlinx.android.synthetic.main.dialog_recipients.view.*
-import kotlinx.android.synthetic.main.dialog_sendemail.*
 import kotlinx.android.synthetic.main.dialog_sendemail.view.*
 import kotlinx.android.synthetic.main.dialog_sendemail.view.buttonSpatDialog
 import kotlinx.android.synthetic.main.dialog_sendemail.view.reasonEmail
-import kotlinx.android.synthetic.main.spinner_layout.view.*
 import sk.letsdream.dbMethods.DBConnection
-import sk.letsdream.helperMethods.ProcessBackup
 import sk.letsdream.helperMethods.TimeMethods
-import kotlin.collections.ArrayList
 
 
 class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -366,16 +355,20 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             val mAlertDialog = mBuilder.show()
             val buttonSpat = dialogView.buttonSpatDialog
             val buttonSubmit = dialogView.buttonPotvrditDialog
+            val chkBox = dialogView.chkAck
 
             buttonSubmit.setOnClickListener{
-                val processBackup: ProcessBackup = ProcessBackup()
-
-                if(processBackup.backupLogintable(this) == "1")
-                {
-                    Toast.makeText(this, "Databaza zálohovaná", Toast.LENGTH_SHORT).show()
+                if(chkBox.isChecked) {
+                    if (dbMethods.backUpLoginTable() == "1") {
+                        Toast.makeText(
+                            this, "Databaza zálohovaná a odoslaná manažérovi",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else
+                        Toast.makeText(this, "Niekde nastala chyba", Toast.LENGTH_SHORT).show()
                 }
                 else
-                    Toast.makeText(this, "Niekde nastala chyba", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Nezaškrtli ste, že rozumiete ako táto funkcia funguje", Toast.LENGTH_SHORT).show()
             }
 
             buttonSpat.setOnClickListener{

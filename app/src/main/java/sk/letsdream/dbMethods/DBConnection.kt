@@ -902,7 +902,7 @@ class DBConnection {
                         lastApp = i
                 }
                 jsonStr = jsonStr.removeRange(firstApp, lastApp + 1)
-                if (jsonStr != "0") {
+                if (jsonStr == "1") {
                     return jsonStr
                 } else {
                     return "0"
