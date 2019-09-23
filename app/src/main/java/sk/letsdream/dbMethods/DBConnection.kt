@@ -882,9 +882,31 @@ class DBConnection {
         return "0"
     }
 
-    fun backUpLoginTable(): String {
+    fun backUpTables(): String {
         val sql =
-            "http://letsdream.xf.cz/index.php?rest=backUpLoginTable"
+            "http://letsdream.xf.cz/index.php?mod=backUpTables&rest=get"
+
+        try {
+            var jsonStr: String = URL(sql).readText()
+            var firstApp: Int = 0
+            var lastApp: Int = 0
+
+            if (jsonStr.contains("BACKUP SUCCESSFUL")) {
+                return "1"
+            } else {
+                return "0"
+            }
+
+
+        } catch (e: Exception) {
+            throw Exception(e)
+        }
+        return "0"
+    }
+
+    fun deleteDB(): String {
+        val sql =
+                "http://letsdream.xf.cz/index.php?mod=deleteDB&rest=get"
 
         try {
             var jsonStr: String = URL(sql).readText()
@@ -903,40 +925,7 @@ class DBConnection {
                 }
                 jsonStr = jsonStr.removeRange(firstApp, lastApp + 1)
                 if (jsonStr == "1") {
-                    return jsonStr
-                } else {
-                    return "0"
-                }
-            }
-
-        } catch (e: Exception) {
-            throw Exception(e)
-        }
-        return "0"
-    }
-
-    fun deleteDB(): String {
-        val sql =
-            "http://letsdream.xf.cz/index.php?rest=deleteDB"
-
-        try {
-            var jsonStr: String = URL(sql).readText()
-            var firstApp: Int = 0
-            var lastApp: Int = 0
-            if (jsonStr.toString().contains("<") || jsonStr.toString().contains(">")) {
-                for (i in 0 until jsonStr.toString().length) {
-                    if (jsonStr[i] == '<') {
-                        firstApp = i
-                        break
-                    }
-                }
-                for (i in 0 until jsonStr.toString().length) {
-                    if (jsonStr[i] == '>')
-                        lastApp = i
-                }
-                jsonStr = jsonStr.removeRange(firstApp, lastApp + 1)
-                if (jsonStr != "0") {
-                    return jsonStr
+                    return "1"
                 } else {
                     return "0"
                 }

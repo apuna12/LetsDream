@@ -40,6 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <EditText
+            android:id="@+id/subjectIssue"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
             android:gravity="left|top"
@@ -74,6 +75,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <EditText
+            android:id="@+id/bodyIssue"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
             android:gravity="left|top"
@@ -89,7 +91,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <CheckBox
-            android:id="@+id/chkAck"
+            android:id="@+id/chkAckIssue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Potvrdzujem, že rozumiem následkom tejto funkcie"/>
@@ -108,7 +110,7 @@
             android:orientation="vertical"
             android:gravity="left">
             <Button
-                android:id="@+id/buttonSpatDialog"
+                android:id="@+id/buttonSpatDialogIssue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -120,7 +122,7 @@
             android:orientation="vertical"
             android:gravity="right">
             <Button
-                android:id="@+id/buttonPotvrditDialog"
+                android:id="@+id/buttonPotvrditDialogIssue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"

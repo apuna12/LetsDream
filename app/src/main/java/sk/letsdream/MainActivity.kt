@@ -14,8 +14,10 @@ import android.support.design.widget.NavigationView
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
+import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
+import kotlinx.android.synthetic.main.content_main.*
 import sk.letsdream.helperMethods.ButtonEffects
 import sk.letsdream.helperMethods.TimeMethods
 import java.text.SimpleDateFormat
@@ -97,12 +99,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             intent.putExtra("login", loginName)
             startActivity(intent)
         }
-        admin.setOnClickListener{
-            vibrate.vibrate(70)
-            val intent = Intent(this@MainActivity, AdminActivity::class.java)
-            intent.putExtra("privileges", privileges)
-            intent.putExtra("login", loginName)
-            startActivity(intent)
+
+        if(privileges!="111")
+        {
+            admin.visibility = View.INVISIBLE
+            adminButtonTW.visibility = View.INVISIBLE
+        }
+        else {
+            admin.visibility = View.VISIBLE
+            adminButtonTW.visibility = View.VISIBLE
+            admin.setOnClickListener {
+                vibrate.vibrate(70)
+                val intent = Intent(this@MainActivity, AdminActivity::class.java)
+                intent.putExtra("privileges", privileges)
+                intent.putExtra("login", loginName)
+                startActivity(intent)
+            }
         }
 
 

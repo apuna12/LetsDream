@@ -1,5 +1,7 @@
 package sk.letsdream
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Build
@@ -18,9 +20,12 @@ import android.view.*
 import android.widget.*
 import kotlinx.android.synthetic.main.dialog_fullrecipients.buttonSpatDialog
 import kotlinx.android.synthetic.main.dialog_fullrecipients.view.*
+import kotlinx.android.synthetic.main.dialog_issue.view.*
 import kotlinx.android.synthetic.main.dialog_recipients.view.*
 import kotlinx.android.synthetic.main.dialog_sendemail.view.*
+import kotlinx.android.synthetic.main.dialog_sendemail.view.buttonPotvrditDialog
 import kotlinx.android.synthetic.main.dialog_sendemail.view.buttonSpatDialog
+import kotlinx.android.synthetic.main.dialog_sendemail.view.chkAck
 import kotlinx.android.synthetic.main.dialog_sendemail.view.reasonEmail
 import sk.letsdream.dbMethods.DBConnection
 import sk.letsdream.helperMethods.TimeMethods
@@ -359,13 +364,14 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
             buttonSubmit.setOnClickListener{
                 if(chkBox.isChecked) {
-                    if (dbMethods.backUpLoginTable() == "1") {
+                    if (dbMethods.backUpTables() == "1") {
                         Toast.makeText(
                             this, "Databaza zálohovaná a odoslaná manažérovi",
                             Toast.LENGTH_SHORT
                         ).show()
+                        mAlertDialog.dismiss()
                     } else
-                        Toast.makeText(this, "Niekde nastala chyba", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Hups! Niekde nastala chyba", Toast.LENGTH_SHORT).show()
                 }
                 else
                     Toast.makeText(this, "Nezaškrtli ste, že rozumiete ako táto funkcia funguje", Toast.LENGTH_SHORT).show()
@@ -382,11 +388,50 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             val mAlertDialog = mBuilder.show()
             val buttonSpat = dialogView.buttonSpatDialog
             val buttonSubmit = dialogView.buttonPotvrditDialog
+            val chkBox = dialogView.chkAck
 
             buttonSubmit.setOnClickListener{
+                if(chkBox.isChecked) {
+                    lateinit var dialog:AlertDialog
+                    val builder = AlertDialog.Builder(this)
+                    builder.setTitle("Naozaj?")
+                    builder.setMessage("Naozaj chcete vymazať celú databázu?")
+
+                    val dialogClickListener = DialogInterface.OnClickListener{_,which ->
+                        when(which){
+                            DialogInterface.BUTTON_POSITIVE ->
+                            {
+                                if (dbMethods.deleteDB() == "1") { //dbMethods.deleteDB()
+                                    Toast.makeText(
+                                        this, "Databaza zmazaná",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    mAlertDialog.dismiss()
+                                } else
+                                    Toast.makeText(this, "Hups! Niekde nastala chyba", Toast.LENGTH_SHORT).show()
+                            }
+                            DialogInterface.BUTTON_NEGATIVE -> {
+                                mAlertDialog.dismiss()
+                            }
+                            DialogInterface.BUTTON_NEUTRAL -> {
+                                dialog.dismiss()
+                            }
 
 
+                        }
+                    }
+                    builder.setPositiveButton("Áno",dialogClickListener)
 
+                    builder.setNegativeButton("Nie",dialogClickListener)
+
+                    builder.setNeutralButton("Zrušiť",dialogClickListener)
+
+                    dialog = builder.create()
+
+                    dialog.show()
+                }
+                else
+                    Toast.makeText(this, "Nezaškrtli ste, že rozumiete ako táto funkcia funguje", Toast.LENGTH_SHORT).show()
             }
 
             buttonSpat.setOnClickListener{
@@ -395,14 +440,45 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         }
 
         issueButton.setOnClickListener{
-            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_issue, null)
-            val mBuilder = android.app.AlertDialog.Builder(this).setView(dialogView)
+            val dialogViewIssue = LayoutInflater.from(this).inflate(R.layout.dialog_issue, null)
+            val mBuilder = android.app.AlertDialog.Builder(this).setView(dialogViewIssue)
             val mAlertDialog = mBuilder.show()
-            val buttonSpat = dialogView.buttonSpatDialog
-            val buttonSubmit = dialogView.buttonPotvrditDialog
+            val buttonSpat = dialogViewIssue.buttonSpatDialogIssue
+            val buttonSubmit = dialogViewIssue.buttonPotvrditDialogIssue
+            val subject = dialogViewIssue.subjectIssue
+            val body = dialogViewIssue.bodyIssue
+            val chkBox = dialogViewIssue.chkAckIssue
 
             buttonSubmit.setOnClickListener{
+                if(chkBox.isChecked) {
+                    if (subject.text.toString() != "" && body.text.toString() != "") {
 
+
+                        var resultFromMail = dbMethods.sendEmail(
+                            "tkocik@gmail.com", subject.text.toString(),
+                            body.text.toString(), "1"
+                        )
+
+                        if(resultFromMail == "0")
+                            Toast.makeText(this, "Hups! Nieco je zlé. Máte zapnutý internet?", Toast.LENGTH_SHORT).show()
+                        else if(resultFromMail == "1")
+                        {
+                            Toast.makeText(this, "Email zaslaný!", Toast.LENGTH_SHORT).show()
+                            body.setText("")
+                            subject.setText("")
+                        }
+                        else
+                        {
+                            body.setText(resultFromMail)
+                        }
+                    } else {
+                        Toast.makeText(this, "Nevyplnili ste niečo!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                else
+                {
+                    Toast.makeText(this, "Nezaškrtli ste, že rozumiete ako táto funkcia funguje", Toast.LENGTH_SHORT).show()
+                }
             }
 
             buttonSpat.setOnClickListener{
