@@ -377,11 +377,12 @@ class UpdateLabelMethods {
                                             .inflate(R.layout.dialog_changeaction, null)
                                         val mBuilder =
                                             AlertDialog.Builder(context).setView(dialogView)
-                                        val nazov = row.getChildAt(0) as TextView
+                                        //val nazov = row.getChildAt(0) as TextView
+                                        val nazov = allActions[i - 1][0]
                                         val datum = row.getChildAt(1) as TextView
                                         val casOd = row.getChildAt(2) as TextView
                                         val casDo = row.getChildAt(3) as TextView
-                                        dialogView.nazovAkcieDialog.text = nazov.text
+                                        dialogView.nazovAkcieDialog.text = nazov
                                         dialogView.datumAkcieDialog.text = datum.text
                                         dialogView.casOdAkcieDialog.text = casOd.text
                                         dialogView.casDoAkcieDialog.text = casDo.text
@@ -400,7 +401,7 @@ class UpdateLabelMethods {
                                                     dialogView.datumAkcieDialog.text.toString(),
                                                     dialogView.casOdAkcieDialog.text.toString(),
                                                     dialogView.casDoAkcieDialog.text.toString(),
-                                                    nazov.text.toString()
+                                                    nazov.toString()
                                                 ) == "1"
                                             ) {
                                                 Toast.makeText(

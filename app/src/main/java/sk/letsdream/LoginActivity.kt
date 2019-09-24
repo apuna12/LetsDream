@@ -31,7 +31,6 @@ import kotlinx.android.synthetic.main.dialog_register.view.*
 import sk.letsdream.dbMethods.DBConnection
 import sk.letsdream.helperMethods.*
 
-
 class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -45,6 +44,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val date: TextView = findViewById(R.id.full_dateTW)
         val time: TextView = findViewById(R.id.timeTW)
+        val progressBar = findViewById<ProgressBar>(R.id.progress_circular)
 
         val timeMethod: TimeMethods = TimeMethods()
         val hexMethods: HexMethods = HexMethods()
@@ -64,6 +64,8 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val vibrate = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         val emailMethods: EmailMethods = EmailMethods()
         val initialSetup: InitialSetup = InitialSetup()
+
+        progressBar.visibility = View.INVISIBLE
 
         if(initialSetup.initialDBCreation() != "111")
         {
@@ -254,6 +256,8 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 })
 
                 dialogView.registrujBtn.setOnClickListener {
+                    getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                     vibrate.vibrate(70)
                     if (userRegister.text.toString() == "") {
                         Toast.makeText(this, "Prosím zadajte meno účtu!", Toast.LENGTH_LONG).show()
@@ -357,6 +361,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                             "Hups, niečo je zlé!",
                                             Toast.LENGTH_LONG
                                         ).show()
+                                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                                     }
 
                                 } catch (e: Exception) {
@@ -372,10 +377,15 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     vibrate.vibrate(70)
                     mAlertDialog.cancel()
                 }
-
             }
 
             loginBtn.setOnClickListener {
+
+                progressBar.visibility = View.VISIBLE
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+
+
                 vibrate.vibrate(70)
                 var digest: MessageDigest
                 digest = MessageDigest.getInstance("SHA-256")
@@ -405,28 +415,35 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             Toast.makeText(this, "Nesprávne heslo", Toast.LENGTH_LONG).show()
                         } else if (jsonStr == "1") // User
                         {
-                            Toast.makeText(this, "Prihlásenie úspešné", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this, "Prihlásenie úspešné", Toast.LENGTH_LONG)
+                                .show()
                             val intent = Intent(this@LoginActivity, MainActivity::class.java)
                             intent.putExtra("privileges", "1")
                             intent.putExtra("login", usernameEdt.text.toString())
                             startActivity(intent)
+
                         } else if (jsonStr == "11") // Admin
                         {
-                            Toast.makeText(this, "Prihlásenie úspešné", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this, "Prihlásenie úspešné", Toast.LENGTH_LONG)
+                                .show()
                             val intent = Intent(this@LoginActivity, MainActivity::class.java)
                             intent.putExtra("privileges", "11")
                             intent.putExtra("login", usernameEdt.text.toString())
                             startActivity(intent)
+
                         } else if (jsonStr == "111") // Super Admin
                         {
-                            Toast.makeText(this, "Prihlásenie úspešné", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this, "Prihlásenie úspešné", Toast.LENGTH_LONG)
+                                .show()
                             val intent = Intent(this@LoginActivity, MainActivity::class.java)
                             intent.putExtra("privileges", "111")
                             intent.putExtra("login", usernameEdt.text.toString())
                             startActivity(intent)
+
                         } else if (jsonStr == "2") {
                             Toast.makeText(this, "Daný užívateľ neexistuje", Toast.LENGTH_LONG)
                                 .show()
+
                         } else if (jsonStr == "3") {
                             Toast.makeText(
                                 this,
@@ -439,7 +456,10 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                 "Niekde nastala chyba. Máte prístup k internetu?",
                                 Toast.LENGTH_LONG
                             ).show()
+
                         }
+
+
                     }
                 } catch (e: Exception) {
                     throw Exception(e)
@@ -458,6 +478,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } else {
             super.onBackPressed()
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

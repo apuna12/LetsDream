@@ -15,7 +15,9 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.View
+import android.view.WindowManager
 import android.widget.ImageButton
+import android.widget.ProgressBar
 import android.widget.TextView
 import kotlinx.android.synthetic.main.content_main.*
 import sk.letsdream.helperMethods.ButtonEffects

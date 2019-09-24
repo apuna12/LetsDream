@@ -1,12 +1,14 @@
 package sk.letsdream
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
+import android.os.Vibrator
 import android.support.annotation.RequiresApi
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
@@ -40,6 +42,7 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     override fun onCreate(savedInstanceState: Bundle?) {
         privileges = intent.getStringExtra("privileges")
         loginName = intent.getStringExtra("login")
+        val vibrate = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -78,6 +81,7 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         val issueButton: Button = findViewById(R.id.buttonIssue)
 
         emailButton.setOnClickListener{
+            vibrate.vibrate(70)
             val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_sendemail, null)
             val mBuilder = android.app.AlertDialog.Builder(this).setView(dialogView)
             val mAlertDialog = mBuilder.show()
@@ -124,7 +128,7 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
 
             spinnerRecipients.setOnClickListener{
-
+                vibrate.vibrate(70)
                 val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_recipients, null)
                 val mBuilder = android.app.AlertDialog.Builder(this).setView(dialogView)
                 val mAlertDialog = mBuilder.show()
@@ -214,6 +218,7 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                             {
                                 var potvrdit = v2 as CheckBox
                                 potvrdit.setOnClickListener{
+                                    vibrate.vibrate(70)
                                     if(it is CheckBox)
                                     {
                                         if(it.isChecked)
@@ -287,6 +292,7 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 }
 
                 dialogView.buttonPotvrditDialogRec.setOnClickListener {
+                    vibrate.vibrate(70)
                     mAlertDialog.dismiss()
                     var allRecipients: String = String()
                     for((name, checked) in rec)
@@ -300,10 +306,12 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                     recipientsTW.text = allRecipients
                 }
                 dialogView.buttonSpatDialogRec.setOnClickListener {
+                    vibrate.vibrate(70)
                     mAlertDialog.dismiss()
                 }
 
                 recipientsTW.setOnClickListener{
+                    vibrate.vibrate(70)
                     val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_fullrecipients, null)
                     val mBuilder = android.app.AlertDialog.Builder(this).setView(dialogView)
                     val mAlertDialog = mBuilder.show()
@@ -318,10 +326,12 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
 
             buttonSpat.setOnClickListener{
+                vibrate.vibrate(70)
                 mAlertDialog.dismiss()
             }
 
             buttonSubmit.setOnClickListener {
+                vibrate.vibrate(70)
                 var text = emailText.text.toString()
 
                 if(text != null || (text.replace(" ", "")) != "")
@@ -355,6 +365,7 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
 
         backupButton.setOnClickListener{
+            vibrate.vibrate(70)
             val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_backupdb, null)
             val mBuilder = android.app.AlertDialog.Builder(this).setView(dialogView)
             val mAlertDialog = mBuilder.show()
@@ -363,6 +374,7 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             val chkBox = dialogView.chkAck
 
             buttonSubmit.setOnClickListener{
+                vibrate.vibrate(70)
                 if(chkBox.isChecked) {
                     if (dbMethods.backUpTables() == "1") {
                         Toast.makeText(
@@ -378,11 +390,13 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             }
 
             buttonSpat.setOnClickListener{
+                vibrate.vibrate(70)
                 mAlertDialog.dismiss()
             }
         }
 
         deleteButton.setOnClickListener{
+            vibrate.vibrate(70)
             val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_deletedb, null)
             val mBuilder = android.app.AlertDialog.Builder(this).setView(dialogView)
             val mAlertDialog = mBuilder.show()
@@ -391,6 +405,7 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             val chkBox = dialogView.chkAck
 
             buttonSubmit.setOnClickListener{
+                vibrate.vibrate(70)
                 if(chkBox.isChecked) {
                     lateinit var dialog:AlertDialog
                     val builder = AlertDialog.Builder(this)
@@ -401,6 +416,7 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                         when(which){
                             DialogInterface.BUTTON_POSITIVE ->
                             {
+                                vibrate.vibrate(70)
                                 if (dbMethods.deleteDB() == "1") { //dbMethods.deleteDB()
                                     Toast.makeText(
                                         this, "Databaza zmazaná",
@@ -411,9 +427,11 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                                     Toast.makeText(this, "Hups! Niekde nastala chyba", Toast.LENGTH_SHORT).show()
                             }
                             DialogInterface.BUTTON_NEGATIVE -> {
+                                vibrate.vibrate(70)
                                 mAlertDialog.dismiss()
                             }
                             DialogInterface.BUTTON_NEUTRAL -> {
+                                vibrate.vibrate(70)
                                 dialog.dismiss()
                             }
 
@@ -428,6 +446,7 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
                     dialog = builder.create()
 
+
                     dialog.show()
                 }
                 else
@@ -435,11 +454,13 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             }
 
             buttonSpat.setOnClickListener{
+                vibrate.vibrate(70)
                 mAlertDialog.dismiss()
             }
         }
 
         issueButton.setOnClickListener{
+            vibrate.vibrate(70)
             val dialogViewIssue = LayoutInflater.from(this).inflate(R.layout.dialog_issue, null)
             val mBuilder = android.app.AlertDialog.Builder(this).setView(dialogViewIssue)
             val mAlertDialog = mBuilder.show()
@@ -450,6 +471,7 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             val chkBox = dialogViewIssue.chkAckIssue
 
             buttonSubmit.setOnClickListener{
+                vibrate.vibrate(70)
                 if(chkBox.isChecked) {
                     if (subject.text.toString() != "" && body.text.toString() != "") {
 
@@ -482,6 +504,7 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             }
 
             buttonSpat.setOnClickListener{
+                vibrate.vibrate(70)
                 mAlertDialog.dismiss()
             }
         }
