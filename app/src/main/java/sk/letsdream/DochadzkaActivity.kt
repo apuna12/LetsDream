@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.app.PendingIntent.getActivity
 import android.content.Context
 import android.database.SQLException
+import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
@@ -89,132 +90,204 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         val spinnerMeno: ImageButton = findViewById(R.id.vybermenaSPINNER)
         val vibrate = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
+        if(isOnline(this)) {
+            if (privileges == "1") {
+                meno.text = dbMethods.getLoggedUserName(loginName)
+                spinnerMeno.visibility = View.INVISIBLE
+                vybermenaLABEL.text = "Používateľ"
+            } else {
+                spinnerMeno.visibility = View.VISIBLE
+                vybermenaLABEL.text = "Výber mena"
+            }
 
-        if(privileges == "1")
-        {
-            meno.text = dbMethods.getLoggedUserName(loginName)
-            spinnerMeno.visibility = View.INVISIBLE
-            vybermenaLABEL.text = "Používateľ"
-        }
-        else
-        {
-            spinnerMeno.visibility = View.VISIBLE
-            vybermenaLABEL.text = "Výber mena"
-        }
+            var namesList: Array<String>
+            namesList = arrayOf<String>()
 
-        var namesList: Array<String>
-        namesList = arrayOf<String>()
+            namesList = dbMethods.getAllApprovedNames().split("?").toTypedArray()
 
-        namesList = dbMethods.getAllApprovedNames().split("?").toTypedArray()
-
-        val wrapper: Context = ContextThemeWrapper(this, R.style.popupMenuStyle)
-        var popUpMenu: PopupMenu = PopupMenu(wrapper, spinnerMeno)
-        if (namesList.size > 0) {
-            for (i in 0 until namesList.size - 1) {
-                if (namesList[i] != null || namesList[i] != "") {
-                    popUpMenu.menu.add(namesList[i])
+            val wrapper: Context = ContextThemeWrapper(this, R.style.popupMenuStyle)
+            var popUpMenu: PopupMenu = PopupMenu(wrapper, spinnerMeno)
+            if (namesList.size > 0) {
+                for (i in 0 until namesList.size - 1) {
+                    if (namesList[i] != null || namesList[i] != "") {
+                        popUpMenu.menu.add(namesList[i])
+                    }
                 }
             }
-        }
 
-        spinnerMeno.setOnClickListener {
-            vibrate.vibrate(70)
-            popUpMenu.setOnMenuItemClickListener {
+            spinnerMeno.setOnClickListener {
                 vibrate.vibrate(70)
-                if (popUpMenu.menu.size() == 0) {
-                    Toast.makeText(this, "Hups! V Databáze sa nenachádza žiadne meno!", Toast.LENGTH_LONG).show()
-                } else {
-                    meno.text = it.title.toString()
+                if(isOnline(this)) {
+                    popUpMenu.setOnMenuItemClickListener {
+                        vibrate.vibrate(70)
+                        if (popUpMenu.menu.size() == 0) {
+                            Toast.makeText(
+                                this,
+                                "Hups! V Databáze sa nenachádza žiadne meno!",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        } else {
+                            meno.text = it.title.toString()
+                        }
+                        true
+                    }
+                    popUpMenu.show()
                 }
-                true
+                else
+                    Toast.makeText(
+                        this,
+                        "Hups! Nie ste pripojený na internet.",
+                        Toast.LENGTH_SHORT
+                    ).show()
             }
-            popUpMenu.show()
-        }
 
-        prichodDatePicker.setOnClickListener {
-            vibrate.vibrate(70)
-            timeMethod.SetDatePicker(this, prichodDatePicker)
-        }
-        odchodDatePicker.setOnClickListener {
-            vibrate.vibrate(70)
-            timeMethod.SetDatePicker(this, odchodDatePicker)
-        }
-        prichodTimePicker.setOnClickListener {
-            vibrate.vibrate(70)
-            timeMethod.SetTimePicker(this, prichodTimePicker)
-        }
-        odchodTimePicker.setOnClickListener {
-            vibrate.vibrate(70)
-            timeMethod.SetTimePicker(this, odchodTimePicker)
-        }
-        poznamka.setOnClickListener {
-            vibrate.vibrate(70)
-        }
+            prichodDatePicker.setOnClickListener {
+                vibrate.vibrate(70)
+                if(isOnline(this)) {
+                    timeMethod.SetDatePicker(this, prichodDatePicker)
+                }
+                else
+                    Toast.makeText(
+                        this,
+                        "Hups! Nie ste pripojený na internet.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+            }
+            odchodDatePicker.setOnClickListener {
+                vibrate.vibrate(70)
+                if(isOnline(this)) {
+                    timeMethod.SetDatePicker(this, odchodDatePicker)
+                }
+                else
+                    Toast.makeText(
+                        this,
+                        "Hups! Nie ste pripojený na internet.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+            }
+            prichodTimePicker.setOnClickListener {
+                vibrate.vibrate(70)
+                if(isOnline(this)) {
+                    timeMethod.SetTimePicker(this, prichodTimePicker)
+                }
+                else
+                    Toast.makeText(
+                        this,
+                        "Hups! Nie ste pripojený na internet.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+            }
+            odchodTimePicker.setOnClickListener {
+                vibrate.vibrate(70)
+                if(isOnline(this)) {
+                    timeMethod.SetTimePicker(this, odchodTimePicker)
+                }
+                else
+                    Toast.makeText(
+                        this,
+                        "Hups! Nie ste pripojený na internet.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+            }
+            poznamka.setOnClickListener {
+                vibrate.vibrate(70)
+            }
 
 
-        submit.setOnClickListener {
-            vibrate.vibrate(70)
-            if (prichodDatePicker.text == "Dátum" || prichodTimePicker.text == "Čas" || odchodDatePicker.text == "Dátum" ||
-                odchodTimePicker.text == "Čas"
-            )
-                Toast.makeText(this, "Prosím vyplňte všetky potrebné informácie", Toast.LENGTH_LONG).show()
-
-            else if(meno.text.toString() == "Vyberte meno")
-                Toast.makeText(this, "Nevybrali ste meno", Toast.LENGTH_LONG).show()
-            else {
-                var timeParser = SimpleDateFormat("HH:mm")
-                var timeFormatter = SimpleDateFormat("HH:mm")
-                var dateParser = SimpleDateFormat("dd.MM.yyyy")
-                var dateFormatter = SimpleDateFormat("dd.MM.yyyy")
-                var dateOdTIME = dateFormatter.format(dateParser.parse(prichodDatePicker.text.toString()))
-                var dateDoTIME = dateFormatter.format(dateParser.parse(odchodDatePicker.text.toString()))
-                var casOdTIME = timeFormatter.format(timeParser.parse(prichodTimePicker.text.toString()))
-                var casDoTIME = timeFormatter.format(timeParser.parse(odchodTimePicker.text.toString()))
-                if (dateOdTIME <= dateDoTIME) {
-                    if ((casOdTIME <= casDoTIME && dateOdTIME <= dateDoTIME) || (casOdTIME > casDoTIME && dateOdTIME < dateDoTIME)) {
-                        var timeDifference = timeMethod.dateDifference(
-                            prichodDatePicker.text.toString(), prichodTimePicker.text.toString(),
-                            odchodDatePicker.text.toString(), odchodTimePicker.text.toString()
-                        )
-                        try {
-
-                            if (dbMethods.addActivityToVolunteer(
-                                    meno.text.toString(),
+            submit.setOnClickListener {
+                vibrate.vibrate(70)
+                if(isOnline(this)) {
+                    if (prichodDatePicker.text == "Dátum" || prichodTimePicker.text == "Čas" || odchodDatePicker.text == "Dátum" ||
+                        odchodTimePicker.text == "Čas"
+                    )
+                        Toast.makeText(
+                            this,
+                            "Prosím vyplňte všetky potrebné informácie",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    else if (meno.text.toString() == "Vyberte meno")
+                        Toast.makeText(this, "Nevybrali ste meno", Toast.LENGTH_LONG).show()
+                    else {
+                        var timeParser = SimpleDateFormat("HH:mm")
+                        var timeFormatter = SimpleDateFormat("HH:mm")
+                        var dateParser = SimpleDateFormat("dd.MM.yyyy")
+                        var dateFormatter = SimpleDateFormat("dd.MM.yyyy")
+                        var dateOdTIME =
+                            dateFormatter.format(dateParser.parse(prichodDatePicker.text.toString()))
+                        var dateDoTIME =
+                            dateFormatter.format(dateParser.parse(odchodDatePicker.text.toString()))
+                        var casOdTIME =
+                            timeFormatter.format(timeParser.parse(prichodTimePicker.text.toString()))
+                        var casDoTIME =
+                            timeFormatter.format(timeParser.parse(odchodTimePicker.text.toString()))
+                        if (dateOdTIME <= dateDoTIME) {
+                            if ((casOdTIME <= casDoTIME && dateOdTIME <= dateDoTIME) || (casOdTIME > casDoTIME && dateOdTIME < dateDoTIME)) {
+                                var timeDifference = timeMethod.dateDifference(
                                     prichodDatePicker.text.toString(),
                                     prichodTimePicker.text.toString(),
                                     odchodDatePicker.text.toString(),
-                                    odchodTimePicker.text.toString(),
-                                    timeDifference.toString(),
-                                    poznamka.text.toString()
-                                ) == "1"
-                            ) {
-                                Toast.makeText(this, "Záznam pridaný", Toast.LENGTH_LONG).show()
-                                meno.text = ""
-                                prichodDatePicker.text = "Dátum"
-                                odchodDatePicker.text = "Dátum"
-                                prichodTimePicker.text = "Čas"
-                                odchodTimePicker.text = "Čas"
-                                poznamka.text.clear()
-                            } else
-                                Toast.makeText(this, "Hups! Záznam nebol pridaný!", Toast.LENGTH_LONG).show()
+                                    odchodTimePicker.text.toString()
+                                )
+                                try {
 
-                        } catch (e: Exception) {
-                            Toast.makeText(
-                                this,
-                                "Hups! Záznam nebol pridaný! Máte zapnutý internet?",
-                                Toast.LENGTH_LONG
-                            )
+                                    if (dbMethods.addActivityToVolunteer(
+                                            meno.text.toString(),
+                                            prichodDatePicker.text.toString(),
+                                            prichodTimePicker.text.toString(),
+                                            odchodDatePicker.text.toString(),
+                                            odchodTimePicker.text.toString(),
+                                            timeDifference.toString(),
+                                            poznamka.text.toString()
+                                        ) == "1"
+                                    ) {
+                                        Toast.makeText(this, "Záznam pridaný", Toast.LENGTH_LONG)
+                                            .show()
+                                        meno.text = ""
+                                        prichodDatePicker.text = "Dátum"
+                                        odchodDatePicker.text = "Dátum"
+                                        prichodTimePicker.text = "Čas"
+                                        odchodTimePicker.text = "Čas"
+                                        poznamka.text.clear()
+                                    } else
+                                        Toast.makeText(
+                                            this,
+                                            "Hups! Záznam nebol pridaný!",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+
+                                } catch (e: Exception) {
+                                    Toast.makeText(
+                                        this,
+                                        "Hups! Záznam nebol pridaný! Máte zapnutý internet?",
+                                        Toast.LENGTH_LONG
+                                    )
+                                        .show()
+                                }
+                            } else {
+                                Toast.makeText(this, "Prosím opravte si čas!", Toast.LENGTH_LONG)
+                                    .show()
+                            }
+
+                        } else {
+                            Toast.makeText(this, "Prosím opravte si dátum!", Toast.LENGTH_LONG)
                                 .show()
                         }
-                    } else {
-                        Toast.makeText(this, "Prosím opravte si čas!", Toast.LENGTH_LONG).show()
                     }
-
-                } else {
-                    Toast.makeText(this, "Prosím opravte si dátum!", Toast.LENGTH_LONG).show()
                 }
+                else
+                    Toast.makeText(
+                        this,
+                        "Hups! Nie ste pripojený na internet.",
+                        Toast.LENGTH_SHORT
+                    ).show()
             }
         }
+        else
+            Toast.makeText(
+                this,
+                "Hups! Nie ste pripojený na internet.",
+                Toast.LENGTH_SHORT
+            ).show()
     }
 
 
@@ -269,5 +342,11 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    fun isOnline(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnected
     }
 }

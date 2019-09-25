@@ -3,6 +3,7 @@ package sk.letsdream
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.StrictMode
 import android.os.Vibrator
@@ -49,12 +50,16 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val timeMethod: TimeMethods = TimeMethods()
         val hexMethods: HexMethods = HexMethods()
 
-        timeMethod.UpdateActualTime(date,time)
+        timeMethod.UpdateActualTime(date, time)
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
+            this,
+            drawerLayout,
+            toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
@@ -65,267 +70,257 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val emailMethods: EmailMethods = EmailMethods()
         val initialSetup: InitialSetup = InitialSetup()
 
-        progressBar.visibility = View.INVISIBLE
 
-        if(initialSetup.initialDBCreation() != "111")
-        {
-            if(dbMethods.checkSuperUser()=="0")
-                initialSetup.CreateSuperAdmin(this)
-            else
-                Toast.makeText(this,"Hups! Niečo sa stalo. Skúste neskôr",Toast.LENGTH_LONG).show()
-        }
-        else if (initialSetup.initialDBCreation() == "111"){
+        if (isOnline(this)) {
 
-            val showPassChb: CheckBox = findViewById(R.id.showPassChb)
-            var passwordEdt: EditText = findViewById(R.id.passwordEdt)
-            var usernameEdt: EditText = findViewById(R.id.userEdt)
-            val registerBtn: Button = findViewById(R.id.registraciaBtn)
-            val loginBtn: Button = findViewById(R.id.prihlasBtn)
-
-            usernameEdt.setOnFocusChangeListener { v, hasFocus ->
-                vibrate.vibrate(70)
-                if (hasFocus) {
-                    usernameEdt.hint = ""
-                } else {
-                    if (usernameEdt.text.toString() == "")
-                        usernameEdt.hint = "Používateľ"
-                }
-            }
-
-            usernameEdt.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-                vibrate.vibrate(70)
-                if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
-                    passwordEdt.requestFocus()
-                    return@OnKeyListener true
-                }
-                false
-            })
-
-            passwordEdt.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-                vibrate.vibrate(70)
-                if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
-                    loginBtn.performClick()
-                    return@OnKeyListener true
-                }
-                false
-            })
-
-            passwordEdt.setOnFocusChangeListener { v, hasFocus ->
-                vibrate.vibrate(70)
-                if (hasFocus) {
-                    passwordEdt.hint = ""
-                } else {
-                    if (passwordEdt.text.toString() == "")
-                        passwordEdt.hint = "Heslo"
-                }
-            }
-
-            showPassChb.setOnCheckedChangeListener { compoundButton: CompoundButton, b: Boolean ->
-                vibrate.vibrate(70)
-                if (b)
-                    passwordEdt.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
+            if (initialSetup.initialDBCreation() != "111") {
+                if (dbMethods.checkSuperUser() == "0")
+                    initialSetup.CreateSuperAdmin(this)
                 else
-                    passwordEdt.inputType = 129
-            }
+                    Toast.makeText(
+                        this,
+                        "Hups! Niečo sa stalo. Skúste neskôr",
+                        Toast.LENGTH_LONG
+                    ).show()
+            } else if (initialSetup.initialDBCreation() == "111") {
 
-            registerBtn.setOnClickListener {
-                vibrate.vibrate(70)
+                val showPassChb: CheckBox = findViewById(R.id.showPassChb)
+                var passwordEdt: EditText = findViewById(R.id.passwordEdt)
+                var usernameEdt: EditText = findViewById(R.id.userEdt)
+                val registerBtn: Button = findViewById(R.id.registraciaBtn)
+                val loginBtn: Button = findViewById(R.id.prihlasBtn)
 
-                val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_register, null)
-                val mBuilder = AlertDialog.Builder(this).setView(dialogView)
-                val mAlertDialog = mBuilder.show()
-                val userRegister = dialogView.userEdt
-                val passRegister = dialogView.passwordRegEdt
-                val passAgainRegister = dialogView.passwordAgainRegEdt
-                val emailRegister = dialogView.emailRegEdt
-                val nameRegister = dialogView.nameRegEdt
-                val surnameRegister = dialogView.surnameRegEdt
-                val back = dialogView.backRegBtn
-                val gdprCHB = dialogView.gdprCHB
-                userRegister.setOnFocusChangeListener { v, hasFocus ->
+                usernameEdt.setOnFocusChangeListener { v, hasFocus ->
                     vibrate.vibrate(70)
                     if (hasFocus) {
-                        userRegister.hint = ""
+                        usernameEdt.hint = ""
                     } else {
-                        if (userRegister.text.toString() == "")
-                            userRegister.hint = "Používateľ"
-                    }
-                }
-                passRegister.setOnFocusChangeListener { v, hasFocus ->
-                    vibrate.vibrate(70)
-                    if (hasFocus) {
-                        passRegister.hint = ""
-                    } else {
-                        if (passRegister.text.toString() == "")
-                            passRegister.hint = "Heslo"
-                    }
-                }
-                passAgainRegister.setOnFocusChangeListener { v, hasFocus ->
-                    vibrate.vibrate(70)
-                    if (hasFocus) {
-                        passAgainRegister.hint = ""
-                    } else {
-                        if (passAgainRegister.text.toString() == "")
-                            passAgainRegister.hint = "Heslo znova"
-                    }
-                }
-                emailRegister.setOnFocusChangeListener { v, hasFocus ->
-                    vibrate.vibrate(70)
-                    if (hasFocus) {
-                        emailRegister.hint = ""
-                    } else {
-                        if (emailRegister.text.toString() == "")
-                            emailRegister.hint = "Email"
+                        if (usernameEdt.text.toString() == "")
+                            usernameEdt.hint = "Používateľ"
                     }
                 }
 
-                nameRegister.setOnFocusChangeListener { v, hasFocus ->
+                usernameEdt.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+                    vibrate.vibrate(70)
+                    if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+                        passwordEdt.requestFocus()
+                        return@OnKeyListener true
+                    }
+                    false
+                })
+
+                passwordEdt.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+                    vibrate.vibrate(70)
+                    if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
+                        loginBtn.performClick()
+                        return@OnKeyListener true
+                    }
+                    false
+                })
+
+                passwordEdt.setOnFocusChangeListener { v, hasFocus ->
                     vibrate.vibrate(70)
                     if (hasFocus) {
-                        emailRegister.hint = ""
+                        passwordEdt.hint = ""
                     } else {
-                        if (emailRegister.text.toString() == "")
-                            emailRegister.hint = "Zadajte meno"
-                    }
-                }
-                surnameRegister.setOnFocusChangeListener { v, hasFocus ->
-                    vibrate.vibrate(70)
-                    if (hasFocus) {
-                        emailRegister.hint = ""
-                    } else {
-                        if (emailRegister.text.toString() == "")
-                            emailRegister.hint = "Zadajte priezvisko"
+                        if (passwordEdt.text.toString() == "")
+                            passwordEdt.hint = "Heslo"
                     }
                 }
 
-                userRegister.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+                showPassChb.setOnCheckedChangeListener { compoundButton: CompoundButton, b: Boolean ->
                     vibrate.vibrate(70)
-                    if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
-                        passRegister.requestFocus()
-                        return@OnKeyListener true
-                    }
-                    false
-                })
-                passRegister.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-                    vibrate.vibrate(70)
-                    if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
-                        passAgainRegister.requestFocus()
-                        return@OnKeyListener true
-                    }
-                    false
-                })
-                passAgainRegister.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-                    vibrate.vibrate(70)
-                    if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
-                        nameRegister.requestFocus()
-                        return@OnKeyListener true
-                    }
-                    false
-                })
-                nameRegister.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-                    vibrate.vibrate(70)
-                    if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
-                        surnameRegister.requestFocus()
-                        return@OnKeyListener true
-                    }
-                    false
-                })
-                surnameRegister.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-                    vibrate.vibrate(70)
-                    if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
-                        emailRegister.requestFocus()
-                        return@OnKeyListener true
-                    }
-                    false
-                })
-                surnameRegister.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-                    vibrate.vibrate(70)
-                    if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
-                        emailRegister.requestFocus()
-                        return@OnKeyListener true
-                    }
-                    false
-                })
-                emailRegister.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-                    vibrate.vibrate(70)
-                    if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
-                        gdprCHB.requestFocus()
-                        return@OnKeyListener true
-                    }
-                    false
-                })
+                    if (b)
+                        passwordEdt.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
+                    else
+                        passwordEdt.inputType = 129
+                }
 
-                dialogView.registrujBtn.setOnClickListener {
-                    getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                    vibrate.vibrate(70)
-                    if (userRegister.text.toString() == "") {
-                        Toast.makeText(this, "Prosím zadajte meno účtu!", Toast.LENGTH_LONG).show()
-                    } else if (passRegister.text.toString() == "") {
-                        Toast.makeText(this, "Prosím zadajte heslo!", Toast.LENGTH_LONG).show()
-                    } else if (passAgainRegister.text.toString() == "") {
-                        Toast.makeText(this, "Prosím zadajte znova heslo!", Toast.LENGTH_LONG)
-                            .show()
-                    } else if (emailRegister.text.toString() == "") {
-                        Toast.makeText(this, "Prosím zadajte emailovú adresu!", Toast.LENGTH_LONG)
-                            .show()
-                    } else if (!emailMethods.isEmailValid(emailRegister.text.toString())) {
-                        Toast.makeText(
-                            this,
-                            "Prosím zadajte správnu emailovú adresu!",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    } else if (passRegister.text.toString() != passAgainRegister.text.toString()) {
-                        Toast.makeText(this, "Vaše heslá sa nezhodujú!", Toast.LENGTH_LONG).show()
-                    } else if (nameRegister.text.toString() == "") {
-                        Toast.makeText(this, "Zadajte prosím meno!", Toast.LENGTH_LONG).show()
-                    } else if (surnameRegister.text.toString() == "") {
-                        Toast.makeText(this, "Zadajte prosím priezvisko!", Toast.LENGTH_LONG).show()
-                    } else if (!gdprCHB.isChecked) {
-                        Toast.makeText(
-                            this,
-                            "Pre úspešne zaregistrovanie musíte súhlasiť so spracovaním údajov!",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    } else {
+                registerBtn.setOnClickListener {
 
-                        val sql =
-                            "http://letsdream.xf.cz/index.php?username=" + userRegister.text + "&mod=register&rest=get"
+                    if (isOnline(this)) {
+                        vibrate.vibrate(70)
 
-                        try {
-                            var jsonStr: String = URL(sql).readText()
-                            var firstApp: Int = 0
-                            var lastApp: Int = 0
-                            if (jsonStr.toString().contains("<") || jsonStr.toString().contains(">")) {
-                                for (i in 0 until jsonStr.toString().length) {
-                                    if (jsonStr[i] == '<') {
-                                        firstApp = i
-                                        break
-                                    }
-                                }
-                                for (i in 0 until jsonStr.toString().length) {
-                                    if (jsonStr[i] == '>')
-                                        lastApp = i
-                                }
-                                jsonStr = jsonStr.removeRange(firstApp, lastApp + 1)
+                        val dialogView =
+                            LayoutInflater.from(this).inflate(R.layout.dialog_register, null)
+                        val mBuilder = AlertDialog.Builder(this).setView(dialogView)
+                        val mAlertDialog = mBuilder.show()
+                        val userRegister = dialogView.userEdt
+                        val passRegister = dialogView.passwordRegEdt
+                        val passAgainRegister = dialogView.passwordAgainRegEdt
+                        val emailRegister = dialogView.emailRegEdt
+                        val nameRegister = dialogView.nameRegEdt
+                        val surnameRegister = dialogView.surnameRegEdt
+                        val back = dialogView.backRegBtn
+                        val gdprCHB = dialogView.gdprCHB
+                        userRegister.setOnFocusChangeListener { v, hasFocus ->
+                            vibrate.vibrate(70)
+                            if (hasFocus) {
+                                userRegister.hint = ""
+                            } else {
+                                if (userRegister.text.toString() == "")
+                                    userRegister.hint = "Používateľ"
                             }
-                            if (jsonStr == "1")
+                        }
+                        passRegister.setOnFocusChangeListener { v, hasFocus ->
+                            vibrate.vibrate(70)
+                            if (hasFocus) {
+                                passRegister.hint = ""
+                            } else {
+                                if (passRegister.text.toString() == "")
+                                    passRegister.hint = "Heslo"
+                            }
+                        }
+                        passAgainRegister.setOnFocusChangeListener { v, hasFocus ->
+                            vibrate.vibrate(70)
+                            if (hasFocus) {
+                                passAgainRegister.hint = ""
+                            } else {
+                                if (passAgainRegister.text.toString() == "")
+                                    passAgainRegister.hint = "Heslo znova"
+                            }
+                        }
+                        emailRegister.setOnFocusChangeListener { v, hasFocus ->
+                            vibrate.vibrate(70)
+                            if (hasFocus) {
+                                emailRegister.hint = ""
+                            } else {
+                                if (emailRegister.text.toString() == "")
+                                    emailRegister.hint = "Email"
+                            }
+                        }
+
+                        nameRegister.setOnFocusChangeListener { v, hasFocus ->
+                            vibrate.vibrate(70)
+                            if (hasFocus) {
+                                emailRegister.hint = ""
+                            } else {
+                                if (emailRegister.text.toString() == "")
+                                    emailRegister.hint = "Zadajte meno"
+                            }
+                        }
+                        surnameRegister.setOnFocusChangeListener { v, hasFocus ->
+                            vibrate.vibrate(70)
+                            if (hasFocus) {
+                                emailRegister.hint = ""
+                            } else {
+                                if (emailRegister.text.toString() == "")
+                                    emailRegister.hint = "Zadajte priezvisko"
+                            }
+                        }
+
+                        userRegister.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+                            vibrate.vibrate(70)
+                            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+                                passRegister.requestFocus()
+                                return@OnKeyListener true
+                            }
+                            false
+                        })
+                        passRegister.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+                            vibrate.vibrate(70)
+                            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+                                passAgainRegister.requestFocus()
+                                return@OnKeyListener true
+                            }
+                            false
+                        })
+                        passAgainRegister.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+                            vibrate.vibrate(70)
+                            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+                                nameRegister.requestFocus()
+                                return@OnKeyListener true
+                            }
+                            false
+                        })
+                        nameRegister.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+                            vibrate.vibrate(70)
+                            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+                                surnameRegister.requestFocus()
+                                return@OnKeyListener true
+                            }
+                            false
+                        })
+                        surnameRegister.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+                            vibrate.vibrate(70)
+                            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+                                emailRegister.requestFocus()
+                                return@OnKeyListener true
+                            }
+                            false
+                        })
+                        surnameRegister.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+                            vibrate.vibrate(70)
+                            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+                                emailRegister.requestFocus()
+                                return@OnKeyListener true
+                            }
+                            false
+                        })
+                        emailRegister.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+                            vibrate.vibrate(70)
+                            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+                                gdprCHB.requestFocus()
+                                return@OnKeyListener true
+                            }
+                            false
+                        })
+
+                        dialogView.registrujBtn.setOnClickListener {
+                            getWindow().setFlags(
+                                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                            );
+                            vibrate.vibrate(70)
+                            if (userRegister.text.toString() == "") {
+                                Toast.makeText(this, "Prosím zadajte meno účtu!", Toast.LENGTH_LONG)
+                                    .show()
+                            } else if (passRegister.text.toString() == "") {
+                                Toast.makeText(this, "Prosím zadajte heslo!", Toast.LENGTH_LONG)
+                                    .show()
+                            } else if (passAgainRegister.text.toString() == "") {
                                 Toast.makeText(
                                     this,
-                                    "Toto meno už používa niekto iný",
+                                    "Prosím zadajte znova heslo!",
+                                    Toast.LENGTH_LONG
+                                )
+                                    .show()
+                            } else if (emailRegister.text.toString() == "") {
+                                Toast.makeText(
+                                    this,
+                                    "Prosím zadajte emailovú adresu!",
+                                    Toast.LENGTH_LONG
+                                )
+                                    .show()
+                            } else if (!emailMethods.isEmailValid(emailRegister.text.toString().trim())) {
+                                Toast.makeText(
+                                    this,
+                                    "Prosím zadajte správnu emailovú adresu!",
                                     Toast.LENGTH_LONG
                                 ).show()
-                            else {
-
-                                var digest: MessageDigest
-                                digest = MessageDigest.getInstance("SHA-256")
-                                digest.update(passRegister.text.toString().toByteArray())
-                                var hash = hexMethods.bytesToHexString(digest.digest())
+                            } else if (passRegister.text.toString() != passAgainRegister.text.toString()) {
+                                Toast.makeText(this, "Vaše heslá sa nezhodujú!", Toast.LENGTH_LONG)
+                                    .show()
+                            } else if (nameRegister.text.toString() == "") {
+                                Toast.makeText(this, "Zadajte prosím meno!", Toast.LENGTH_LONG)
+                                    .show()
+                            } else if (surnameRegister.text.toString() == "") {
+                                Toast.makeText(
+                                    this,
+                                    "Zadajte prosím priezvisko!",
+                                    Toast.LENGTH_LONG
+                                )
+                                    .show()
+                            } else if (!gdprCHB.isChecked) {
+                                Toast.makeText(
+                                    this,
+                                    "Pre úspešne zaregistrovanie musíte súhlasiť so spracovaním údajov!",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            } else {
 
                                 val sql =
-                                    "http://letsdream.xf.cz/index.php?username=" + userRegister.text + "&password=" + hash +
-                                            "&email=" + emailRegister.text + "&name=" + surnameRegister.text + ",_" +
-                                            nameRegister.text + "&mod=register&rest=post"
+                                    "http://letsdream.xf.cz/index.php?username=" + userRegister.text + "&mod=register&rest=get"
 
                                 try {
                                     var jsonStr: String = URL(sql).readText()
@@ -347,126 +342,196 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                         }
                                         jsonStr = jsonStr.removeRange(firstApp, lastApp + 1)
                                     }
-                                    if (jsonStr.contains("1")) {
+                                    if (jsonStr == "1")
                                         Toast.makeText(
                                             this,
-                                            "Používateľ úspešne registrovaný!",
+                                            "Toto meno už používa niekto iný",
                                             Toast.LENGTH_LONG
                                         ).show()
-                                        val intent = Intent(this, LoginActivity::class.java)
-                                        startActivity(intent)
-                                    } else {
-                                        Toast.makeText(
-                                            this,
-                                            "Hups, niečo je zlé!",
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                                    }
+                                    else {
 
+                                        var digest: MessageDigest
+                                        digest = MessageDigest.getInstance("SHA-256")
+                                        digest.update(passRegister.text.toString().toByteArray())
+                                        var hash = hexMethods.bytesToHexString(digest.digest())
+
+                                        val sql =
+                                            "http://letsdream.xf.cz/index.php?username=" +
+                                                    userRegister.text + "&password=" + hash +
+                                                    "&email=" + emailRegister.text.toString().trim() +
+                                                    "&name=" + surnameRegister.text + ",_" +
+                                                    nameRegister.text + "&mod=register&rest=post"
+
+                                        try {
+                                            var jsonStr: String = URL(sql).readText()
+                                            var firstApp: Int = 0
+                                            var lastApp: Int = 0
+                                            if (jsonStr.toString().contains("<") || jsonStr.toString().contains(
+                                                    ">"
+                                                )
+                                            ) {
+                                                for (i in 0 until jsonStr.toString().length) {
+                                                    if (jsonStr[i] == '<') {
+                                                        firstApp = i
+                                                        break
+                                                    }
+                                                }
+                                                for (i in 0 until jsonStr.toString().length) {
+                                                    if (jsonStr[i] == '>')
+                                                        lastApp = i
+                                                }
+                                                jsonStr = jsonStr.removeRange(firstApp, lastApp + 1)
+                                            }
+                                            if (jsonStr.contains("1")) {
+                                                Toast.makeText(
+                                                    this,
+                                                    "Používateľ úspešne registrovaný!",
+                                                    Toast.LENGTH_LONG
+                                                ).show()
+                                                val intent = Intent(this, LoginActivity::class.java)
+                                                startActivity(intent)
+                                            } else {
+                                                Toast.makeText(
+                                                    this,
+                                                    "Hups, niečo je zlé!",
+                                                    Toast.LENGTH_LONG
+                                                ).show()
+                                                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                                            }
+
+                                        } catch (e: Exception) {
+                                            throw Exception(e)
+                                        }
+                                    }
                                 } catch (e: Exception) {
                                     throw Exception(e)
                                 }
                             }
+                        }
+                        back.setOnClickListener {
+                            vibrate.vibrate(70)
+                            mAlertDialog.cancel()
+                        }
+                    } else
+                        Toast.makeText(
+                            this,
+                            "Hups! Nie ste pripojený na internet",
+                            Toast.LENGTH_LONG
+                        ).show()
+
+
+                }
+
+                loginBtn.setOnClickListener {
+
+                    if (isOnline(this)) {
+                        /*getWindow().setFlags(
+                            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                        )*/
+
+
+                        vibrate.vibrate(70)
+                        var digest: MessageDigest
+                        digest = MessageDigest.getInstance("SHA-256")
+                        digest.update(passwordEdt.text.toString().toByteArray())
+                        var hash = hexMethods.bytesToHexString(digest.digest())
+
+                        val sql =
+                            "http://letsdream.xf.cz/index.php?username=" + usernameEdt.text + "&password=" + hash + "&mod=login&rest=get"
+
+                        try {
+                            var jsonStr: String = URL(sql).readText()
+                            var firstApp: Int = 0
+                            var lastApp: Int = 0
+                            if (jsonStr.toString().contains("<") || jsonStr.toString().contains(">")) {
+                                for (i in 0 until jsonStr.toString().length) {
+                                    if (jsonStr[i] == '<') {
+                                        firstApp = i
+                                        break
+                                    }
+                                }
+                                for (i in 0 until jsonStr.toString().length) {
+                                    if (jsonStr[i] == '>')
+                                        lastApp = i
+                                }
+                                jsonStr = jsonStr.removeRange(firstApp, lastApp + 1)
+                                if (jsonStr == "0") {
+                                    Toast.makeText(this, "Nesprávne heslo", Toast.LENGTH_LONG)
+                                        .show()
+                                } else if (jsonStr == "1") // User
+                                {
+                                    Toast.makeText(this, "Prihlásenie úspešné", Toast.LENGTH_LONG)
+                                        .show()
+                                    val intent =
+                                        Intent(this@LoginActivity, MainActivity::class.java)
+                                    intent.putExtra("privileges", "1")
+                                    intent.putExtra("login", usernameEdt.text.toString())
+                                    startActivity(intent)
+
+                                } else if (jsonStr == "11") // Admin
+                                {
+                                    Toast.makeText(this, "Prihlásenie úspešné", Toast.LENGTH_LONG)
+                                        .show()
+                                    val intent =
+                                        Intent(this@LoginActivity, MainActivity::class.java)
+                                    intent.putExtra("privileges", "11")
+                                    intent.putExtra("login", usernameEdt.text.toString())
+                                    startActivity(intent)
+
+                                } else if (jsonStr == "111") // Super Admin
+                                {
+                                    Toast.makeText(this, "Prihlásenie úspešné", Toast.LENGTH_LONG)
+                                        .show()
+                                    val intent =
+                                        Intent(this@LoginActivity, MainActivity::class.java)
+                                    intent.putExtra("privileges", "111")
+                                    intent.putExtra("login", usernameEdt.text.toString())
+                                    startActivity(intent)
+
+                                } else if (jsonStr == "2") {
+                                    Toast.makeText(
+                                        this,
+                                        "Daný užívateľ neexistuje",
+                                        Toast.LENGTH_LONG
+                                    )
+                                        .show()
+
+                                } else if (jsonStr == "3") {
+                                    Toast.makeText(
+                                        this,
+                                        "Vaša registrácia nebola potvrdená administrátorom!",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                } else {
+                                    Toast.makeText(
+                                        this,
+                                        "Niekde nastala chyba. Máte prístup k internetu?",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+
+                                }
+
+
+                            }
                         } catch (e: Exception) {
                             throw Exception(e)
                         }
+                    } else {
+                        Toast.makeText(
+                            this,
+                            "Hups! Nie ste pripojený na internet",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
-                back.setOnClickListener {
-                    vibrate.vibrate(70)
-                    mAlertDialog.cancel()
-                }
             }
-
-            loginBtn.setOnClickListener {
-
-                progressBar.visibility = View.VISIBLE
-                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-
-
-                vibrate.vibrate(70)
-                var digest: MessageDigest
-                digest = MessageDigest.getInstance("SHA-256")
-                digest.update(passwordEdt.text.toString().toByteArray())
-                var hash = hexMethods.bytesToHexString(digest.digest())
-
-                val sql =
-                    "http://letsdream.xf.cz/index.php?username=" + usernameEdt.text + "&password=" + hash + "&mod=login&rest=get"
-
-                try {
-                    var jsonStr: String = URL(sql).readText()
-                    var firstApp: Int = 0
-                    var lastApp: Int = 0
-                    if (jsonStr.toString().contains("<") || jsonStr.toString().contains(">")) {
-                        for (i in 0 until jsonStr.toString().length) {
-                            if (jsonStr[i] == '<') {
-                                firstApp = i
-                                break
-                            }
-                        }
-                        for (i in 0 until jsonStr.toString().length) {
-                            if (jsonStr[i] == '>')
-                                lastApp = i
-                        }
-                        jsonStr = jsonStr.removeRange(firstApp, lastApp + 1)
-                        if (jsonStr == "0") {
-                            Toast.makeText(this, "Nesprávne heslo", Toast.LENGTH_LONG).show()
-                        } else if (jsonStr == "1") // User
-                        {
-                            Toast.makeText(this, "Prihlásenie úspešné", Toast.LENGTH_LONG)
-                                .show()
-                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                            intent.putExtra("privileges", "1")
-                            intent.putExtra("login", usernameEdt.text.toString())
-                            startActivity(intent)
-
-                        } else if (jsonStr == "11") // Admin
-                        {
-                            Toast.makeText(this, "Prihlásenie úspešné", Toast.LENGTH_LONG)
-                                .show()
-                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                            intent.putExtra("privileges", "11")
-                            intent.putExtra("login", usernameEdt.text.toString())
-                            startActivity(intent)
-
-                        } else if (jsonStr == "111") // Super Admin
-                        {
-                            Toast.makeText(this, "Prihlásenie úspešné", Toast.LENGTH_LONG)
-                                .show()
-                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                            intent.putExtra("privileges", "111")
-                            intent.putExtra("login", usernameEdt.text.toString())
-                            startActivity(intent)
-
-                        } else if (jsonStr == "2") {
-                            Toast.makeText(this, "Daný užívateľ neexistuje", Toast.LENGTH_LONG)
-                                .show()
-
-                        } else if (jsonStr == "3") {
-                            Toast.makeText(
-                                this,
-                                "Vaša registrácia nebola potvrdená administrátorom!",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        } else {
-                            Toast.makeText(
-                                this,
-                                "Niekde nastala chyba. Máte prístup k internetu?",
-                                Toast.LENGTH_LONG
-                            ).show()
-
-                        }
-
-
-                    }
-                } catch (e: Exception) {
-                    throw Exception(e)
-                }
-
-
-            }
+        } else {
+            Toast.makeText(
+                this,
+                "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
+                Toast.LENGTH_LONG
+            ).show()
         }
 
     }
@@ -522,5 +587,11 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    fun isOnline(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnected
     }
 }

@@ -2,6 +2,7 @@ package sk.letsdream
 
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Vibrator
 import android.support.design.widget.FloatingActionButton
@@ -19,6 +20,7 @@ import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import kotlinx.android.synthetic.main.content_main.*
 import sk.letsdream.helperMethods.ButtonEffects
 import sk.letsdream.helperMethods.TimeMethods
@@ -75,31 +77,72 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         dochadzka.setOnClickListener{
             vibrate.vibrate(70)
-            val intent = Intent(this@MainActivity, DochadzkaActivity::class.java)
-            intent.putExtra("privileges", privileges)
-            intent.putExtra("login", loginName)
-            startActivity(intent)
+            if(isOnline(this)) {
+                val intent = Intent(this@MainActivity, DochadzkaActivity::class.java)
+                intent.putExtra("privileges", privileges)
+                intent.putExtra("login", loginName)
+                startActivity(intent)
+            }
+            else
+            {
+                Toast.makeText(
+                    this,
+                    "Hups! Nie ste pripojený na internet",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
         meno.setOnClickListener{
             vibrate.vibrate(70)
-            val intent = Intent(this@MainActivity, VyberMenaActivity::class.java)
-            intent.putExtra("privileges", privileges)
-            intent.putExtra("login", loginName)
-            startActivity(intent)
+            if(isOnline(this)) {
+
+                val intent = Intent(this@MainActivity, VyberMenaActivity::class.java)
+                intent.putExtra("privileges", privileges)
+                intent.putExtra("login", loginName)
+                startActivity(intent)
+            }
+            else
+            {
+                Toast.makeText(
+                    this,
+                    "Hups! Nie ste pripojený na internet",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
         akcie.setOnClickListener{
             vibrate.vibrate(70)
-            val intent = Intent(this@MainActivity, AkcieActivity::class.java)
-            intent.putExtra("privileges", privileges)
-            intent.putExtra("login", loginName)
-            startActivity(intent)
+            if(isOnline(this)) {
+                val intent = Intent(this@MainActivity, AkcieActivity::class.java)
+                intent.putExtra("privileges", privileges)
+                intent.putExtra("login", loginName)
+                startActivity(intent)
+            }
+            else
+            {
+                Toast.makeText(
+                    this,
+                    "Hups! Nie ste pripojený na internet",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
         statistika.setOnClickListener{
             vibrate.vibrate(70)
-            val intent = Intent(this@MainActivity, StatistikyActivity::class.java)
-            intent.putExtra("privileges", privileges)
-            intent.putExtra("login", loginName)
-            startActivity(intent)
+            if(isOnline(this)) {
+                val intent = Intent(this@MainActivity, StatistikyActivity::class.java)
+                intent.putExtra("privileges", privileges)
+                intent.putExtra("login", loginName)
+                startActivity(intent)
+            }
+            else
+            {
+                Toast.makeText(
+                    this,
+                    "Hups! Nie ste pripojený na internet",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
 
         if(privileges!="111")
@@ -112,10 +155,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             adminButtonTW.visibility = View.VISIBLE
             admin.setOnClickListener {
                 vibrate.vibrate(70)
-                val intent = Intent(this@MainActivity, AdminActivity::class.java)
-                intent.putExtra("privileges", privileges)
-                intent.putExtra("login", loginName)
-                startActivity(intent)
+                if(isOnline(this)) {
+                    val intent = Intent(this@MainActivity, AdminActivity::class.java)
+                    intent.putExtra("privileges", privileges)
+                    intent.putExtra("login", loginName)
+                    startActivity(intent)
+                }
             }
         }
 
@@ -172,5 +217,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+    fun isOnline(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnected
     }
 }

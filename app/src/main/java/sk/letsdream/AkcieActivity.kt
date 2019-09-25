@@ -7,6 +7,7 @@ import android.content.ContextWrapper
 import android.content.DialogInterface
 import android.content.Intent
 import android.media.Image
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.StrictMode
 import android.os.Vibrator
@@ -142,20 +143,28 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         try {
-            var actionName: String = popUpMenu.menu.getItem(0).toString()
-            nazovAkcieVedlaSpinnera.text = actionName
-            nazovAkcieZoSpinnera.text = actionName
-            val statsArray: Array<String> = dbMethods.getLabelStatistics(actionName.replace(" ", "_"))
-            if(statsArray.get(0) != "NaN") {
-                pocetDobr.text = statsArray.get(0)
-                pocetNavs.text = statsArray.get(1)
-                datum.text = statsArray.get(2)
-                casOd.text = statsArray.get(3)
-                casDo.text = statsArray.get(4)
-                poznamka.text = statsArray.get(5)
+            if(isOnline(this)) {
+                var actionName: String = popUpMenu.menu.getItem(0).toString()
+                nazovAkcieVedlaSpinnera.text = actionName
+                nazovAkcieZoSpinnera.text = actionName
+                val statsArray: Array<String> =
+                    dbMethods.getLabelStatistics(actionName.replace(" ", "_"))
+                if (statsArray.get(0) != "NaN") {
+                    pocetDobr.text = statsArray.get(0)
+                    pocetNavs.text = statsArray.get(1)
+                    datum.text = statsArray.get(2)
+                    casOd.text = statsArray.get(3)
+                    casDo.text = statsArray.get(4)
+                    poznamka.text = statsArray.get(5)
+                } else
+                    Toast.makeText(this, "Hups! Niečo je zlé", Toast.LENGTH_LONG).show()
             }
             else
-                Toast.makeText(this, "Hups! Niečo je zlé", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this,
+                    "Hups! Nie ste pripojený na internet.",
+                    Toast.LENGTH_SHORT
+                ).show()
         }
         catch (e:Exception)
         {
@@ -165,27 +174,33 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         vyberAkcieSpinner.setOnClickListener{
             vibrate.vibrate(70)
-            popUpMenu.setOnMenuItemClickListener {
-                vibrate.vibrate(70)
-                var actionName: String = it.title.toString()
-                nazovAkcieVedlaSpinnera.setText(actionName)
-                nazovAkcieZoSpinnera.setText(actionName)
-                val statsArray: Array<String> = dbMethods.getLabelStatistics(actionName)
-                if(statsArray.get(0) != "NaN") {
-                    pocetDobr.text = statsArray.get(0)
-                    pocetNavs.text = statsArray.get(1)
-                    datum.text = statsArray.get(2)
-                    casOd.text = statsArray.get(3)
-                    casDo.text = statsArray.get(4)
-                    poznamka.text = statsArray.get(5)
-                    //dorobit poznamku
+            if(isOnline(this)) {
+                popUpMenu.setOnMenuItemClickListener {
+                    vibrate.vibrate(70)
+                    var actionName: String = it.title.toString()
+                    nazovAkcieVedlaSpinnera.setText(actionName)
+                    nazovAkcieZoSpinnera.setText(actionName)
+                    val statsArray: Array<String> = dbMethods.getLabelStatistics(actionName)
+                    if (statsArray.get(0) != "NaN") {
+                        pocetDobr.text = statsArray.get(0)
+                        pocetNavs.text = statsArray.get(1)
+                        datum.text = statsArray.get(2)
+                        casOd.text = statsArray.get(3)
+                        casDo.text = statsArray.get(4)
+                        poznamka.text = statsArray.get(5)
+                        //dorobit poznamku
+                    } else
+                        Toast.makeText(this, "Hups! Niečo je zlé", Toast.LENGTH_LONG).show()
+                    true
                 }
-                else
-                    Toast.makeText(this, "Hups! Niečo je zlé", Toast.LENGTH_LONG).show()
-                true
+                popUpMenu.show()
             }
-            popUpMenu.show()
-
+            else
+                Toast.makeText(
+                    this,
+                    "Hups! Nie ste pripojený na internet.",
+                    Toast.LENGTH_SHORT
+                ).show()
 
         }
         vytvoritAkciu.visibility = View.INVISIBLE
@@ -259,124 +274,266 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         upravitCas.setOnClickListener{
             vibrate.vibrate(70)
-            updateLabelMethods.updateTimeLabel(this, casOd, casDo, nazovAkcieVedlaSpinnera)
+            if(isOnline(this)) {
+
+                updateLabelMethods.updateTimeLabel(this, casOd, casDo, nazovAkcieVedlaSpinnera)
+            }
+            Toast.makeText(
+                this,
+                "Hups! Nie ste pripojený na internet.",
+                Toast.LENGTH_SHORT
+            ).show()
         }
         upravitDobr.setOnClickListener{
             vibrate.vibrate(70)
-            updateLabelMethods.updateNumberLabels(this, upravitDobr, pocetDobr, nazovAkcieVedlaSpinnera, "pocDobr")
+            if(isOnline(this)) {
+
+                updateLabelMethods.updateNumberLabels(
+                    this,
+                    upravitDobr,
+                    pocetDobr,
+                    nazovAkcieVedlaSpinnera,
+                    "pocDobr"
+                )
+            }
+            else
+                Toast.makeText(
+                    this,
+                    "Hups! Nie ste pripojený na internet.",
+                    Toast.LENGTH_SHORT
+                ).show()
         }
         upravitNavs.setOnClickListener{
             vibrate.vibrate(70)
-            updateLabelMethods.updateNumberLabels(this, upravitNavs, pocetNavs, nazovAkcieVedlaSpinnera, "pocNavs")
+            if(isOnline(this)) {
+                updateLabelMethods.updateNumberLabels(
+                    this,
+                    upravitNavs,
+                    pocetNavs,
+                    nazovAkcieVedlaSpinnera,
+                    "pocNavs"
+                )
+            }
+            else
+                Toast.makeText(
+                    this,
+                    "Hups! Nie ste pripojený na internet.",
+                    Toast.LENGTH_SHORT
+                ).show()
         }
         upravitDatum.setOnClickListener{
             vibrate.vibrate(70)
-            updateLabelMethods.updateDateLabel(this, upravitDatum, datum, nazovAkcieVedlaSpinnera)
+            if(isOnline(this)) {
+                updateLabelMethods.updateDateLabel(
+                    this,
+                    upravitDatum,
+                    datum,
+                    nazovAkcieVedlaSpinnera
+                )
+            }
+            else
+                Toast.makeText(
+                    this,
+                    "Hups! Nie ste pripojený na internet.",
+                    Toast.LENGTH_SHORT
+                ).show()
         }
         upravitPozn.setOnClickListener{
             vibrate.vibrate(70)
-            updateLabelMethods.updatePoznLabels(this, poznamka, nazovAkcieVedlaSpinnera)
+            if(isOnline(this)) {
+                updateLabelMethods.updatePoznLabels(this, poznamka, nazovAkcieVedlaSpinnera)
+            }
+            else
+                Toast.makeText(
+                    this,
+                    "Hups! Nie ste pripojený na internet.",
+                    Toast.LENGTH_SHORT
+                ).show()
         }
         poznamka.setOnClickListener {
             vibrate.vibrate(70)
-            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_fullpoznamka, null)
-            val mBuilder = AlertDialog.Builder(this).setView(dialogView)
-            dialogView.fullPoznDialog.filters =
-                arrayOf(*dialogView.fullPoznDialog.filters, InputFilter.LengthFilter(100))
-            dialogView.fullPoznDialog.text = poznamka.text
-            val mAlertDialog = mBuilder.show()
-            dialogView.buttonSpatDialog.setOnClickListener {
-                mAlertDialog.dismiss()
+            if(isOnline(this)) {
+                val dialogView =
+                    LayoutInflater.from(this).inflate(R.layout.dialog_fullpoznamka, null)
+                val mBuilder = AlertDialog.Builder(this).setView(dialogView)
+                dialogView.fullPoznDialog.filters =
+                    arrayOf(*dialogView.fullPoznDialog.filters, InputFilter.LengthFilter(100))
+                dialogView.fullPoznDialog.text = poznamka.text
+                val mAlertDialog = mBuilder.show()
+                dialogView.buttonSpatDialog.setOnClickListener {
+                    mAlertDialog.dismiss()
+                }
             }
+            else
+                Toast.makeText(
+                    this,
+                    "Hups! Nie ste pripojený na internet.",
+                    Toast.LENGTH_SHORT
+                ).show()
         }
         vytvoritAkciu.setOnClickListener{
             vibrate.vibrate(70)
-            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_addnewaction, null)
-            val mBuilder = AlertDialog.Builder(this).setView(dialogView)
-            dialogView.actionNameAddAction.filters =
-                arrayOf(*dialogView.actionNameAddAction.filters, InputFilter.LengthFilter(100))
-            dialogView.poznamkaAddAction.filters =
-                arrayOf(*dialogView.poznamkaAddAction.filters, InputFilter.LengthFilter(100))
-            val mAlertDialog = mBuilder.show()
-            dialogView.submitAddAction.setOnClickListener{
-                vibrate.vibrate(70)
-                var parser = SimpleDateFormat("HH:mm")
-                var formatter = SimpleDateFormat("HH:mm")
-                var casOdTIME = formatter.format(parser.parse(dialogView.casOdAddAction.text.toString()))
-                var casDoTIME = formatter.format(parser.parse(dialogView.casDoAddAction.text.toString()))
+            if(isOnline(this)) {
+                val dialogView =
+                    LayoutInflater.from(this).inflate(R.layout.dialog_addnewaction, null)
+                val mBuilder = AlertDialog.Builder(this).setView(dialogView)
+                dialogView.actionNameAddAction.filters =
+                    arrayOf(*dialogView.actionNameAddAction.filters, InputFilter.LengthFilter(100))
+                dialogView.poznamkaAddAction.filters =
+                    arrayOf(*dialogView.poznamkaAddAction.filters, InputFilter.LengthFilter(100))
+                val mAlertDialog = mBuilder.show()
+                dialogView.submitAddAction.setOnClickListener {
+                    vibrate.vibrate(70)
+                    if(isOnline(this)) {
+                        var parser = SimpleDateFormat("HH:mm")
+                        var formatter = SimpleDateFormat("HH:mm")
+                        var casOdTIME =
+                            formatter.format(parser.parse(dialogView.casOdAddAction.text.toString()))
+                        var casDoTIME =
+                            formatter.format(parser.parse(dialogView.casDoAddAction.text.toString()))
 
-                if(dialogView.actionNameAddAction.text.toString() != "" &&
-                    dialogView.dateAddAction.text.toString() != "" &&
-                    dialogView.casOdAddAction.text.toString() != "" &&
-                    dialogView.casDoAddAction.text.toString() != "") {
-                    if(casOdTIME < casDoTIME) {
-                        val check = dbMethods.addNewAction(
-                            dialogView.actionNameAddAction.text.toString(),
-                            dialogView.pocDobrAddAction.text.toString(),
-                            dialogView.pocNavsAddAction.text.toString(),
-                            dialogView.dateAddAction.text.toString(),
-                            dialogView.casOdAddAction.text.toString(),
-                            dialogView.casDoAddAction.text.toString(),
-                            dialogView.poznamkaAddAction.text.toString()
-                        )
-                        if (check == "1") {
-                            mAlertDialog.dismiss()
-                            Toast.makeText(this, "Nová akcia pridaná", Toast.LENGTH_LONG).show()
-                            finish()
-                            startActivity(intent)
+                        if (dialogView.actionNameAddAction.text.toString() != "" &&
+                            dialogView.dateAddAction.text.toString() != "" &&
+                            dialogView.casOdAddAction.text.toString() != "" &&
+                            dialogView.casDoAddAction.text.toString() != ""
+                        ) {
+                            if (casOdTIME < casDoTIME) {
+                                val check = dbMethods.addNewAction(
+                                    dialogView.actionNameAddAction.text.toString(),
+                                    dialogView.pocDobrAddAction.text.toString(),
+                                    dialogView.pocNavsAddAction.text.toString(),
+                                    dialogView.dateAddAction.text.toString(),
+                                    dialogView.casOdAddAction.text.toString(),
+                                    dialogView.casDoAddAction.text.toString(),
+                                    dialogView.poznamkaAddAction.text.toString()
+                                )
+                                if (check == "1") {
+                                    mAlertDialog.dismiss()
+                                    Toast.makeText(this, "Nová akcia pridaná", Toast.LENGTH_LONG)
+                                        .show()
+                                    finish()
+                                    startActivity(intent)
+                                } else
+                                    Toast.makeText(
+                                        this,
+                                        "Hups! Záznam nebol pridaný.",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                            } else
+                                Toast.makeText(
+                                    this,
+                                    "Hups! Opravte si prosím čas.",
+                                    Toast.LENGTH_LONG
+                                ).show()
                         } else
-                            Toast.makeText(this, "Hups! Záznam nebol pridaný.", Toast.LENGTH_LONG).show()
-                    }
-                    else
-                        Toast.makeText(this, "Hups! Opravte si prosím čas.", Toast.LENGTH_LONG).show()
-                }
-                else
-                    Toast.makeText(this, "Vyplňte prosím všetky povinné položky!", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                this,
+                                "Vyplňte prosím všetky povinné položky!",
+                                Toast.LENGTH_LONG
+                            ).show()
 
-
-            }
-
-            dialogView.backAddAction.setOnClickListener{
-                vibrate.vibrate(70)
-                mAlertDialog.cancel()
-            }
-
-            dialogView.dateAddAction.setOnClickListener{
-                vibrate.vibrate(70)
-                timeMethod.SetDatePicker(this, dialogView.dateAddAction)
-            }
-            dialogView.casOdAddAction.setOnClickListener{
-                vibrate.vibrate(70)
-                timeMethod.SetTimePicker(this, dialogView.casOdAddAction)
-            }
-            dialogView.casDoAddAction.setOnClickListener{
-                vibrate.vibrate(70)
-                timeMethod.SetTimePicker(this, dialogView.casDoAddAction)
-            }
-        }
-        deleteAction.setOnClickListener{
-            vibrate.vibrate(70)
-            val alertDialog = AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Naozaj chcete vymazať akciu '" + nazovAkcieZoSpinnera.text.toString() + "' ?")
-                .setPositiveButton("Áno", DialogInterface.OnClickListener{ dialog, i ->
-                    if(dbMethods.deleteAction(nazovAkcieVedlaSpinnera.text.toString()) == "1") {
-                        vibrate.vibrate(70)
-                        finish()
-                        startActivity(intent)
-                        Toast.makeText(this, "Akcia úspešne vymazaná", Toast.LENGTH_LONG).show()
                     }
                     else
                     {
-                        Toast.makeText(this, "Hups! Akcia nebola vymazaná", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this,
+                            "Hups! Nie ste pripojený na internet.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-                })
-                .setNegativeButton("Nie", DialogInterface.OnClickListener{ dialog, i ->
-                    vibrate.vibrate(70)
-                    dialog.cancel()
-                })
-                .show()
+                }
 
+                dialogView.backAddAction.setOnClickListener {
+                    vibrate.vibrate(70)
+                    mAlertDialog.cancel()
+                }
+
+                dialogView.dateAddAction.setOnClickListener {
+                    vibrate.vibrate(70)
+                    if(isOnline(this)) {
+                        timeMethod.SetDatePicker(this, dialogView.dateAddAction)
+                    }
+                    else
+                        Toast.makeText(
+                            this,
+                            "Hups! Nie ste pripojený na internet.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                }
+                dialogView.casOdAddAction.setOnClickListener {
+                    vibrate.vibrate(70)
+                    if(isOnline(this)) {
+                        timeMethod.SetTimePicker(this, dialogView.casOdAddAction)
+                    }
+                    else
+                        Toast.makeText(
+                            this,
+                            "Hups! Nie ste pripojený na internet.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                }
+                dialogView.casDoAddAction.setOnClickListener {
+                    vibrate.vibrate(70)
+                    if(isOnline(this)) {
+                        timeMethod.SetTimePicker(this, dialogView.casDoAddAction)
+                    }
+                    else
+                        Toast.makeText(
+                            this,
+                            "Hups! Nie ste pripojený na internet.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                }
+            }
+            else
+                Toast.makeText(
+                    this,
+                    "Hups! Nie ste pripojený na internet.",
+                    Toast.LENGTH_SHORT
+                ).show()
+        }
+        deleteAction.setOnClickListener{
+            vibrate.vibrate(70)
+            if(isOnline(this)) {
+                val alertDialog = AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Naozaj chcete vymazať akciu '" + nazovAkcieZoSpinnera.text.toString() + "' ?")
+                    .setPositiveButton("Áno", DialogInterface.OnClickListener { dialog, i ->
+                        vibrate.vibrate(70)
+                        if(isOnline(this)) {
+                            if (dbMethods.deleteAction(nazovAkcieVedlaSpinnera.text.toString()) == "1") {
+                                finish()
+                                startActivity(intent)
+                                Toast.makeText(this, "Akcia úspešne vymazaná", Toast.LENGTH_LONG)
+                                    .show()
+                            } else {
+                                Toast.makeText(
+                                    this,
+                                    "Hups! Akcia nebola vymazaná",
+                                    Toast.LENGTH_LONG
+                                )
+                                    .show()
+                            }
+                        }
+                        else
+                            Toast.makeText(
+                                this,
+                                "Hups! Nie ste pripojený na internet.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                    })
+                    .setNegativeButton("Nie", DialogInterface.OnClickListener { dialog, i ->
+                        vibrate.vibrate(70)
+                        dialog.cancel()
+                    })
+                    .show()
+            }
+            else
+                Toast.makeText(
+                    this,
+                    "Hups! Nie ste pripojený na internet.",
+                    Toast.LENGTH_SHORT
+                ).show()
         }
     }
 
@@ -430,5 +587,10 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+    fun isOnline(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnected
     }
 }

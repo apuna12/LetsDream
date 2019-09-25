@@ -7,6 +7,7 @@ import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.database.SQLException
 import android.graphics.Color
+import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
@@ -97,44 +98,47 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         textViewStatNameLabel.setText(textViewStatName.text)
 
         imageButton.setOnClickListener{
-            vibrate.vibrate(70)
-
-            popUpMenu.setOnMenuItemClickListener {
+            if(isOnline(this)) {
                 vibrate.vibrate(70)
-                textViewStatName.setText(it.title.toString())
-                textViewStatNameLabel.setText(it.title.toString())
-                val itemId= it.itemId
-                val chartMethods: ChartMethods = ChartMethods()
-                if(itemId == R.id.menu_item_1) {
 
-                }
-                else if(itemId == R.id.menu_item_2) {
-                    val lineChart: LineChart = findViewById(R.id.lineChart)
-                    barChart.visibility = View.INVISIBLE
-                    //pieChart.visibility = View.INVISIBLE
-                    lineChart.visibility = View.VISIBLE
-                    chartMethods.lineChart(this,2,lineChart)
+                popUpMenu.setOnMenuItemClickListener {
+                    vibrate.vibrate(70)
+                    textViewStatName.setText(it.title.toString())
+                    textViewStatNameLabel.setText(it.title.toString())
+                    val itemId = it.itemId
+                    val chartMethods: ChartMethods = ChartMethods()
+                    if (itemId == R.id.menu_item_1) {
 
+                    } else if (itemId == R.id.menu_item_2) {
+                        val lineChart: LineChart = findViewById(R.id.lineChart)
+                        barChart.visibility = View.INVISIBLE
+                        //pieChart.visibility = View.INVISIBLE
+                        lineChart.visibility = View.VISIBLE
+                        chartMethods.lineChart(this, 2, lineChart)
+
+                    } else if (itemId == R.id.menu_item_3) {
+                        val barChart: BarChart = findViewById(R.id.barChart)
+                        lineChart.visibility = View.INVISIBLE
+                        //pieChart.visibility = View.INVISIBLE
+                        barChart.visibility = View.VISIBLE
+                        chartMethods.barChart(this, 3, barChart)
+                    } else if (itemId == R.id.menu_item_4) {
+                        val pieChart: PieChart = findViewById(R.id.pieChart)
+                        lineChart.visibility = View.INVISIBLE
+                        //pieChart.visibility = View.VISIBLE
+                        barChart.visibility = View.VISIBLE
+                        chartMethods.volunteerPerformance(this, barChart)
+                    }
+                    true
                 }
-                else if(itemId == R.id.menu_item_3)
-                {
-                    val barChart: BarChart = findViewById(R.id.barChart)
-                    lineChart.visibility = View.INVISIBLE
-                    //pieChart.visibility = View.INVISIBLE
-                    barChart.visibility = View.VISIBLE
-                    chartMethods.barChart(this,3,barChart)
-                }
-                else if(itemId == R.id.menu_item_4)
-                {
-                    val pieChart: PieChart = findViewById(R.id.pieChart)
-                    lineChart.visibility = View.INVISIBLE
-                    //pieChart.visibility = View.VISIBLE
-                    barChart.visibility = View.VISIBLE
-                    chartMethods.volunteerPerformance(this, barChart)
-                }
-                true
+                popUpMenu.show()
             }
-            popUpMenu.show()
+            else
+                Toast.makeText(
+                    this,
+                    "Hups! Nie ste pripojený na internet.",
+                    Toast.LENGTH_SHORT
+                ).show()
         }
     }
 
@@ -188,5 +192,10 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+    fun isOnline(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnected
     }
 }

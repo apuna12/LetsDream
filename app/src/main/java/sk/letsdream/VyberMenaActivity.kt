@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Vibrator
 import android.support.design.widget.FloatingActionButton
@@ -93,10 +94,20 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
             changePrivileges.visibility = View.INVISIBLE
             vyberPouzivatelaTW.text = "Používateľ"
             spinnerMeno.visibility = View.INVISIBLE
-            meno.text = dbMethods.getLoggedUserName(loginName)
+            if(isOnline(this)) {
+                meno.text = dbMethods.getLoggedUserName(loginName)
 
-            var pocetHod = dbMethods.getAllHoursForUser(meno.text.toString())
-            pocetHodin.text = pocetHod + " h"
+                var pocetHod = dbMethods.getAllHoursForUser(meno.text.toString())
+                pocetHodin.text = pocetHod + " h"
+            }
+            else
+            {
+                Toast.makeText(
+                    this,
+                    "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
         else if(privileges == "11" || privileges =="111")
         {
@@ -108,16 +119,23 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
             changePrivileges.visibility = View.VISIBLE
             vyberPouzivatelaTW.text = "Výber používateľa"
             spinnerMeno.visibility = View.VISIBLE
-            var newRegs: String = dbMethods.getNewRegistrations()
-            if(newRegs != "0")
-                newRegistrations.text = "Nové: " + newRegs
-            else
-            {
-                leftBracket.visibility = View.INVISIBLE
-                rightBracket.visibility = View.INVISIBLE
-                newRegistrations.visibility = View.INVISIBLE
-                spravovatRegistracie.visibility = View.INVISIBLE
+            if(isOnline(this)) {
+                var newRegs: String = dbMethods.getNewRegistrations()
+                if (newRegs != "0")
+                    newRegistrations.text = "Nové: " + newRegs
+                else {
+                    leftBracket.visibility = View.INVISIBLE
+                    rightBracket.visibility = View.INVISIBLE
+                    newRegistrations.visibility = View.INVISIBLE
+                    spravovatRegistracie.visibility = View.INVISIBLE
+                }
             }
+            else
+                Toast.makeText(
+                    this,
+                    "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
+                    Toast.LENGTH_LONG
+                ).show()
         }
         else
         {
@@ -148,284 +166,387 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
 
         spinnerMeno.setOnClickListener {
             vibrate.vibrate(70)
-            popUpMenu.setOnMenuItemClickListener {
-                vibrate.vibrate(70)
-                if (popUpMenu.menu.size() == 0) {
-                    Toast.makeText(this, "Hups! V Databáze sa nenachádza žiadne meno!", Toast.LENGTH_LONG).show()
-                } else {
-                    meno.text = it.title.toString()
-                    if(dbMethods.getPrivileges(meno.text.toString()).toLowerCase() == "admin" && privileges.toLowerCase() == "11")
-                    {
-                        promoteDemote.visibility = View.INVISIBLE
-                    }
-                    else if(dbMethods.getPrivileges(meno.text.toString()).toLowerCase() == "admin" && privileges.toLowerCase() == "111")
-                    {
-                        promoteDemote.visibility = View.VISIBLE
-                        promoteDemote.text = "Degradovať na užívateľa"
-                    }
-                    else if(dbMethods.getPrivileges(meno.text.toString()).toLowerCase() == "user" &&
-                        (privileges.toLowerCase() == "111" || privileges.toLowerCase() == "11"))
-                    {
-                        promoteDemote.visibility = View.VISIBLE
-                        promoteDemote.text = "Povýšiť na administrátora"
-                    }
-                    else if(privileges.toLowerCase() == "1")
-                    {
+            if(isOnline(this)) {
+                popUpMenu.setOnMenuItemClickListener {
+                    vibrate.vibrate(70)
+                    if(isOnline(this)) {
+                        if (popUpMenu.menu.size() == 0) {
+                            Toast.makeText(
+                                this,
+                                "Hups! V Databáze sa nenachádza žiadne meno!",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        } else {
+                            meno.text = it.title.toString()
+                            if (dbMethods.getPrivileges(meno.text.toString()).toLowerCase() == "admin" && privileges.toLowerCase() == "11") {
+                                promoteDemote.visibility = View.INVISIBLE
+                            } else if (dbMethods.getPrivileges(meno.text.toString()).toLowerCase() == "admin" && privileges.toLowerCase() == "111") {
+                                promoteDemote.visibility = View.VISIBLE
+                                promoteDemote.text = "Degradovať na užívateľa"
+                            } else if (dbMethods.getPrivileges(meno.text.toString()).toLowerCase() == "user" &&
+                                (privileges.toLowerCase() == "111" || privileges.toLowerCase() == "11")
+                            ) {
+                                promoteDemote.visibility = View.VISIBLE
+                                promoteDemote.text = "Povýšiť na administrátora"
+                            } else if (privileges.toLowerCase() == "1") {
 
-                        promoteDemote.visibility = View.INVISIBLE
-                    }
-                    else{
-                        promoteDemote.visibility = View.INVISIBLE
-                    }
+                                promoteDemote.visibility = View.INVISIBLE
+                            } else {
+                                promoteDemote.visibility = View.INVISIBLE
+                            }
 
-                    var pocetHod = dbMethods.getAllHoursForUser(meno.text.toString())
+                            var pocetHod = dbMethods.getAllHoursForUser(meno.text.toString())
 
-                    pocetHodin.text = pocetHod + " h"
+                            pocetHodin.text = pocetHod + " h"
+                        }
+                        true
+                    }
+                    else {
+                        Toast.makeText(
+                            this,
+                            "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        true
+                    }
                 }
-                true
+                popUpMenu.show()
             }
-            popUpMenu.show()
+            else
+                Toast.makeText(
+                    this,
+                    "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
+                    Toast.LENGTH_LONG
+                ).show()
         }
 
         promoteDemote.setOnClickListener{
             vibrate.vibrate(70)
-            if(privileges.toLowerCase() == "111" || privileges.toLowerCase() == "11")
-            {
-                if(meno.text != "Vyberte meno") {
-                    if(promoteDemote.text == "Povýšiť na administrátora")
-                    {
-                        val alertDialog = android.app.AlertDialog.Builder(this)
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setTitle("Povýšenie")
-                            .setMessage("Naozaj chcete povýšiť užívateľa '" + meno.text.toString() + "' na administrátora?")
-                            .setPositiveButton("Áno", DialogInterface.OnClickListener{ dialog, i ->
-                                dbMethods.promoteToAdmin(meno.text.toString())
-                                Toast.makeText(this, "Používateľ povýšený", Toast.LENGTH_LONG).show()
-                                if(privileges == "111")
-                                    promoteDemote.text = "Degradovať na užívateľa"
-                                else
-                                    promoteDemote.visibility = View.INVISIBLE
-                            })
-                            .setNegativeButton("Nie", DialogInterface.OnClickListener{ dialog, i ->
-                                dialog.cancel()
-                            })
-                            .show()
-                    }
-                    else if(promoteDemote.text == "Degradovať na užívateľa")
-                    {
-                        val alertDialog = android.app.AlertDialog.Builder(this)
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setTitle("Degradovanie")
-                            .setMessage("Naozaj chcete degradovať administrátora '" + meno.text.toString() + "' na bežného užívateľa?")
-                            .setPositiveButton("Áno", DialogInterface.OnClickListener{ dialog, i ->
-                                dbMethods.demoteToUser(meno.text.toString())
-                                Toast.makeText(this, "Používateľ degradovaný", Toast.LENGTH_LONG).show()
-                                promoteDemote.text = "Povýšiť na administrátora"
-                            })
-                            .setNegativeButton("Nie", DialogInterface.OnClickListener{ dialog, i ->
-                                dialog.cancel()
-                            })
-                            .show()
+            if(isOnline(this)) {
+                if (privileges.toLowerCase() == "111" || privileges.toLowerCase() == "11") {
+                    if (meno.text != "Vyberte meno") {
+                        if (promoteDemote.text == "Povýšiť na administrátora") {
+                            val alertDialog = android.app.AlertDialog.Builder(this)
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setTitle("Povýšenie")
+                                .setMessage("Naozaj chcete povýšiť užívateľa '" + meno.text.toString() + "' na administrátora?")
+                                .setPositiveButton(
+                                    "Áno",
+                                    DialogInterface.OnClickListener { dialog, i ->
+                                        dbMethods.promoteToAdmin(meno.text.toString())
+                                        Toast.makeText(
+                                            this,
+                                            "Používateľ povýšený",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                        if (privileges == "111")
+                                            promoteDemote.text = "Degradovať na užívateľa"
+                                        else
+                                            promoteDemote.visibility = View.INVISIBLE
+                                    })
+                                .setNegativeButton(
+                                    "Nie",
+                                    DialogInterface.OnClickListener { dialog, i ->
+                                        dialog.cancel()
+                                    })
+                                .show()
+                        } else if (promoteDemote.text == "Degradovať na užívateľa") {
+                            val alertDialog = android.app.AlertDialog.Builder(this)
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setTitle("Degradovanie")
+                                .setMessage("Naozaj chcete degradovať administrátora '" + meno.text.toString() + "' na bežného užívateľa?")
+                                .setPositiveButton(
+                                    "Áno",
+                                    DialogInterface.OnClickListener { dialog, i ->
+                                        dbMethods.demoteToUser(meno.text.toString())
+                                        Toast.makeText(
+                                            this,
+                                            "Používateľ degradovaný",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                        promoteDemote.text = "Povýšiť na administrátora"
+                                    })
+                                .setNegativeButton(
+                                    "Nie",
+                                    DialogInterface.OnClickListener { dialog, i ->
+                                        dialog.cancel()
+                                    })
+                                .show()
 
-                    }
+                        }
+                    } else
+                        Toast.makeText(
+                            this,
+                            "Hups! Nevybrali ste žiadne meno",
+                            Toast.LENGTH_LONG
+                        ).show()
+                } else {
+                    Toast.makeText(this, "Hups! Niečo je zlé. Skúste neskôr", Toast.LENGTH_LONG)
+                        .show()
                 }
-                else
-                    Toast.makeText(this, "Hups! Nevybrali ste žiadne meno", Toast.LENGTH_LONG).show()
             }
             else
-            {
-                Toast.makeText(this, "Hups! Niečo je zlé. Skúste neskôr", Toast.LENGTH_LONG).show()
-            }
+                Toast.makeText(
+                    this,
+                    "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
+                    Toast.LENGTH_LONG
+                ).show()
         }
 
         newRegistrations.setOnClickListener{
             vibrate.vibrate(70)
-            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_newregistrations, null)
-            val mBuilder = android.app.AlertDialog.Builder(this).setView(dialogView)
-            val mAlertDialog = mBuilder.show()
+            if(isOnline(this)) {
+                val dialogView =
+                    LayoutInflater.from(this).inflate(R.layout.dialog_newregistrations, null)
+                val mBuilder = android.app.AlertDialog.Builder(this).setView(dialogView)
+                val mAlertDialog = mBuilder.show()
 
-            var regTable = dialogView.newRegistrationsTable
-            var childCount = regTable.childCount
-            if(childCount>1)
-                regTable.removeViews(1,childCount-1)
-            val dbValue = dbMethods.getNewRegistrationsTable()
-            var splittedDbValue = dbValue.split("?").toTypedArray()
+                var regTable = dialogView.newRegistrationsTable
+                var childCount = regTable.childCount
+                if (childCount > 1)
+                    regTable.removeViews(1, childCount - 1)
+                val dbValue = dbMethods.getNewRegistrationsTable()
+                var splittedDbValue = dbValue.split("?").toTypedArray()
 
-            var allNewRegistrations = arrayOf<Array<String>>()
-            for (i in 0 until splittedDbValue.size)
-            {
-                allNewRegistrations += splittedDbValue[i].split("-").toTypedArray()
-            }
-            allNewRegistrations = allNewRegistrations.dropLast(1).toTypedArray()
+                var allNewRegistrations = arrayOf<Array<String>>()
+                for (i in 0 until splittedDbValue.size) {
+                    allNewRegistrations += splittedDbValue[i].split("-").toTypedArray()
+                }
+                allNewRegistrations = allNewRegistrations.dropLast(1).toTypedArray()
 
-            for(i in 0 until allNewRegistrations.size)
-            {
-                var tableRowAllRegistered: TableRow = TableRow(this)
-                var lp : TableRow.LayoutParams = TableRow.LayoutParams(TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT))
-                tableRowAllRegistered.layoutParams = lp
-                var textViewMeno : TextView = TextView(this)
-                var textViewLogin : TextView = TextView(this)
-                var textViewPotvrd : TextView = TextView(this)
-                var textViewOdstran : TextView = TextView(this)
+                for (i in 0 until allNewRegistrations.size) {
+                    var tableRowAllRegistered: TableRow = TableRow(this)
+                    var lp: TableRow.LayoutParams = TableRow.LayoutParams(
+                        TableRow.LayoutParams(
+                            TableRow.LayoutParams.MATCH_PARENT,
+                            TableRow.LayoutParams.WRAP_CONTENT
+                        )
+                    )
+                    tableRowAllRegistered.layoutParams = lp
+                    var textViewMeno: TextView = TextView(this)
+                    var textViewLogin: TextView = TextView(this)
+                    var textViewPotvrd: TextView = TextView(this)
+                    var textViewOdstran: TextView = TextView(this)
 
-                textViewMeno.setText(allNewRegistrations[i][0])
-                textViewMeno.setTextColor(Color.BLACK)
-                textViewLogin.setText(allNewRegistrations[i][1])
-                textViewLogin.setTextColor(Color.BLACK)
-                textViewPotvrd.setText("Potvrdiť")
-                textViewPotvrd.setTextColor(Color.GREEN)
-                textViewOdstran.setText("Odstrániť")
-                textViewOdstran.setTextColor(Color.RED)
-
-
-                tableRowAllRegistered.addView(textViewMeno)
-                tableRowAllRegistered.addView(textViewLogin)
-                tableRowAllRegistered.addView(textViewPotvrd)
-                tableRowAllRegistered.addView(textViewOdstran)
-                regTable.addView(tableRowAllRegistered, i+1)
+                    textViewMeno.setText(allNewRegistrations[i][0])
+                    textViewMeno.setTextColor(Color.BLACK)
+                    textViewLogin.setText(allNewRegistrations[i][1])
+                    textViewLogin.setTextColor(Color.BLACK)
+                    textViewPotvrd.setText("Potvrdiť")
+                    textViewPotvrd.setTextColor(Color.GREEN)
+                    textViewOdstran.setText("Odstrániť")
+                    textViewOdstran.setTextColor(Color.RED)
 
 
-            }
+                    tableRowAllRegistered.addView(textViewMeno)
+                    tableRowAllRegistered.addView(textViewLogin)
+                    tableRowAllRegistered.addView(textViewPotvrd)
+                    tableRowAllRegistered.addView(textViewOdstran)
+                    regTable.addView(tableRowAllRegistered, i + 1)
 
-            var count = regTable.childCount
-            for(i in 0 until count)
-            {
-                val v: View = regTable.getChildAt(i)
-                if(v is TableRow)
-                {
-                    var row: TableRow = v as TableRow
-                    var rowCount = row.childCount
-                    for(j in 0 until rowCount)
-                    {
-                        val v2: View = row.getChildAt(j)
-                        if(v2 is TextView)
-                        {
-                            var potvrdit = v2 as TextView
-                            potvrdit.setOnClickListener{
-                                if(it is TextView)
-                                {
-                                    if(it.text == "Potvrdiť")
-                                    {
-                                        val login = row.getChildAt(j-1) as TextView
-                                        val name = row.getChildAt(j-2) as TextView
 
-                                        val alertDialog = android.app.AlertDialog.Builder(this)
-                                            .setIcon(android.R.drawable.ic_dialog_alert)
-                                            .setTitle("Potvrdiť?")
-                                            .setMessage("Naozaj si prajete potvrdiť používateľa '" + name.text + "' ?")
-                                            .setPositiveButton("Áno", DialogInterface.OnClickListener{ dialog, i ->
-                                                if(dbMethods.acknowledgeUser(login.text.toString()) == "1") {
-                                                    Toast.makeText(this, "Používateľ potvrdený", Toast.LENGTH_LONG)
-                                                        .show()
-                                                    finish()
-                                                    startActivity(intent)
-                                                }
-                                                else
-                                                    Toast.makeText(this, "Hups! Niečo je zlé. Skúste neskôr", Toast.LENGTH_LONG).show()
+                }
 
-                                            })
-                                            .setNegativeButton("Nie", DialogInterface.OnClickListener{ dialog, i ->
-                                                dialog.cancel()
-                                            }).show()
+                var count = regTable.childCount
+                for (i in 0 until count) {
+                    val v: View = regTable.getChildAt(i)
+                    if (v is TableRow) {
+                        var row: TableRow = v as TableRow
+                        var rowCount = row.childCount
+                        for (j in 0 until rowCount) {
+                            val v2: View = row.getChildAt(j)
+                            if (v2 is TextView) {
+                                var potvrdit = v2 as TextView
+                                potvrdit.setOnClickListener {
+                                    vibrate.vibrate(70)
+                                    if(isOnline(this)) {
+                                        if (it is TextView) {
+                                            if (it.text == "Potvrdiť") {
+                                                val login = row.getChildAt(j - 1) as TextView
+                                                val name = row.getChildAt(j - 2) as TextView
 
+                                                val alertDialog =
+                                                    android.app.AlertDialog.Builder(this)
+                                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                                        .setTitle("Potvrdiť?")
+                                                        .setMessage("Naozaj si prajete potvrdiť používateľa '" + name.text + "' ?")
+                                                        .setPositiveButton(
+                                                            "Áno",
+                                                            DialogInterface.OnClickListener { dialog, i ->
+                                                                if (dbMethods.acknowledgeUser(login.text.toString()) == "1") {
+                                                                    Toast.makeText(
+                                                                        this,
+                                                                        "Používateľ potvrdený",
+                                                                        Toast.LENGTH_LONG
+                                                                    )
+                                                                        .show()
+                                                                    finish()
+                                                                    startActivity(intent)
+                                                                } else
+                                                                    Toast.makeText(
+                                                                        this,
+                                                                        "Hups! Niečo je zlé. Skúste neskôr",
+                                                                        Toast.LENGTH_LONG
+                                                                    ).show()
+
+                                                            })
+                                                        .setNegativeButton(
+                                                            "Nie",
+                                                            DialogInterface.OnClickListener { dialog, i ->
+                                                                dialog.cancel()
+                                                            }).show()
+
+                                            } else if (it.text == "Odstrániť") {
+                                                val login = row.getChildAt(j - 2) as TextView
+                                                val name = row.getChildAt(j - 3) as TextView
+
+                                                val alertDialog =
+                                                    android.app.AlertDialog.Builder(this)
+                                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                                        .setTitle("Odstrániť?")
+                                                        .setMessage("Naozaj si prajete odstrániť používateľa '" + name.text + "' ?")
+                                                        .setPositiveButton(
+                                                            "Áno",
+                                                            DialogInterface.OnClickListener { dialog, i ->
+                                                                if (dbMethods.deleteUser(login.text.toString()) == "1") {
+                                                                    Toast.makeText(
+                                                                        this,
+                                                                        "Používateľ odstránený",
+                                                                        Toast.LENGTH_LONG
+                                                                    )
+                                                                        .show()
+                                                                    finish()
+                                                                    startActivity(intent)
+                                                                } else
+                                                                    Toast.makeText(
+                                                                        this,
+                                                                        "Hups! Niečo je zlé. Skúste neskôr",
+                                                                        Toast.LENGTH_LONG
+                                                                    ).show()
+                                                            })
+                                                        .setNegativeButton(
+                                                            "Nie",
+                                                            DialogInterface.OnClickListener { dialog, i ->
+                                                                dialog.cancel()
+                                                            }).show()
+                                            }
+                                        }
                                     }
-                                    else if(it.text == "Odstrániť")
-                                    {
-                                        val login = row.getChildAt(j-2) as TextView
-                                        val name = row.getChildAt(j-3) as TextView
-
-                                        val alertDialog = android.app.AlertDialog.Builder(this)
-                                            .setIcon(android.R.drawable.ic_dialog_alert)
-                                            .setTitle("Odstrániť?")
-                                            .setMessage("Naozaj si prajete odstrániť používateľa '" + name.text + "' ?")
-                                            .setPositiveButton("Áno", DialogInterface.OnClickListener{ dialog, i ->
-                                                if(dbMethods.deleteUser(login.text.toString()) == "1") {
-                                                    Toast.makeText(this, "Používateľ odstránený", Toast.LENGTH_LONG)
-                                                        .show()
-                                                    finish()
-                                                    startActivity(intent)
-                                                }
-                                                else
-                                                    Toast.makeText(this, "Hups! Niečo je zlé. Skúste neskôr", Toast.LENGTH_LONG).show()
-                                            })
-                                            .setNegativeButton("Nie", DialogInterface.OnClickListener{ dialog, i ->
-                                                dialog.cancel()
-                                            }).show()
-                                    }
+                                    else
+                                        Toast.makeText(
+                                            this,
+                                            "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
+                                            Toast.LENGTH_LONG
+                                        ).show()
                                 }
-                            }
 
+                            }
                         }
                     }
                 }
-            }
 
-            dialogView.buttonSpatDialog.setOnClickListener {
+
+                dialogView.buttonSpatDialog.setOnClickListener {
+                    vibrate.vibrate(70)
+                    mAlertDialog.dismiss()
+                }
+
+            }
+            else
+                Toast.makeText(
+                    this,
+                    "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
+                    Toast.LENGTH_LONG
+                ).show()
+
+        }
+        if(isOnline(this)) {
+            var updateLabelMethods: UpdateLabelMethods = UpdateLabelMethods()
+
+            updateLabelMethods.allActions(this, table, intent, "1")
+
+            changePrivileges.setOnClickListener {
                 vibrate.vibrate(70)
-                mAlertDialog.dismiss()
-            }
-
-
-            // dorobit tabulku, kde budu stlpce: Meno, login, Potvrdenie, Odstranenie
-            // kliknutim na potvrdenie sa vymaze riadok a zmeni New_User z 1 na 0
-            // vratenim sa mimo dialogu sa refresne cely intent
-        }
-
-        var updateLabelMethods: UpdateLabelMethods = UpdateLabelMethods()
-
-        updateLabelMethods.allActions(this, table, intent, "1")
-
-        changePrivileges.setOnClickListener{
-            vibrate.vibrate(70)
-            if(privileges.toLowerCase()=="1" && userTW.text == "Používateľ")
-            {
-                Toast.makeText(this,"K tejto funkcii ma prístup iba administrátor!", Toast.LENGTH_SHORT).show()
-                updateLabelMethods.allActions(this, table, intent, "1")
-            }
-            else if((privileges.toLowerCase() == "11" || privileges.toLowerCase()=="111") && userTW.text == "Používateľ")
-            {
-                Toast.makeText(this,"Zapnutý admin mód!", Toast.LENGTH_SHORT).show()
-                userTW.text = "Admin"
-                changePrivileges.visibility = View.VISIBLE
-                updateLabelMethods.allActions(this, table, intent, "11")
-            }
-            else if((privileges.toLowerCase() == "11" || privileges.toLowerCase()=="111") && userTW.text == "Admin")
-            {
-                Toast.makeText(this,"Zapnutý používateľský mód!", Toast.LENGTH_SHORT).show()
-                userTW.text = "Používateľ"
-                updateLabelMethods.allActions(this, table, intent, "1")
-            }
-            else
-            {
-                Toast.makeText(this,"Nastala chyba! Nerozpoznaná rola používateľa", Toast.LENGTH_SHORT).show()
-                userTW.visibility = View.INVISIBLE
-                changePrivileges.visibility = View.INVISIBLE
-                updateLabelMethods.allActions(this, table, intent, "1")
-            }
-        }
-
-
-        showDochadzka.setOnClickListener{
-            vibrate.vibrate(70)
-            if(privileges == "11" || privileges == "111")
-            {
-                if(dbMethods.getDochadzka(privileges) != "0")
-                {
-                    updateLabelMethods.processDochadzka(this, intent ,privileges)
+                if(isOnline(this)) {
+                    if (privileges.toLowerCase() == "1" && userTW.text == "Používateľ") {
+                        Toast.makeText(
+                            this,
+                            "K tejto funkcii ma prístup iba administrátor!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        updateLabelMethods.allActions(this, table, intent, "1")
+                    } else if ((privileges.toLowerCase() == "11" || privileges.toLowerCase() == "111") && userTW.text == "Používateľ") {
+                        Toast.makeText(this, "Zapnutý admin mód!", Toast.LENGTH_SHORT).show()
+                        userTW.text = "Admin"
+                        changePrivileges.visibility = View.VISIBLE
+                        updateLabelMethods.allActions(this, table, intent, "11")
+                    } else if ((privileges.toLowerCase() == "11" || privileges.toLowerCase() == "111") && userTW.text == "Admin") {
+                        Toast.makeText(this, "Zapnutý používateľský mód!", Toast.LENGTH_SHORT)
+                            .show()
+                        userTW.text = "Používateľ"
+                        updateLabelMethods.allActions(this, table, intent, "1")
+                    } else {
+                        Toast.makeText(
+                            this,
+                            "Nastala chyba! Nerozpoznaná rola používateľa",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        userTW.visibility = View.INVISIBLE
+                        changePrivileges.visibility = View.INVISIBLE
+                        updateLabelMethods.allActions(this, table, intent, "1")
+                    }
                 }
                 else
-                    Toast.makeText(this, "Hups! Niečo je zlé. Skúste neskôr", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this,
+                        "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
+                        Toast.LENGTH_LONG
+                    ).show()
             }
-            else
-            {
-                if(dbMethods.getDochadzka(privileges, meno.text.toString()) != "0")
-                {
-                    updateLabelMethods.processDochadzka(this, intent ,privileges,  meno.text.toString())
+
+
+            showDochadzka.setOnClickListener {
+                vibrate.vibrate(70)
+                if(isOnline(this)) {
+                    if (privileges == "11" || privileges == "111") {
+                        if (dbMethods.getDochadzka(privileges) != "0") {
+                            updateLabelMethods.processDochadzka(this, intent, privileges)
+                        } else
+                            Toast.makeText(
+                                this,
+                                "Hups! Niečo je zlé. Skúste neskôr",
+                                Toast.LENGTH_LONG
+                            ).show()
+                    } else {
+                        if (dbMethods.getDochadzka(privileges, meno.text.toString()) != "0") {
+                            updateLabelMethods.processDochadzka(
+                                this,
+                                intent,
+                                privileges,
+                                meno.text.toString()
+                            )
+                        } else
+                            Toast.makeText(
+                                this,
+                                "Hups! Niečo je zlé. Skúste neskôr",
+                                Toast.LENGTH_LONG
+                            ).show()
+                    }
                 }
                 else
-                    Toast.makeText(this, "Hups! Niečo je zlé. Skúste neskôr", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this,
+                        "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
+                        Toast.LENGTH_LONG
+                    ).show()
             }
         }
+        else
+            Toast.makeText(
+                this,
+                "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
+                Toast.LENGTH_LONG
+            ).show()
 
     }
 
@@ -435,4 +556,9 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    fun isOnline(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnected
+    }
 }
