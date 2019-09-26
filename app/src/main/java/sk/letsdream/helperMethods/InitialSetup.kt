@@ -1,8 +1,10 @@
 package sk.letsdream.helperMethods
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.os.Vibrator
 import android.support.v4.content.ContextCompat.startActivity
 import android.view.KeyEvent
@@ -19,9 +21,10 @@ import java.security.MessageDigest
 
 class InitialSetup {
 
-    fun CreateSuperAdmin(context: Context)
+    fun CreateSuperAdmin(context: Activity)
     {
         val dbMethods: DBConnection = DBConnection()
+        var networkTask: NetworkTask
         val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         val emailMethods: EmailMethods = EmailMethods()
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_register, null)
@@ -153,117 +156,130 @@ class InitialSetup {
 
         dialogView.registrujBtn.setOnClickListener {
             vibrate.vibrate(70)
-            if (userRegister.text.toString() == "") {
-                Toast.makeText(context, "Prosím zadajte meno účtu!", Toast.LENGTH_LONG).show()
-            } else if (passRegister.text.toString() == "") {
-                Toast.makeText(context, "Prosím zadajte heslo!", Toast.LENGTH_LONG).show()
-            } else if (passAgainRegister.text.toString() == "") {
-                Toast.makeText(context, "Prosím zadajte znova heslo!", Toast.LENGTH_LONG)
-                    .show()
-            } else if (emailRegister.text.toString() == "") {
-                Toast.makeText(context, "Prosím zadajte emailovú adresu!", Toast.LENGTH_LONG)
-                    .show()
-            } else if (!emailMethods.isEmailValid(emailRegister.text.toString())) {
-                Toast.makeText(
-                    context,
-                    "Prosím zadajte správnu emailovú adresu!",
-                    Toast.LENGTH_LONG
-                ).show()
-            } else if (passRegister.text.toString() != passAgainRegister.text.toString()) {
-                Toast.makeText(context, "Vaše heslá sa nezhodujú!", Toast.LENGTH_LONG).show()
-            } else if (nameRegister.text.toString() == "") {
-                Toast.makeText(context, "Zadajte prosím meno!", Toast.LENGTH_LONG).show()
-            } else if (surnameRegister.text.toString() == "") {
-                Toast.makeText(context, "Zadajte prosím priezvisko!", Toast.LENGTH_LONG).show()
-            } else if (!gdprCHB.isChecked) {
-                Toast.makeText(
-                    context,
-                    "Pre úspešne zaregistrovanie musíte súhlasiť so spracovaním údajov!",
-                    Toast.LENGTH_LONG
-                ).show()
-            } else {
+            networkTask = NetworkTask(context)
+            networkTask.execute()
+            if(isOnline(context)) {
 
-                val sql =
-                    "http://letsdream.xf.cz/index.php?username=" + userRegister.text + "&mod=register&rest=get"
+                if (userRegister.text.toString() == "") {
+                    Toast.makeText(context, "Prosím zadajte meno účtu!", Toast.LENGTH_LONG).show()
+                } else if (passRegister.text.toString() == "") {
+                    Toast.makeText(context, "Prosím zadajte heslo!", Toast.LENGTH_LONG).show()
+                } else if (passAgainRegister.text.toString() == "") {
+                    Toast.makeText(context, "Prosím zadajte znova heslo!", Toast.LENGTH_LONG)
+                        .show()
+                } else if (emailRegister.text.toString() == "") {
+                    Toast.makeText(context, "Prosím zadajte emailovú adresu!", Toast.LENGTH_LONG)
+                        .show()
+                } else if (!emailMethods.isEmailValid(emailRegister.text.toString())) {
+                    Toast.makeText(
+                        context,
+                        "Prosím zadajte správnu emailovú adresu!",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else if (passRegister.text.toString() != passAgainRegister.text.toString()) {
+                    Toast.makeText(context, "Vaše heslá sa nezhodujú!", Toast.LENGTH_LONG).show()
+                } else if (nameRegister.text.toString() == "") {
+                    Toast.makeText(context, "Zadajte prosím meno!", Toast.LENGTH_LONG).show()
+                } else if (surnameRegister.text.toString() == "") {
+                    Toast.makeText(context, "Zadajte prosím priezvisko!", Toast.LENGTH_LONG).show()
+                } else if (!gdprCHB.isChecked) {
+                    Toast.makeText(
+                        context,
+                        "Pre úspešne zaregistrovanie musíte súhlasiť so spracovaním údajov!",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
 
-                try {
-                    var jsonStr: String = URL(sql).readText()
-                    var firstApp: Int = 0
-                    var lastApp: Int = 0
-                    if (jsonStr.toString().contains("<") || jsonStr.toString().contains(">")) {
-                        for (i in 0 until jsonStr.toString().length) {
-                            if (jsonStr[i] == '<') {
-                                firstApp = i
-                                break
+                    val sql =
+                        "http://letsdream.xf.cz/index.php?username=" + userRegister.text + "&mod=register&rest=get"
+
+                    try {
+                        var jsonStr: String = URL(sql).readText()
+                        var firstApp: Int = 0
+                        var lastApp: Int = 0
+                        if (jsonStr.toString().contains("<") || jsonStr.toString().contains(">")) {
+                            for (i in 0 until jsonStr.toString().length) {
+                                if (jsonStr[i] == '<') {
+                                    firstApp = i
+                                    break
+                                }
                             }
+                            for (i in 0 until jsonStr.toString().length) {
+                                if (jsonStr[i] == '>')
+                                    lastApp = i
+                            }
+                            jsonStr = jsonStr.removeRange(firstApp, lastApp + 1)
                         }
-                        for (i in 0 until jsonStr.toString().length) {
-                            if (jsonStr[i] == '>')
-                                lastApp = i
-                        }
-                        jsonStr = jsonStr.removeRange(firstApp, lastApp + 1)
-                    }
-                    if (jsonStr == "1")
-                        Toast.makeText(
-                            context,
-                            "Toto meno už používa niekto iný",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    else {
+                        if (jsonStr == "1")
+                            Toast.makeText(
+                                context,
+                                "Toto meno už používa niekto iný",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        else {
 
-                        var digest: MessageDigest
-                        digest = MessageDigest.getInstance("SHA-256")
-                        digest.update(passRegister.text.toString().toByteArray())
-                        var hash = hexMethods.bytesToHexString(digest.digest())
+                            var digest: MessageDigest
+                            digest = MessageDigest.getInstance("SHA-256")
+                            digest.update(passRegister.text.toString().toByteArray())
+                            var hash = hexMethods.bytesToHexString(digest.digest())
 
-                        val sql =
-                            "http://letsdream.xf.cz/index.php?username=" + userRegister.text + "&password=" + hash +
-                                    "&email=" + emailRegister.text + "&name=" + surnameRegister.text + ",_" +
-                                    nameRegister.text + "&mod=registerSuperadmin&rest=post"
+                            val sql =
+                                "http://letsdream.xf.cz/index.php?username=" + userRegister.text + "&password=" + hash +
+                                        "&email=" + emailRegister.text + "&name=" + surnameRegister.text + ",_" +
+                                        nameRegister.text + "&mod=registerSuperadmin&rest=post"
 
-                        try {
-                            var jsonStr: String = URL(sql).readText()
-                            var firstApp: Int = 0
-                            var lastApp: Int = 0
-                            if (jsonStr.toString().contains("<") || jsonStr.toString().contains(
-                                    ">"
-                                )
-                            ) {
-                                for (i in 0 until jsonStr.toString().length) {
-                                    if (jsonStr[i] == '<') {
-                                        firstApp = i
-                                        break
+                            try {
+                                var jsonStr: String = URL(sql).readText()
+                                var firstApp: Int = 0
+                                var lastApp: Int = 0
+                                if (jsonStr.toString().contains("<") || jsonStr.toString().contains(
+                                        ">"
+                                    )
+                                ) {
+                                    for (i in 0 until jsonStr.toString().length) {
+                                        if (jsonStr[i] == '<') {
+                                            firstApp = i
+                                            break
+                                        }
                                     }
+                                    for (i in 0 until jsonStr.toString().length) {
+                                        if (jsonStr[i] == '>')
+                                            lastApp = i
+                                    }
+                                    jsonStr = jsonStr.removeRange(firstApp, lastApp + 1)
                                 }
-                                for (i in 0 until jsonStr.toString().length) {
-                                    if (jsonStr[i] == '>')
-                                        lastApp = i
+                                if (jsonStr.contains("1")) {
+                                    Toast.makeText(
+                                        context,
+                                        "Používateľ úspešne registrovaný!",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                    val intent = Intent(context, LoginActivity::class.java)
+                                    startActivity(context, intent, null)
+                                } else {
+                                    Toast.makeText(
+                                        context,
+                                        "Hups, niečo je zlé!",
+                                        Toast.LENGTH_LONG
+                                    ).show()
                                 }
-                                jsonStr = jsonStr.removeRange(firstApp, lastApp + 1)
-                            }
-                            if (jsonStr.contains("1")) {
-                                Toast.makeText(
-                                    context,
-                                    "Používateľ úspešne registrovaný!",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                                val intent = Intent(context, LoginActivity::class.java)
-                                startActivity(context, intent,null)
-                            } else {
-                                Toast.makeText(
-                                    context,
-                                    "Hups, niečo je zlé!",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
 
-                        } catch (e: Exception) {
-                            throw Exception(e)
+                            } catch (e: Exception) {
+                                throw Exception(e)
+                            }
                         }
+                    } catch (e: Exception) {
+                        throw Exception(e)
                     }
-                } catch (e: Exception) {
-                    throw Exception(e)
                 }
+            }
+            else
+            {
+                Toast.makeText(
+                    context,
+                    "Hups! Nie ste pripojený na internet.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
         back.setOnClickListener {
@@ -279,5 +295,9 @@ class InitialSetup {
         return dbConnection.initialDBCreation()
     }
 
-
+    fun isOnline(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnected
+    }
 }

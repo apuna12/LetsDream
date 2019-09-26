@@ -906,7 +906,7 @@ class DBConnection {
 
     fun deleteDB(): String {
         val sql =
-                "http://letsdream.xf.cz/index.php?mod=deleteDB&rest=get"
+                "http://letsdream.xf.cz/index.php?mod=deleteDB&rest=delete"
 
         try {
             var jsonStr: String = URL(sql).readText()

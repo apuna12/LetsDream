@@ -31,6 +31,7 @@ import kotlinx.android.synthetic.main.dialog_sendemail.view.buttonSpatDialog
 import kotlinx.android.synthetic.main.dialog_sendemail.view.chkAck
 import kotlinx.android.synthetic.main.dialog_sendemail.view.reasonEmail
 import sk.letsdream.dbMethods.DBConnection
+import sk.letsdream.helperMethods.NetworkTask
 import sk.letsdream.helperMethods.TimeMethods
 
 
@@ -56,6 +57,8 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
         val timeMethod: TimeMethods = TimeMethods()
         val dbMethods: DBConnection = DBConnection()
+        var networkTask: NetworkTask
+
 
         timeMethod.UpdateActualTime(date, time)
 
@@ -67,7 +70,11 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
+            this,
+            drawerLayout,
+            toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
@@ -75,15 +82,16 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         navView.setNavigationItemSelectedListener(this)
 
 
-
         val emailButton: Button = findViewById(R.id.buttonOdoslMail)
         val backupButton: Button = findViewById(R.id.buttonZalohaDB)
         val deleteButton: Button = findViewById(R.id.buttonZmazatDB)
         val issueButton: Button = findViewById(R.id.buttonIssue)
 
-        emailButton.setOnClickListener{
-            if(isOnline(this)) {
-                vibrate.vibrate(70)
+        emailButton.setOnClickListener {
+            vibrate.vibrate(70)
+            networkTask = NetworkTask(this)
+            networkTask.execute()
+            if (isOnline(this)) {
                 val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_sendemail, null)
                 val mBuilder = android.app.AlertDialog.Builder(this).setView(dialogView)
                 val mAlertDialog = mBuilder.show()
@@ -128,7 +136,10 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
                 spinnerRecipients.setOnClickListener {
                     vibrate.vibrate(70)
-                    if(isOnline(this)) {
+                    networkTask = NetworkTask(this)
+                    networkTask.execute()
+                    if (isOnline(this)) {
+
                         val dialogView =
                             LayoutInflater.from(this).inflate(R.layout.dialog_recipients, null)
                         val mBuilder = android.app.AlertDialog.Builder(this).setView(dialogView)
@@ -168,7 +179,7 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                         tableRowAllRegistered.background = resources.getDrawable(R.drawable.border)
                         regTable.addView(tableRowAllRegistered, 0)
 
-                        for (i in 1 until list_of_names.size) {
+                        for (i in 1 until list_of_names.size+1) {
                             var tableRowAllRegistered: TableRow = TableRow(this)
                             var lp: TableRow.LayoutParams = TableRow.LayoutParams(
                                 TableRow.LayoutParams(
@@ -217,6 +228,8 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                                         var potvrdit = v2 as CheckBox
                                         potvrdit.setOnClickListener {
                                             vibrate.vibrate(70)
+                                            networkTask = NetworkTask(this)
+                                            networkTask.execute()
                                             if (it is CheckBox) {
                                                 if (it.isChecked) {
                                                     if (i == 1) {
@@ -301,6 +314,8 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
                         dialogView.buttonPotvrditDialogRec.setOnClickListener {
                             vibrate.vibrate(70)
+                            networkTask = NetworkTask(this)
+                            networkTask.execute()
                             mAlertDialog.dismiss()
                             var allRecipients: String = String()
                             for ((name, checked) in rec) {
@@ -319,6 +334,8 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
                         recipientsTW.setOnClickListener {
                             vibrate.vibrate(70)
+                            networkTask = NetworkTask(this)
+                            networkTask.execute()
                             val dialogView =
                                 LayoutInflater.from(this)
                                     .inflate(R.layout.dialog_fullrecipients, null)
@@ -331,8 +348,7 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                                 mAlertDialog.dismiss()
                             }
                         }
-                    }
-                    else
+                    } else
                         Toast.makeText(
                             this,
                             "Hups! Nie ste pripojený na internet.",
@@ -348,7 +364,10 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
                 buttonSubmit.setOnClickListener {
                     vibrate.vibrate(70)
-                    if(isOnline(this)) {
+                    networkTask = NetworkTask(this)
+                    networkTask.execute()
+                    if (isOnline(this)) {
+
                         var text = emailText.text.toString()
 
                         if (text != null || (text.replace(" ", "")) != "") {
@@ -388,29 +407,31 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
-                    }
-                    else
+                    } else
                         Toast.makeText(
                             this,
                             "Hups! Nie ste pripojený na internet.",
                             Toast.LENGTH_SHORT
                         ).show()
                 }
-            }
-            else
-            {
+            } else {
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet.",
                     Toast.LENGTH_SHORT
                 ).show()
             }
+            networkTask = NetworkTask(this)
+            networkTask.execute()
         }
 
 
-        backupButton.setOnClickListener{
+        backupButton.setOnClickListener {
             vibrate.vibrate(70)
-            if(isOnline(this)) {
+            networkTask = NetworkTask(this)
+            networkTask.execute()
+            if (isOnline(this)) {
+
                 val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_backupdb, null)
                 val mBuilder = android.app.AlertDialog.Builder(this).setView(dialogView)
                 val mAlertDialog = mBuilder.show()
@@ -420,7 +441,9 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
                 buttonSubmit.setOnClickListener {
                     vibrate.vibrate(70)
-                    if(isOnline(this)) {
+                    networkTask = NetworkTask(this)
+                    networkTask.execute()
+                    if (isOnline(this)) {
                         if (chkBox.isChecked) {
                             if (dbMethods.backUpTables() == "1") {
                                 Toast.makeText(
@@ -440,9 +463,7 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                                 "Nezaškrtli ste, že rozumiete ako táto funkcia funguje",
                                 Toast.LENGTH_SHORT
                             ).show()
-                    }
-                    else
-                    {
+                    } else {
                         Toast.makeText(
                             this,
                             "Hups! Nie ste pripojený na internet.",
@@ -455,9 +476,7 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                     vibrate.vibrate(70)
                     mAlertDialog.dismiss()
                 }
-            }
-            else
-            {
+            } else {
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet.",
@@ -466,9 +485,12 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             }
         }
 
-        deleteButton.setOnClickListener{
+        deleteButton.setOnClickListener {
             vibrate.vibrate(70)
-            if(isOnline(this)) {
+            networkTask = NetworkTask(this)
+            networkTask.execute()
+            if (isOnline(this)) {
+
                 val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_deletedb, null)
                 val mBuilder = android.app.AlertDialog.Builder(this).setView(dialogView)
                 val mAlertDialog = mBuilder.show()
@@ -478,7 +500,9 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
                 buttonSubmit.setOnClickListener {
                     vibrate.vibrate(70)
-                    if(isOnline(this)) {
+                    if (isOnline(this)) {
+                        networkTask = NetworkTask(this)
+                        networkTask.execute()
                         if (chkBox.isChecked) {
                             lateinit var dialog: AlertDialog
                             val builder = AlertDialog.Builder(this)
@@ -489,7 +513,9 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                                 when (which) {
                                     DialogInterface.BUTTON_POSITIVE -> {
                                         vibrate.vibrate(70)
-                                        if (dbMethods.deleteDB() == "1") { //dbMethods.deleteDB()
+                                        networkTask = NetworkTask(this)
+                                        networkTask.execute()
+                                        if (dbMethods.deleteDB() == "1") {
                                             Toast.makeText(
                                                 this, "Databaza zmazaná",
                                                 Toast.LENGTH_SHORT
@@ -530,9 +556,7 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                                 "Nezaškrtli ste, že rozumiete ako táto funkcia funguje",
                                 Toast.LENGTH_SHORT
                             ).show()
-                    }
-                    else
-                    {
+                    } else {
                         Toast.makeText(
                             this,
                             "Hups! Nie ste pripojený na internet.",
@@ -545,9 +569,7 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                     vibrate.vibrate(70)
                     mAlertDialog.dismiss()
                 }
-            }
-            else
-            {
+            } else {
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet.",
@@ -556,9 +578,11 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             }
         }
 
-        issueButton.setOnClickListener{
+        issueButton.setOnClickListener {
             vibrate.vibrate(70)
-            if(isOnline(this)) {
+            if (isOnline(this)) {
+                networkTask = NetworkTask(this)
+                networkTask.execute()
                 val dialogViewIssue = LayoutInflater.from(this).inflate(R.layout.dialog_issue, null)
                 val mBuilder = android.app.AlertDialog.Builder(this).setView(dialogViewIssue)
                 val mAlertDialog = mBuilder.show()
@@ -570,13 +594,15 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
                 buttonSubmit.setOnClickListener {
                     vibrate.vibrate(70)
-                    if(isOnline(this)) {
+                    if (isOnline(this)) {
+                        networkTask = NetworkTask(this)
+                        networkTask.execute()
                         if (chkBox.isChecked) {
                             if (subject.text.toString() != "" && body.text.toString() != "") {
 
 
                                 var resultFromMail = dbMethods.sendEmail(
-                                    "tkocik@gmail.com", subject.text.toString(),
+                                    "<tkocik@gmail.com>", subject.text.toString(),
                                     body.text.toString(), "1"
                                 )
 
@@ -605,9 +631,7 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
-                    }
-                    else
-                    {
+                    } else {
                         Toast.makeText(
                             this,
                             "Hups! Nie ste pripojený na internet.",
@@ -620,9 +644,7 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                     vibrate.vibrate(70)
                     mAlertDialog.dismiss()
                 }
-            }
-            else
-            {
+            } else {
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet.",
@@ -630,7 +652,6 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 ).show()
             }
         }
-
 
 
     }

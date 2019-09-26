@@ -23,6 +23,7 @@ import android.widget.TextView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.content_main.*
 import sk.letsdream.helperMethods.ButtonEffects
+import sk.letsdream.helperMethods.NetworkTask
 import sk.letsdream.helperMethods.TimeMethods
 import java.text.SimpleDateFormat
 
@@ -51,8 +52,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val timeMethod: TimeMethods = TimeMethods()
         val buttonEffects: ButtonEffects = ButtonEffects()
+        var networkTask: NetworkTask
 
-        timeMethod.UpdateActualTime(date,time)
+
+        timeMethod.UpdateActualTime(date, time)
         buttonEffects.ButtonClickEffect(findViewById(R.id.graph_imageButton))
         buttonEffects.ButtonClickEffect(findViewById(R.id.star_imageButton))
         buttonEffects.ButtonClickEffect(findViewById(R.id.person_imageButton))
@@ -67,7 +70,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
+            this,
+            drawerLayout,
+            toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
@@ -75,16 +82,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navView.setNavigationItemSelectedListener(this)
 
 
-        dochadzka.setOnClickListener{
+        dochadzka.setOnClickListener {
             vibrate.vibrate(70)
-            if(isOnline(this)) {
+            networkTask = NetworkTask(this)
+            networkTask.execute()
+            if (isOnline(this)) {
+
                 val intent = Intent(this@MainActivity, DochadzkaActivity::class.java)
                 intent.putExtra("privileges", privileges)
                 intent.putExtra("login", loginName)
                 startActivity(intent)
-            }
-            else
-            {
+            } else {
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet",
@@ -92,17 +100,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 ).show()
             }
         }
-        meno.setOnClickListener{
+        meno.setOnClickListener {
             vibrate.vibrate(70)
-            if(isOnline(this)) {
+            networkTask = NetworkTask(this)
+            networkTask.execute()
+            if (isOnline(this)) {
 
                 val intent = Intent(this@MainActivity, VyberMenaActivity::class.java)
                 intent.putExtra("privileges", privileges)
                 intent.putExtra("login", loginName)
                 startActivity(intent)
-            }
-            else
-            {
+            } else {
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet",
@@ -110,16 +118,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 ).show()
             }
         }
-        akcie.setOnClickListener{
+        akcie.setOnClickListener {
             vibrate.vibrate(70)
-            if(isOnline(this)) {
+            networkTask = NetworkTask(this)
+            networkTask.execute()
+            if (isOnline(this)) {
+
                 val intent = Intent(this@MainActivity, AkcieActivity::class.java)
                 intent.putExtra("privileges", privileges)
                 intent.putExtra("login", loginName)
                 startActivity(intent)
-            }
-            else
-            {
+            } else {
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet",
@@ -127,16 +136,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 ).show()
             }
         }
-        statistika.setOnClickListener{
+        statistika.setOnClickListener {
             vibrate.vibrate(70)
-            if(isOnline(this)) {
+            networkTask = NetworkTask(this)
+            networkTask.execute()
+            if (isOnline(this)) {
+
                 val intent = Intent(this@MainActivity, StatistikyActivity::class.java)
                 intent.putExtra("privileges", privileges)
                 intent.putExtra("login", loginName)
                 startActivity(intent)
-            }
-            else
-            {
+            } else {
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet",
@@ -145,17 +155,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
 
-        if(privileges!="111")
-        {
+        if (privileges != "111") {
             admin.visibility = View.INVISIBLE
             adminButtonTW.visibility = View.INVISIBLE
-        }
-        else {
+        } else {
             admin.visibility = View.VISIBLE
             adminButtonTW.visibility = View.VISIBLE
             admin.setOnClickListener {
                 vibrate.vibrate(70)
-                if(isOnline(this)) {
+                networkTask = NetworkTask(this)
+                networkTask.execute()
+                if (isOnline(this)) {
+
                     val intent = Intent(this@MainActivity, AdminActivity::class.java)
                     intent.putExtra("privileges", privileges)
                     intent.putExtra("login", loginName)

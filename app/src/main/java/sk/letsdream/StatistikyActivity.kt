@@ -41,6 +41,7 @@ import okhttp3.*
 import sk.letsdream.dbMethods.DBConnection
 import sk.letsdream.helperMethods.ButtonEffects
 import sk.letsdream.helperMethods.ChartMethods
+import sk.letsdream.helperMethods.NetworkTask
 import sk.letsdream.helperMethods.TimeMethods
 import java.io.IOException
 import java.lang.Exception
@@ -71,13 +72,17 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
 
         val timeMethod: TimeMethods = TimeMethods()
 
-        timeMethod.UpdateActualTime(date,time)
+        timeMethod.UpdateActualTime(date, time)
 
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
+            this,
+            drawerLayout,
+            toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
@@ -88,6 +93,8 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         val textViewStatName: TextView = findViewById(R.id.statFromSpinner)
         val textViewStatNameLabel: TextView = findViewById(R.id.názovStatistikyLABEL)
         val dbMethods: DBConnection = DBConnection()
+        var networkTask: NetworkTask
+
         val vibrate = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
         val wrapper: Context = ContextThemeWrapper(this, R.style.popupMenuStyle)
@@ -103,28 +110,38 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         val chartMethods: ChartMethods = ChartMethods()
         chartMethods.lineChart(this, 2, lineChart)
 
-        imageButton.setOnClickListener{
-            if(isOnline(this)) {
-                vibrate.vibrate(70)
+        imageButton.setOnClickListener {
+            vibrate.vibrate(70)
+            networkTask = NetworkTask(this)
+            networkTask.execute()
+            if (isOnline(this)) {
 
                 popUpMenu.setOnMenuItemClickListener {
                     vibrate.vibrate(70)
+                    networkTask = NetworkTask(this)
+                    networkTask.execute()
                     textViewStatName.setText(it.title.toString())
                     textViewStatNameLabel.setText(it.title.toString())
                     val itemId = it.itemId
                     if (itemId == R.id.menu_item_2) {
+                        networkTask = NetworkTask(this)
+                        networkTask.execute()
                         val lineChart: LineChart = findViewById(R.id.lineChart)
                         barChart.visibility = View.INVISIBLE
                         //pieChart.visibility = View.INVISIBLE
                         lineChart.visibility = View.VISIBLE
                         chartMethods.lineChart(this, 2, lineChart)
                     } else if (itemId == R.id.menu_item_3) {
+                        networkTask = NetworkTask(this)
+                        networkTask.execute()
                         val barChart: BarChart = findViewById(R.id.barChart)
                         lineChart.visibility = View.INVISIBLE
                         //pieChart.visibility = View.INVISIBLE
                         barChart.visibility = View.VISIBLE
                         chartMethods.barChart(this, 3, barChart)
                     } else if (itemId == R.id.menu_item_4) {
+                        networkTask = NetworkTask(this)
+                        networkTask.execute()
                         val pieChart: PieChart = findViewById(R.id.pieChart)
                         lineChart.visibility = View.INVISIBLE
                         //pieChart.visibility = View.VISIBLE
@@ -134,8 +151,7 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                     true
                 }
                 popUpMenu.show()
-            }
-            else
+            } else
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet.",

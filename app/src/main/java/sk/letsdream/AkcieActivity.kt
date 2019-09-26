@@ -57,13 +57,19 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val timeMethod: TimeMethods = TimeMethods()
         val hexMethods: HexMethods = HexMethods()
+        var networkTask: NetworkTask
 
-        timeMethod.UpdateActualTime(date,time)
+
+        timeMethod.UpdateActualTime(date, time)
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
+            this,
+            drawerLayout,
+            toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
@@ -101,7 +107,7 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         akcieList = arrayOf<String>()
         val sql = "http://letsdream.xf.cz/index.php?mod=getAllActions&rest=get"
 
-        try{
+        try {
             var jsonStr: String = URL(sql).readText()
             var firstApp: Int = 0
             var lastApp: Int = 0
@@ -116,34 +122,31 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     if (jsonStr[i] == '>')
                         lastApp = i
                 }
-                jsonStr = jsonStr.removeRange(firstApp, lastApp+1)
-                if(jsonStr=="0")
-                {
-                    Toast.makeText(this,"Hups! Niekde nastala chyba", Toast.LENGTH_LONG).show()
-                }
-                else
-                {
+                jsonStr = jsonStr.removeRange(firstApp, lastApp + 1)
+                if (jsonStr == "0") {
+                    Toast.makeText(this, "Hups! Niekde nastala chyba", Toast.LENGTH_LONG).show()
+                } else {
                     akcieList = jsonStr.split(",").toTypedArray()
                     akcieList = akcieList.dropLast(1).toTypedArray()
                 }
             }
-        }
-        catch (e: Exception)
-        {
+        } catch (e: Exception) {
             throw Exception(e)
         }
 
         val wrapper: Context = ContextThemeWrapper(this, R.style.popupMenuStyle)
         var popUpMenu: PopupMenu = PopupMenu(wrapper, vyberAkcieSpinner)
-        if(akcieList.size > 0) {
+        if (akcieList.size > 0) {
             for (i in 0 until akcieList.size) {
-                if(akcieList[i] != null || akcieList[i] != "")
+                if (akcieList[i] != null || akcieList[i] != "")
                     popUpMenu.menu.add(akcieList[i])
             }
         }
 
         try {
-            if(isOnline(this)) {
+            networkTask = NetworkTask(this)
+            networkTask.execute()
+            if (isOnline(this)) {
                 var actionName: String = popUpMenu.menu.getItem(0).toString()
                 nazovAkcieVedlaSpinnera.text = actionName
                 nazovAkcieZoSpinnera.text = actionName
@@ -158,23 +161,23 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     poznamka.text = statsArray.get(5)
                 } else
                     Toast.makeText(this, "Hups! Niečo je zlé", Toast.LENGTH_LONG).show()
-            }
-            else
+            } else
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet.",
                     Toast.LENGTH_SHORT
                 ).show()
-        }
-        catch (e:Exception)
-        {
+        } catch (e: Exception) {
             nazovAkcieVedlaSpinnera.text = "V databáze neexistuje žiadna akcia."
             nazovAkcieZoSpinnera.text = "V databáze neexistuje žiadna akcia."
         }
 
-        vyberAkcieSpinner.setOnClickListener{
+        vyberAkcieSpinner.setOnClickListener {
             vibrate.vibrate(70)
-            if(isOnline(this)) {
+            networkTask = NetworkTask(this)
+            networkTask.execute()
+            if (isOnline(this)) {
+
                 popUpMenu.setOnMenuItemClickListener {
                     vibrate.vibrate(70)
                     var actionName: String = it.title.toString()
@@ -188,14 +191,12 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         casOd.text = statsArray.get(3)
                         casDo.text = statsArray.get(4)
                         poznamka.text = statsArray.get(5)
-                        //dorobit poznamku
                     } else
                         Toast.makeText(this, "Hups! Niečo je zlé", Toast.LENGTH_LONG).show()
                     true
                 }
                 popUpMenu.show()
-            }
-            else
+            } else
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet.",
@@ -211,28 +212,28 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         upravitPozn.visibility = View.INVISIBLE
         deleteAction.visibility = View.INVISIBLE
 
-        if(privileges.toLowerCase()=="11" || privileges.toLowerCase()=="111")
-        {
+        if (privileges.toLowerCase() == "11" || privileges.toLowerCase() == "111") {
             adminUserLabel.text = "Používateľ"
             adminUserLabel.visibility = View.VISIBLE
-        }
-        else
-        {
+        } else {
             adminUserLabel.visibility = View.INVISIBLE
             changePrivileges.visibility = View.INVISIBLE
 
         }
 
 
-        changePrivileges.setOnClickListener{
+        changePrivileges.setOnClickListener {
             vibrate.vibrate(70)
-            if(privileges.toLowerCase()=="1" && adminUserLabel.text == "Používateľ")
-            {
-                Toast.makeText(this,"K tejto funkcii ma prístup iba administrátor!", Toast.LENGTH_LONG).show()
-            }
-            else if((privileges.toLowerCase() == "11" || privileges.toLowerCase()=="111") && adminUserLabel.text == "Používateľ")
-            {
-                Toast.makeText(this,"Zapnutý admin mód!", Toast.LENGTH_LONG).show()
+            networkTask = NetworkTask(this)
+            networkTask.execute()
+            if (privileges.toLowerCase() == "1" && adminUserLabel.text == "Používateľ") {
+                Toast.makeText(
+                    this,
+                    "K tejto funkcii ma prístup iba administrátor!",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else if ((privileges.toLowerCase() == "11" || privileges.toLowerCase() == "111") && adminUserLabel.text == "Používateľ") {
+                Toast.makeText(this, "Zapnutý admin mód!", Toast.LENGTH_LONG).show()
                 vytvoritAkciu.visibility = View.VISIBLE
                 upravitDobr.visibility = View.VISIBLE
                 upravitNavs.visibility = View.VISIBLE
@@ -244,10 +245,8 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 adminUserLabel.visibility = View.VISIBLE
                 changePrivileges.visibility = View.VISIBLE
 
-            }
-            else if((privileges.toLowerCase() == "11" || privileges.toLowerCase()=="111") && adminUserLabel.text == "Administrátor")
-            {
-                Toast.makeText(this,"Zapnutý používateľský mód!", Toast.LENGTH_LONG).show()
+            } else if ((privileges.toLowerCase() == "11" || privileges.toLowerCase() == "111") && adminUserLabel.text == "Administrátor") {
+                Toast.makeText(this, "Zapnutý používateľský mód!", Toast.LENGTH_LONG).show()
                 vytvoritAkciu.visibility = View.INVISIBLE
                 upravitDobr.visibility = View.INVISIBLE
                 upravitNavs.visibility = View.INVISIBLE
@@ -256,10 +255,12 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 upravitPozn.visibility = View.INVISIBLE
                 adminUserLabel.text = "Používateľ"
                 deleteAction.visibility = View.INVISIBLE
-            }
-            else
-            {
-                Toast.makeText(this,"Nastala chyba! Nerozpoznaná rola používateľa", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(
+                    this,
+                    "Nastala chyba! Nerozpoznaná rola používateľa",
+                    Toast.LENGTH_LONG
+                ).show()
                 vytvoritAkciu.visibility = View.INVISIBLE
                 upravitDobr.visibility = View.INVISIBLE
                 upravitNavs.visibility = View.INVISIBLE
@@ -272,9 +273,11 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
 
-        upravitCas.setOnClickListener{
+        upravitCas.setOnClickListener {
             vibrate.vibrate(70)
-            if(isOnline(this)) {
+            networkTask = NetworkTask(this)
+            networkTask.execute()
+            if (isOnline(this)) {
 
                 updateLabelMethods.updateTimeLabel(this, casOd, casDo, nazovAkcieVedlaSpinnera)
             }
@@ -284,9 +287,11 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.LENGTH_SHORT
             ).show()
         }
-        upravitDobr.setOnClickListener{
+        upravitDobr.setOnClickListener {
             vibrate.vibrate(70)
-            if(isOnline(this)) {
+            networkTask = NetworkTask(this)
+            networkTask.execute()
+            if (isOnline(this)) {
 
                 updateLabelMethods.updateNumberLabels(
                     this,
@@ -295,17 +300,19 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     nazovAkcieVedlaSpinnera,
                     "pocDobr"
                 )
-            }
-            else
+            } else
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet.",
                     Toast.LENGTH_SHORT
                 ).show()
         }
-        upravitNavs.setOnClickListener{
+        upravitNavs.setOnClickListener {
             vibrate.vibrate(70)
-            if(isOnline(this)) {
+            networkTask = NetworkTask(this)
+            networkTask.execute()
+            if (isOnline(this)) {
+
                 updateLabelMethods.updateNumberLabels(
                     this,
                     upravitNavs,
@@ -313,37 +320,40 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     nazovAkcieVedlaSpinnera,
                     "pocNavs"
                 )
-            }
-            else
+            } else
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet.",
                     Toast.LENGTH_SHORT
                 ).show()
         }
-        upravitDatum.setOnClickListener{
+        upravitDatum.setOnClickListener {
             vibrate.vibrate(70)
-            if(isOnline(this)) {
+            networkTask = NetworkTask(this)
+            networkTask.execute()
+            if (isOnline(this)) {
+
                 updateLabelMethods.updateDateLabel(
                     this,
                     upravitDatum,
                     datum,
                     nazovAkcieVedlaSpinnera
                 )
-            }
-            else
+            } else
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet.",
                     Toast.LENGTH_SHORT
                 ).show()
         }
-        upravitPozn.setOnClickListener{
+        upravitPozn.setOnClickListener {
             vibrate.vibrate(70)
-            if(isOnline(this)) {
+            networkTask = NetworkTask(this)
+            networkTask.execute()
+            if (isOnline(this)) {
+
                 updateLabelMethods.updatePoznLabels(this, poznamka, nazovAkcieVedlaSpinnera)
-            }
-            else
+            } else
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet.",
@@ -352,7 +362,10 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         poznamka.setOnClickListener {
             vibrate.vibrate(70)
-            if(isOnline(this)) {
+            networkTask = NetworkTask(this)
+            networkTask.execute()
+            if (isOnline(this)) {
+
                 val dialogView =
                     LayoutInflater.from(this).inflate(R.layout.dialog_fullpoznamka, null)
                 val mBuilder = AlertDialog.Builder(this).setView(dialogView)
@@ -363,17 +376,19 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 dialogView.buttonSpatDialog.setOnClickListener {
                     mAlertDialog.dismiss()
                 }
-            }
-            else
+            } else
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet.",
                     Toast.LENGTH_SHORT
                 ).show()
         }
-        vytvoritAkciu.setOnClickListener{
+        vytvoritAkciu.setOnClickListener {
             vibrate.vibrate(70)
-            if(isOnline(this)) {
+            networkTask = NetworkTask(this)
+            networkTask.execute()
+            if (isOnline(this)) {
+
                 val dialogView =
                     LayoutInflater.from(this).inflate(R.layout.dialog_addnewaction, null)
                 val mBuilder = AlertDialog.Builder(this).setView(dialogView)
@@ -384,7 +399,9 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val mAlertDialog = mBuilder.show()
                 dialogView.submitAddAction.setOnClickListener {
                     vibrate.vibrate(70)
-                    if(isOnline(this)) {
+                    networkTask = NetworkTask(this)
+                    networkTask.execute()
+                    if (isOnline(this)) {
                         var parser = SimpleDateFormat("HH:mm")
                         var formatter = SimpleDateFormat("HH:mm")
                         var casOdTIME =
@@ -432,9 +449,7 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                 Toast.LENGTH_LONG
                             ).show()
 
-                    }
-                    else
-                    {
+                    } else {
                         Toast.makeText(
                             this,
                             "Hups! Nie ste pripojený na internet.",
@@ -450,10 +465,12 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                 dialogView.dateAddAction.setOnClickListener {
                     vibrate.vibrate(70)
-                    if(isOnline(this)) {
+                    networkTask = NetworkTask(this)
+                    networkTask.execute()
+                    if (isOnline(this)) {
+
                         timeMethod.SetDatePicker(this, dialogView.dateAddAction)
-                    }
-                    else
+                    } else
                         Toast.makeText(
                             this,
                             "Hups! Nie ste pripojený na internet.",
@@ -462,10 +479,12 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
                 dialogView.casOdAddAction.setOnClickListener {
                     vibrate.vibrate(70)
-                    if(isOnline(this)) {
+                    networkTask = NetworkTask(this)
+                    networkTask.execute()
+                    if (isOnline(this)) {
+
                         timeMethod.SetTimePicker(this, dialogView.casOdAddAction)
-                    }
-                    else
+                    } else
                         Toast.makeText(
                             this,
                             "Hups! Nie ste pripojený na internet.",
@@ -474,33 +493,40 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
                 dialogView.casDoAddAction.setOnClickListener {
                     vibrate.vibrate(70)
-                    if(isOnline(this)) {
+                    networkTask = NetworkTask(this)
+                    networkTask.execute()
+                    if (isOnline(this)) {
+
                         timeMethod.SetTimePicker(this, dialogView.casDoAddAction)
-                    }
-                    else
+                    } else
                         Toast.makeText(
                             this,
                             "Hups! Nie ste pripojený na internet.",
                             Toast.LENGTH_SHORT
                         ).show()
                 }
-            }
-            else
+            } else
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet.",
                     Toast.LENGTH_SHORT
                 ).show()
         }
-        deleteAction.setOnClickListener{
+        deleteAction.setOnClickListener {
             vibrate.vibrate(70)
-            if(isOnline(this)) {
+            networkTask = NetworkTask(this)
+            networkTask.execute()
+            if (isOnline(this)) {
+
                 val alertDialog = AlertDialog.Builder(this)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle("Naozaj chcete vymazať akciu '" + nazovAkcieZoSpinnera.text.toString() + "' ?")
                     .setPositiveButton("Áno", DialogInterface.OnClickListener { dialog, i ->
                         vibrate.vibrate(70)
-                        if(isOnline(this)) {
+                        networkTask = NetworkTask(this)
+                        networkTask.execute()
+                        if (isOnline(this)) {
+
                             if (dbMethods.deleteAction(nazovAkcieVedlaSpinnera.text.toString()) == "1") {
                                 finish()
                                 startActivity(intent)
@@ -514,8 +540,7 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                 )
                                     .show()
                             }
-                        }
-                        else
+                        } else
                             Toast.makeText(
                                 this,
                                 "Hups! Nie ste pripojený na internet.",
@@ -527,8 +552,7 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         dialog.cancel()
                     })
                     .show()
-            }
-            else
+            } else
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet.",

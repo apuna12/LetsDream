@@ -69,13 +69,18 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val vibrate = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         val emailMethods: EmailMethods = EmailMethods()
         val initialSetup: InitialSetup = InitialSetup()
+        var networkTask: NetworkTask
+
 
 
         if (isOnline(this)) {
 
             if (initialSetup.initialDBCreation() != "111") {
-                if (dbMethods.checkSuperUser() == "0")
+                if (dbMethods.checkSuperUser() == "0") {
+                    networkTask = NetworkTask(this)
+                    networkTask.execute()
                     initialSetup.CreateSuperAdmin(this)
+                }
                 else
                     Toast.makeText(
                         this,
@@ -137,9 +142,11 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
 
                 registerBtn.setOnClickListener {
-
+                    vibrate.vibrate(70)
+                    networkTask = NetworkTask(this)
+                    networkTask.execute()
                     if (isOnline(this)) {
-                        vibrate.vibrate(70)
+
 
                         val dialogView =
                             LayoutInflater.from(this).inflate(R.layout.dialog_register, null)
@@ -267,11 +274,10 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         })
 
                         dialogView.registrujBtn.setOnClickListener {
-                            getWindow().setFlags(
-                                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                            );
+
                             vibrate.vibrate(70)
+                            networkTask = NetworkTask(this)
+                            networkTask.execute()
                             if (userRegister.text.toString() == "") {
                                 Toast.makeText(this, "Prosím zadajte meno účtu!", Toast.LENGTH_LONG)
                                     .show()
@@ -423,15 +429,11 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
 
                 loginBtn.setOnClickListener {
-
+                    vibrate.vibrate(70)
+                    networkTask = NetworkTask(this)
+                    networkTask.execute()
                     if (isOnline(this)) {
-                        /*getWindow().setFlags(
-                            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                        )*/
 
-
-                        vibrate.vibrate(70)
                         var digest: MessageDigest
                         digest = MessageDigest.getInstance("SHA-256")
                         digest.update(passwordEdt.text.toString().toByteArray())
@@ -509,7 +511,6 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                         "Niekde nastala chyba. Máte prístup k internetu?",
                                         Toast.LENGTH_LONG
                                     ).show()
-
                                 }
 
 

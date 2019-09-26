@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.dialog_addnewaction.view.*
 import okhttp3.*
 import sk.letsdream.dbMethods.DBConnection
 import sk.letsdream.helperMethods.ButtonEffects
+import sk.letsdream.helperMethods.NetworkTask
 import sk.letsdream.helperMethods.TimeMethods
 import java.io.IOException
 import java.lang.Exception
@@ -61,6 +62,8 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
         val timeMethod: TimeMethods = TimeMethods()
         val dbMethods: DBConnection = DBConnection()
+        var networkTask: NetworkTask
+
 
         timeMethod.UpdateActualTime(date, time)
 
@@ -72,7 +75,11 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
+            this,
+            drawerLayout,
+            toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
@@ -90,7 +97,7 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         val spinnerMeno: ImageButton = findViewById(R.id.vybermenaSPINNER)
         val vibrate = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
-        if(isOnline(this)) {
+        if (isOnline(this)) {
             if (privileges == "1") {
                 meno.text = dbMethods.getLoggedUserName(loginName)
                 spinnerMeno.visibility = View.INVISIBLE
@@ -117,7 +124,9 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
             spinnerMeno.setOnClickListener {
                 vibrate.vibrate(70)
-                if(isOnline(this)) {
+                networkTask = NetworkTask(this)
+                networkTask.execute()
+                if (isOnline(this)) {
                     popUpMenu.setOnMenuItemClickListener {
                         vibrate.vibrate(70)
                         if (popUpMenu.menu.size() == 0) {
@@ -132,8 +141,7 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                         true
                     }
                     popUpMenu.show()
-                }
-                else
+                } else
                     Toast.makeText(
                         this,
                         "Hups! Nie ste pripojený na internet.",
@@ -143,10 +151,11 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
             prichodDatePicker.setOnClickListener {
                 vibrate.vibrate(70)
-                if(isOnline(this)) {
+                networkTask = NetworkTask(this)
+                networkTask.execute()
+                if (isOnline(this)) {
                     timeMethod.SetDatePicker(this, prichodDatePicker)
-                }
-                else
+                } else
                     Toast.makeText(
                         this,
                         "Hups! Nie ste pripojený na internet.",
@@ -155,10 +164,11 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             }
             odchodDatePicker.setOnClickListener {
                 vibrate.vibrate(70)
-                if(isOnline(this)) {
+                networkTask = NetworkTask(this)
+                networkTask.execute()
+                if (isOnline(this)) {
                     timeMethod.SetDatePicker(this, odchodDatePicker)
-                }
-                else
+                } else
                     Toast.makeText(
                         this,
                         "Hups! Nie ste pripojený na internet.",
@@ -167,10 +177,11 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             }
             prichodTimePicker.setOnClickListener {
                 vibrate.vibrate(70)
-                if(isOnline(this)) {
+                networkTask = NetworkTask(this)
+                networkTask.execute()
+                if (isOnline(this)) {
                     timeMethod.SetTimePicker(this, prichodTimePicker)
-                }
-                else
+                } else
                     Toast.makeText(
                         this,
                         "Hups! Nie ste pripojený na internet.",
@@ -179,10 +190,11 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             }
             odchodTimePicker.setOnClickListener {
                 vibrate.vibrate(70)
-                if(isOnline(this)) {
+                networkTask = NetworkTask(this)
+                networkTask.execute()
+                if (isOnline(this)) {
                     timeMethod.SetTimePicker(this, odchodTimePicker)
-                }
-                else
+                } else
                     Toast.makeText(
                         this,
                         "Hups! Nie ste pripojený na internet.",
@@ -196,7 +208,10 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
             submit.setOnClickListener {
                 vibrate.vibrate(70)
-                if(isOnline(this)) {
+                networkTask = NetworkTask(this)
+                networkTask.execute()
+                if (isOnline(this)) {
+
                     if (prichodDatePicker.text == "Dátum" || prichodTimePicker.text == "Čas" || odchodDatePicker.text == "Dátum" ||
                         odchodTimePicker.text == "Čas"
                     )
@@ -273,16 +288,14 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                                 .show()
                         }
                     }
-                }
-                else
+                } else
                     Toast.makeText(
                         this,
                         "Hups! Nie ste pripojený na internet.",
                         Toast.LENGTH_SHORT
                     ).show()
             }
-        }
-        else
+        } else
             Toast.makeText(
                 this,
                 "Hups! Nie ste pripojený na internet.",

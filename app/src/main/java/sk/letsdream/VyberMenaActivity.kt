@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.nav_header_main.*
 import org.w3c.dom.Text
 import sk.letsdream.dbMethods.DBConnection
 import sk.letsdream.helperMethods.ButtonEffects
+import sk.letsdream.helperMethods.NetworkTask
 import sk.letsdream.helperMethods.TimeMethods
 import sk.letsdream.helperMethods.UpdateLabelMethods
 import java.lang.Exception
@@ -50,13 +51,19 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
 
         val timeMethod: TimeMethods = TimeMethods()
         val buttonEffects: ButtonEffects = ButtonEffects()
+        var networkTask: NetworkTask
 
-        timeMethod.UpdateActualTime(date,time)
+
+        timeMethod.UpdateActualTime(date, time)
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
+            this,
+            drawerLayout,
+            toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
@@ -64,18 +71,15 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
         navView.setNavigationItemSelectedListener(this)
 
 
-
-
-
-        var dbMethods:DBConnection = DBConnection()
+        var dbMethods: DBConnection = DBConnection()
         var table: TableLayout = findViewById(R.id.table)
 
         val spinnerMeno: ImageButton = findViewById(R.id.vybermenaSPINNER_VM)
         val meno: TextView = findViewById(R.id.nameFromSpinner_VM)
         val promoteDemote: TextView = findViewById(R.id.textView20)
-        val leftBracket : TextView = findViewById(R.id.leftBracket)
-        val rightBracket : TextView = findViewById(R.id.rightBracket)
-        val newRegistrations : TextView = findViewById(R.id.newRegistrations)
+        val leftBracket: TextView = findViewById(R.id.leftBracket)
+        val rightBracket: TextView = findViewById(R.id.rightBracket)
+        val newRegistrations: TextView = findViewById(R.id.newRegistrations)
         val spravovatRegistracie: TextView = findViewById(R.id.textView16)
         val pocetHodin: TextView = findViewById(R.id.pocetHodin)
         val changePrivileges: ImageView = findViewById(R.id.changePriv_VM)
@@ -84,8 +88,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
         val vyberPouzivatelaTW: TextView = findViewById(R.id.vybermenaLABEL_VM)
         val vibrate = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
-        if(privileges == "1")
-        {
+        if (privileges == "1") {
             leftBracket.visibility = View.INVISIBLE
             rightBracket.visibility = View.INVISIBLE
             newRegistrations.visibility = View.INVISIBLE
@@ -94,23 +97,19 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
             changePrivileges.visibility = View.INVISIBLE
             vyberPouzivatelaTW.text = "Používateľ"
             spinnerMeno.visibility = View.INVISIBLE
-            if(isOnline(this)) {
+            if (isOnline(this)) {
                 meno.text = dbMethods.getLoggedUserName(loginName)
 
                 var pocetHod = dbMethods.getAllHoursForUser(meno.text.toString())
                 pocetHodin.text = pocetHod + " h"
-            }
-            else
-            {
+            } else {
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
                     Toast.LENGTH_LONG
                 ).show()
             }
-        }
-        else if(privileges == "11" || privileges =="111")
-        {
+        } else if (privileges == "11" || privileges == "111") {
             leftBracket.visibility = View.VISIBLE
             rightBracket.visibility = View.VISIBLE
             newRegistrations.visibility = View.VISIBLE
@@ -119,7 +118,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
             changePrivileges.visibility = View.VISIBLE
             vyberPouzivatelaTW.text = "Výber používateľa"
             spinnerMeno.visibility = View.VISIBLE
-            if(isOnline(this)) {
+            if (isOnline(this)) {
                 var newRegs: String = dbMethods.getNewRegistrations()
                 if (newRegs != "0")
                     newRegistrations.text = "Nové: " + newRegs
@@ -129,16 +128,13 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                     newRegistrations.visibility = View.INVISIBLE
                     spravovatRegistracie.visibility = View.INVISIBLE
                 }
-            }
-            else
+            } else
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
                     Toast.LENGTH_LONG
                 ).show()
-        }
-        else
-        {
+        } else {
             leftBracket.visibility = View.INVISIBLE
             rightBracket.visibility = View.INVISIBLE
             newRegistrations.visibility = View.INVISIBLE
@@ -160,16 +156,24 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                     popUpMenu.menu.add(namesList[i])
                 }
             }
-        }
-        else
-            Toast.makeText(this,"Hups! Neexistujú žiadne mená v databáze", Toast.LENGTH_LONG).show()
+        } else
+            Toast.makeText(
+                this,
+                "Hups! Neexistujú žiadne mená v databáze",
+                Toast.LENGTH_LONG
+            ).show()
 
         spinnerMeno.setOnClickListener {
             vibrate.vibrate(70)
-            if(isOnline(this)) {
+            networkTask = NetworkTask(this)
+            networkTask.execute()
+            if (isOnline(this)) {
+
                 popUpMenu.setOnMenuItemClickListener {
                     vibrate.vibrate(70)
-                    if(isOnline(this)) {
+                    networkTask = NetworkTask(this)
+                    networkTask.execute()
+                    if (isOnline(this)) {
                         if (popUpMenu.menu.size() == 0) {
                             Toast.makeText(
                                 this,
@@ -200,8 +204,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                             pocetHodin.text = pocetHod + " h"
                         }
                         true
-                    }
-                    else {
+                    } else {
                         Toast.makeText(
                             this,
                             "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
@@ -211,8 +214,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                     }
                 }
                 popUpMenu.show()
-            }
-            else
+            } else
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
@@ -220,9 +222,12 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                 ).show()
         }
 
-        promoteDemote.setOnClickListener{
+        promoteDemote.setOnClickListener {
             vibrate.vibrate(70)
-            if(isOnline(this)) {
+            networkTask = NetworkTask(this)
+            networkTask.execute()
+            if (isOnline(this)) {
+
                 if (privileges.toLowerCase() == "111" || privileges.toLowerCase() == "11") {
                     if (meno.text != "Vyberte meno") {
                         if (promoteDemote.text == "Povýšiť na administrátora") {
@@ -233,6 +238,9 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                                 .setPositiveButton(
                                     "Áno",
                                     DialogInterface.OnClickListener { dialog, i ->
+                                        vibrate.vibrate(70)
+                                        networkTask = NetworkTask(this)
+                                        networkTask.execute()
                                         dbMethods.promoteToAdmin(meno.text.toString())
                                         Toast.makeText(
                                             this,
@@ -247,6 +255,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                                 .setNegativeButton(
                                     "Nie",
                                     DialogInterface.OnClickListener { dialog, i ->
+                                        vibrate.vibrate(70)
                                         dialog.cancel()
                                     })
                                 .show()
@@ -258,6 +267,9 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                                 .setPositiveButton(
                                     "Áno",
                                     DialogInterface.OnClickListener { dialog, i ->
+                                        vibrate.vibrate(70)
+                                        networkTask = NetworkTask(this)
+                                        networkTask.execute()
                                         dbMethods.demoteToUser(meno.text.toString())
                                         Toast.makeText(
                                             this,
@@ -269,6 +281,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                                 .setNegativeButton(
                                     "Nie",
                                     DialogInterface.OnClickListener { dialog, i ->
+                                        vibrate.vibrate(70)
                                         dialog.cancel()
                                     })
                                 .show()
@@ -284,8 +297,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                     Toast.makeText(this, "Hups! Niečo je zlé. Skúste neskôr", Toast.LENGTH_LONG)
                         .show()
                 }
-            }
-            else
+            } else
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
@@ -293,9 +305,12 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                 ).show()
         }
 
-        newRegistrations.setOnClickListener{
+        newRegistrations.setOnClickListener {
             vibrate.vibrate(70)
-            if(isOnline(this)) {
+            networkTask = NetworkTask(this)
+            networkTask.execute()
+            if (isOnline(this)) {
+
                 val dialogView =
                     LayoutInflater.from(this).inflate(R.layout.dialog_newregistrations, null)
                 val mBuilder = android.app.AlertDialog.Builder(this).setView(dialogView)
@@ -359,7 +374,10 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                                 var potvrdit = v2 as TextView
                                 potvrdit.setOnClickListener {
                                     vibrate.vibrate(70)
-                                    if(isOnline(this)) {
+                                    networkTask = NetworkTask(this)
+                                    networkTask.execute()
+                                    if (isOnline(this)) {
+
                                         if (it is TextView) {
                                             if (it.text == "Potvrdiť") {
                                                 val login = row.getChildAt(j - 1) as TextView
@@ -373,6 +391,9 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                                                         .setPositiveButton(
                                                             "Áno",
                                                             DialogInterface.OnClickListener { dialog, i ->
+                                                                vibrate.vibrate(70)
+                                                                networkTask = NetworkTask(this)
+                                                                networkTask.execute()
                                                                 if (dbMethods.acknowledgeUser(login.text.toString()) == "1") {
                                                                     Toast.makeText(
                                                                         this,
@@ -393,6 +414,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                                                         .setNegativeButton(
                                                             "Nie",
                                                             DialogInterface.OnClickListener { dialog, i ->
+                                                                vibrate.vibrate(70)
                                                                 dialog.cancel()
                                                             }).show()
 
@@ -408,6 +430,9 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                                                         .setPositiveButton(
                                                             "Áno",
                                                             DialogInterface.OnClickListener { dialog, i ->
+                                                                vibrate.vibrate(70)
+                                                                networkTask = NetworkTask(this)
+                                                                networkTask.execute()
                                                                 if (dbMethods.deleteUser(login.text.toString()) == "1") {
                                                                     Toast.makeText(
                                                                         this,
@@ -427,12 +452,12 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                                                         .setNegativeButton(
                                                             "Nie",
                                                             DialogInterface.OnClickListener { dialog, i ->
+                                                                vibrate.vibrate(70)
                                                                 dialog.cancel()
                                                             }).show()
                                             }
                                         }
-                                    }
-                                    else
+                                    } else
                                         Toast.makeText(
                                             this,
                                             "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
@@ -451,8 +476,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                     mAlertDialog.dismiss()
                 }
 
-            }
-            else
+            } else
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
@@ -460,14 +484,17 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                 ).show()
 
         }
-        if(isOnline(this)) {
+        if (isOnline(this)) {
             var updateLabelMethods: UpdateLabelMethods = UpdateLabelMethods()
 
             updateLabelMethods.allActions(this, table, intent, "1")
 
             changePrivileges.setOnClickListener {
                 vibrate.vibrate(70)
-                if(isOnline(this)) {
+                networkTask = NetworkTask(this)
+                networkTask.execute()
+                if (isOnline(this)) {
+
                     if (privileges.toLowerCase() == "1" && userTW.text == "Používateľ") {
                         Toast.makeText(
                             this,
@@ -495,8 +522,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                         changePrivileges.visibility = View.INVISIBLE
                         updateLabelMethods.allActions(this, table, intent, "1")
                     }
-                }
-                else
+                } else
                     Toast.makeText(
                         this,
                         "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
@@ -507,7 +533,10 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
 
             showDochadzka.setOnClickListener {
                 vibrate.vibrate(70)
-                if(isOnline(this)) {
+                networkTask = NetworkTask(this)
+                networkTask.execute()
+                if (isOnline(this)) {
+
                     if (privileges == "11" || privileges == "111") {
                         if (dbMethods.getDochadzka(privileges) != "0") {
                             updateLabelMethods.processDochadzka(this, intent, privileges)
@@ -532,16 +561,14 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                                 Toast.LENGTH_LONG
                             ).show()
                     }
-                }
-                else
+                } else
                     Toast.makeText(
                         this,
                         "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
                         Toast.LENGTH_LONG
                     ).show()
             }
-        }
-        else
+        } else
             Toast.makeText(
                 this,
                 "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",

@@ -24,7 +24,9 @@ import kotlin.random.Random
 
 class ChartMethods{
 
+
     fun barChart(context: Context, chart: Int, barChart: BarChart) {
+
         val dbMethods: DBConnection = DBConnection()
         val request: String = dbMethods.getStatistics(chart)
         var arrayList: ArrayList<BarEntry> = ArrayList()
