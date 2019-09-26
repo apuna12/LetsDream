@@ -96,6 +96,12 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         popUpMenu.menuInflater.inflate(R.menu.array, popUpMenu.menu)
         textViewStatName.setText(popUpMenu.menu.getItem(0).toString())
         textViewStatNameLabel.setText(textViewStatName.text)
+        val lineChart: LineChart = findViewById(R.id.lineChart)
+        barChart.visibility = View.INVISIBLE
+        //pieChart.visibility = View.INVISIBLE
+        lineChart.visibility = View.VISIBLE
+        val chartMethods: ChartMethods = ChartMethods()
+        chartMethods.lineChart(this, 2, lineChart)
 
         imageButton.setOnClickListener{
             if(isOnline(this)) {
@@ -106,16 +112,12 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                     textViewStatName.setText(it.title.toString())
                     textViewStatNameLabel.setText(it.title.toString())
                     val itemId = it.itemId
-                    val chartMethods: ChartMethods = ChartMethods()
-                    if (itemId == R.id.menu_item_1) {
-
-                    } else if (itemId == R.id.menu_item_2) {
+                    if (itemId == R.id.menu_item_2) {
                         val lineChart: LineChart = findViewById(R.id.lineChart)
                         barChart.visibility = View.INVISIBLE
                         //pieChart.visibility = View.INVISIBLE
                         lineChart.visibility = View.VISIBLE
                         chartMethods.lineChart(this, 2, lineChart)
-
                     } else if (itemId == R.id.menu_item_3) {
                         val barChart: BarChart = findViewById(R.id.barChart)
                         lineChart.visibility = View.INVISIBLE
