@@ -3,6 +3,7 @@ package sk.letsdream
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.net.ConnectivityManager
@@ -521,6 +522,16 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                                                 Toast.LENGTH_SHORT
                                             ).show()
                                             mAlertDialog.dismiss()
+                                            networkTask = NetworkTask(this)
+                                            networkTask.execute()
+                                            val intent = Intent(this@AdminActivity, LoginActivity::class.java)
+                                            startActivity(intent)
+                                            networkTask = NetworkTask(this)
+                                            networkTask.execute()
+                                            Toast.makeText(
+                                                this, "Pre správne fungovanie aplikácie prosím reštartujte aplikáciu",
+                                                Toast.LENGTH_LONG
+                                            ).show()
                                         } else
                                             Toast.makeText(
                                                 this,

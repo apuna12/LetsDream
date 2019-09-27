@@ -2,34 +2,24 @@ package sk.letsdream
 
 import android.content.Context
 import android.content.DialogInterface
-import android.content.Intent
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Vibrator
-import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
-import android.support.design.widget.Snackbar
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.text.InputFilter
 import android.view.*
 import android.widget.*
-import kotlinx.android.synthetic.main.dialog_fullpoznamka.view.*
 import kotlinx.android.synthetic.main.dialog_fullpoznamka.view.buttonSpatDialog
 import kotlinx.android.synthetic.main.dialog_newregistrations.view.*
-import kotlinx.android.synthetic.main.nav_header_main.*
-import org.w3c.dom.Text
 import sk.letsdream.dbMethods.DBConnection
 import sk.letsdream.helperMethods.ButtonEffects
 import sk.letsdream.helperMethods.NetworkTask
 import sk.letsdream.helperMethods.TimeMethods
 import sk.letsdream.helperMethods.UpdateLabelMethods
-import java.lang.Exception
 
 class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -106,7 +96,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
-                    Toast.LENGTH_LONG
+                    Toast.LENGTH_SHORT
                 ).show()
             }
         } else if (privileges == "11" || privileges == "111") {
@@ -132,7 +122,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
-                    Toast.LENGTH_LONG
+                    Toast.LENGTH_SHORT
                 ).show()
         } else {
             leftBracket.visibility = View.INVISIBLE
@@ -160,7 +150,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
             Toast.makeText(
                 this,
                 "Hups! Neexistujú žiadne mená v databáze",
-                Toast.LENGTH_LONG
+                Toast.LENGTH_SHORT
             ).show()
 
         spinnerMeno.setOnClickListener {
@@ -178,7 +168,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                             Toast.makeText(
                                 this,
                                 "Hups! V Databáze sa nenachádza žiadne meno!",
-                                Toast.LENGTH_LONG
+                                Toast.LENGTH_SHORT
                             ).show()
                         } else {
                             meno.text = it.title.toString()
@@ -208,7 +198,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                         Toast.makeText(
                             this,
                             "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
-                            Toast.LENGTH_LONG
+                            Toast.LENGTH_SHORT
                         ).show()
                         true
                     }
@@ -218,7 +208,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
-                    Toast.LENGTH_LONG
+                    Toast.LENGTH_SHORT
                 ).show()
         }
 
@@ -245,7 +235,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                                         Toast.makeText(
                                             this,
                                             "Používateľ povýšený",
-                                            Toast.LENGTH_LONG
+                                            Toast.LENGTH_SHORT
                                         ).show()
                                         if (privileges == "111")
                                             promoteDemote.text = "Degradovať na užívateľa"
@@ -274,7 +264,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                                         Toast.makeText(
                                             this,
                                             "Používateľ degradovaný",
-                                            Toast.LENGTH_LONG
+                                            Toast.LENGTH_SHORT
                                         ).show()
                                         promoteDemote.text = "Povýšiť na administrátora"
                                     })
@@ -291,17 +281,17 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                         Toast.makeText(
                             this,
                             "Hups! Nevybrali ste žiadne meno",
-                            Toast.LENGTH_LONG
+                            Toast.LENGTH_SHORT
                         ).show()
                 } else {
-                    Toast.makeText(this, "Hups! Niečo je zlé. Skúste neskôr", Toast.LENGTH_LONG)
+                    Toast.makeText(this, "Hups! Niečo je zlé. Skúste neskôr", Toast.LENGTH_SHORT)
                         .show()
                 }
             } else
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
-                    Toast.LENGTH_LONG
+                    Toast.LENGTH_SHORT
                 ).show()
         }
 
@@ -398,7 +388,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                                                                     Toast.makeText(
                                                                         this,
                                                                         "Používateľ potvrdený",
-                                                                        Toast.LENGTH_LONG
+                                                                        Toast.LENGTH_SHORT
                                                                     )
                                                                         .show()
                                                                     finish()
@@ -407,7 +397,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                                                                     Toast.makeText(
                                                                         this,
                                                                         "Hups! Niečo je zlé. Skúste neskôr",
-                                                                        Toast.LENGTH_LONG
+                                                                        Toast.LENGTH_SHORT
                                                                     ).show()
 
                                                             })
@@ -437,7 +427,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                                                                     Toast.makeText(
                                                                         this,
                                                                         "Používateľ odstránený",
-                                                                        Toast.LENGTH_LONG
+                                                                        Toast.LENGTH_SHORT
                                                                     )
                                                                         .show()
                                                                     finish()
@@ -446,7 +436,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                                                                     Toast.makeText(
                                                                         this,
                                                                         "Hups! Niečo je zlé. Skúste neskôr",
-                                                                        Toast.LENGTH_LONG
+                                                                        Toast.LENGTH_SHORT
                                                                     ).show()
                                                             })
                                                         .setNegativeButton(
@@ -461,7 +451,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                                         Toast.makeText(
                                             this,
                                             "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
-                                            Toast.LENGTH_LONG
+                                            Toast.LENGTH_SHORT
                                         ).show()
                                 }
 
@@ -480,7 +470,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
-                    Toast.LENGTH_LONG
+                    Toast.LENGTH_SHORT
                 ).show()
 
         }
@@ -526,7 +516,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                     Toast.makeText(
                         this,
                         "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
-                        Toast.LENGTH_LONG
+                        Toast.LENGTH_SHORT
                     ).show()
             }
 
@@ -544,7 +534,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                             Toast.makeText(
                                 this,
                                 "Hups! Niečo je zlé. Skúste neskôr",
-                                Toast.LENGTH_LONG
+                                Toast.LENGTH_SHORT
                             ).show()
                     } else {
                         if (dbMethods.getDochadzka(privileges, meno.text.toString()) != "0") {
@@ -558,21 +548,21 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                             Toast.makeText(
                                 this,
                                 "Hups! Niečo je zlé. Skúste neskôr",
-                                Toast.LENGTH_LONG
+                                Toast.LENGTH_SHORT
                             ).show()
                     }
                 } else
                     Toast.makeText(
                         this,
                         "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
-                        Toast.LENGTH_LONG
+                        Toast.LENGTH_SHORT
                     ).show()
             }
         } else
             Toast.makeText(
                 this,
                 "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
-                Toast.LENGTH_LONG
+                Toast.LENGTH_SHORT
             ).show()
 
     }

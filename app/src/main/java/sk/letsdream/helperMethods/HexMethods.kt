@@ -1,7 +1,5 @@
 package sk.letsdream.helperMethods
 
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
 
 class HexMethods {
     fun bytesToHexString(bytes: ByteArray): String {

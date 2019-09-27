@@ -7,27 +7,20 @@ import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.StrictMode
 import android.os.Vibrator
-import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
-import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.text.InputFilter
 import android.text.InputType
 import android.view.*
 import android.widget.*
-import kotlinx.android.synthetic.main.content_login.*
 import java.lang.Exception
 import java.net.URL
-import java.security.Key
 import java.security.MessageDigest
-import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import android.widget.EditText
-import kotlinx.android.synthetic.main.dialog_addnewaction.view.*
 import kotlinx.android.synthetic.main.dialog_register.view.*
 import sk.letsdream.dbMethods.DBConnection
 import sk.letsdream.helperMethods.*
@@ -74,7 +67,6 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
         if (isOnline(this)) {
-
             if (initialSetup.initialDBCreation() != "111") {
                 if (dbMethods.checkSuperUser() == "0") {
                     networkTask = NetworkTask(this)
@@ -85,9 +77,15 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     Toast.makeText(
                         this,
                         "Hups! Niečo sa stalo. Skúste neskôr",
-                        Toast.LENGTH_LONG
+                        Toast.LENGTH_SHORT
                     ).show()
             } else if (initialSetup.initialDBCreation() == "111") {
+
+                if (dbMethods.checkSuperUser() == "0") {
+                    networkTask = NetworkTask(this)
+                    networkTask.execute()
+                    initialSetup.CreateSuperAdmin(this)
+                }
 
                 val showPassChb: CheckBox = findViewById(R.id.showPassChb)
                 var passwordEdt: EditText = findViewById(R.id.passwordEdt)
@@ -279,49 +277,49 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             networkTask = NetworkTask(this)
                             networkTask.execute()
                             if (userRegister.text.toString() == "") {
-                                Toast.makeText(this, "Prosím zadajte meno účtu!", Toast.LENGTH_LONG)
+                                Toast.makeText(this, "Prosím zadajte meno účtu!", Toast.LENGTH_SHORT)
                                     .show()
                             } else if (passRegister.text.toString() == "") {
-                                Toast.makeText(this, "Prosím zadajte heslo!", Toast.LENGTH_LONG)
+                                Toast.makeText(this, "Prosím zadajte heslo!", Toast.LENGTH_SHORT)
                                     .show()
                             } else if (passAgainRegister.text.toString() == "") {
                                 Toast.makeText(
                                     this,
                                     "Prosím zadajte znova heslo!",
-                                    Toast.LENGTH_LONG
+                                    Toast.LENGTH_SHORT
                                 )
                                     .show()
                             } else if (emailRegister.text.toString() == "") {
                                 Toast.makeText(
                                     this,
                                     "Prosím zadajte emailovú adresu!",
-                                    Toast.LENGTH_LONG
+                                    Toast.LENGTH_SHORT
                                 )
                                     .show()
                             } else if (!emailMethods.isEmailValid(emailRegister.text.toString().trim())) {
                                 Toast.makeText(
                                     this,
                                     "Prosím zadajte správnu emailovú adresu!",
-                                    Toast.LENGTH_LONG
+                                    Toast.LENGTH_SHORT
                                 ).show()
                             } else if (passRegister.text.toString() != passAgainRegister.text.toString()) {
-                                Toast.makeText(this, "Vaše heslá sa nezhodujú!", Toast.LENGTH_LONG)
+                                Toast.makeText(this, "Vaše heslá sa nezhodujú!", Toast.LENGTH_SHORT)
                                     .show()
                             } else if (nameRegister.text.toString() == "") {
-                                Toast.makeText(this, "Zadajte prosím meno!", Toast.LENGTH_LONG)
+                                Toast.makeText(this, "Zadajte prosím meno!", Toast.LENGTH_SHORT)
                                     .show()
                             } else if (surnameRegister.text.toString() == "") {
                                 Toast.makeText(
                                     this,
                                     "Zadajte prosím priezvisko!",
-                                    Toast.LENGTH_LONG
+                                    Toast.LENGTH_SHORT
                                 )
                                     .show()
                             } else if (!gdprCHB.isChecked) {
                                 Toast.makeText(
                                     this,
                                     "Pre úspešne zaregistrovanie musíte súhlasiť so spracovaním údajov!",
-                                    Toast.LENGTH_LONG
+                                    Toast.LENGTH_SHORT
                                 ).show()
                             } else {
 
@@ -352,7 +350,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                         Toast.makeText(
                                             this,
                                             "Toto meno už používa niekto iný",
-                                            Toast.LENGTH_LONG
+                                            Toast.LENGTH_SHORT
                                         ).show()
                                     else {
 
@@ -392,7 +390,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                                 Toast.makeText(
                                                     this,
                                                     "Používateľ úspešne registrovaný!",
-                                                    Toast.LENGTH_LONG
+                                                    Toast.LENGTH_SHORT
                                                 ).show()
                                                 val intent = Intent(this, LoginActivity::class.java)
                                                 startActivity(intent)
@@ -400,7 +398,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                                 Toast.makeText(
                                                     this,
                                                     "Hups, niečo je zlé!",
-                                                    Toast.LENGTH_LONG
+                                                    Toast.LENGTH_SHORT
                                                 ).show()
                                                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                                             }
@@ -422,7 +420,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         Toast.makeText(
                             this,
                             "Hups! Nie ste pripojený na internet",
-                            Toast.LENGTH_LONG
+                            Toast.LENGTH_SHORT
                         ).show()
 
 
@@ -459,11 +457,11 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                 }
                                 jsonStr = jsonStr.removeRange(firstApp, lastApp + 1)
                                 if (jsonStr == "0") {
-                                    Toast.makeText(this, "Nesprávne heslo", Toast.LENGTH_LONG)
+                                    Toast.makeText(this, "Nesprávne heslo", Toast.LENGTH_SHORT)
                                         .show()
                                 } else if (jsonStr == "1") // User
                                 {
-                                    Toast.makeText(this, "Prihlásenie úspešné", Toast.LENGTH_LONG)
+                                    Toast.makeText(this, "Prihlásenie úspešné", Toast.LENGTH_SHORT)
                                         .show()
                                     val intent =
                                         Intent(this@LoginActivity, MainActivity::class.java)
@@ -473,7 +471,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                                 } else if (jsonStr == "11") // Admin
                                 {
-                                    Toast.makeText(this, "Prihlásenie úspešné", Toast.LENGTH_LONG)
+                                    Toast.makeText(this, "Prihlásenie úspešné", Toast.LENGTH_SHORT)
                                         .show()
                                     val intent =
                                         Intent(this@LoginActivity, MainActivity::class.java)
@@ -483,7 +481,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                                 } else if (jsonStr == "111") // Super Admin
                                 {
-                                    Toast.makeText(this, "Prihlásenie úspešné", Toast.LENGTH_LONG)
+                                    Toast.makeText(this, "Prihlásenie úspešné", Toast.LENGTH_SHORT)
                                         .show()
                                     val intent =
                                         Intent(this@LoginActivity, MainActivity::class.java)
@@ -495,7 +493,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                     Toast.makeText(
                                         this,
                                         "Daný užívateľ neexistuje",
-                                        Toast.LENGTH_LONG
+                                        Toast.LENGTH_SHORT
                                     )
                                         .show()
 
@@ -503,13 +501,13 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                     Toast.makeText(
                                         this,
                                         "Vaša registrácia nebola potvrdená administrátorom!",
-                                        Toast.LENGTH_LONG
+                                        Toast.LENGTH_SHORT
                                     ).show()
                                 } else {
                                     Toast.makeText(
                                         this,
                                         "Niekde nastala chyba. Máte prístup k internetu?",
-                                        Toast.LENGTH_LONG
+                                        Toast.LENGTH_SHORT
                                     ).show()
                                 }
 
@@ -522,7 +520,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         Toast.makeText(
                             this,
                             "Hups! Nie ste pripojený na internet",
-                            Toast.LENGTH_LONG
+                            Toast.LENGTH_SHORT
                         ).show()
                     }
                 }
@@ -531,7 +529,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Toast.makeText(
                 this,
                 "Hups! Nie ste pripojený na internet. Zapnite si internet a reštartujte aplikáciu.",
-                Toast.LENGTH_LONG
+                Toast.LENGTH_SHORT
             ).show()
         }
 

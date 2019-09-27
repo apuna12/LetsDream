@@ -3,7 +3,6 @@ package sk.letsdream.helperMethods
 import android.graphics.PorterDuff
 import android.view.MotionEvent
 import android.view.View
-import android.widget.LinearLayout
 
 class ButtonEffects {
 

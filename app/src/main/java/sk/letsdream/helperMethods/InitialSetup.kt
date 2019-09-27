@@ -18,12 +18,12 @@ import sk.letsdream.dbMethods.DBConnection
 import java.lang.Exception
 import java.net.URL
 import java.security.MessageDigest
+import kotlin.system.exitProcess
 
 class InitialSetup {
 
     fun CreateSuperAdmin(context: Activity)
     {
-        val dbMethods: DBConnection = DBConnection()
         var networkTask: NetworkTask
         val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         val emailMethods: EmailMethods = EmailMethods()
@@ -40,6 +40,7 @@ class InitialSetup {
         val back = dialogView.backRegBtn
         val gdprCHB = dialogView.gdprCHB
         val hexMethods: HexMethods = HexMethods()
+
         dialogHeader.text = "Registrácia hlavného administrátora"
         userRegister.setOnFocusChangeListener { v, hasFocus ->
             vibrate.vibrate(70)
@@ -170,7 +171,7 @@ class InitialSetup {
                 } else if (emailRegister.text.toString() == "") {
                     Toast.makeText(context, "Prosím zadajte emailovú adresu!", Toast.LENGTH_LONG)
                         .show()
-                } else if (!emailMethods.isEmailValid(emailRegister.text.toString())) {
+                } else if (!emailMethods.isEmailValid(emailRegister.text.toString().trim())) {
                     Toast.makeText(
                         context,
                         "Prosím zadajte správnu emailovú adresu!",
@@ -225,7 +226,7 @@ class InitialSetup {
 
                             val sql =
                                 "http://letsdream.xf.cz/index.php?username=" + userRegister.text + "&password=" + hash +
-                                        "&email=" + emailRegister.text + "&name=" + surnameRegister.text + ",_" +
+                                        "&email=" + emailRegister.text.toString().trim() + "&name=" + surnameRegister.text + ",_" +
                                         nameRegister.text + "&mod=registerSuperadmin&rest=post"
 
                             try {
@@ -254,6 +255,7 @@ class InitialSetup {
                                         "Používateľ úspešne registrovaný!",
                                         Toast.LENGTH_LONG
                                     ).show()
+                                    mAlertDialog.dismiss()
                                     val intent = Intent(context, LoginActivity::class.java)
                                     startActivity(context, intent, null)
                                 } else {
@@ -285,8 +287,10 @@ class InitialSetup {
         back.setOnClickListener {
             vibrate.vibrate(70)
             mAlertDialog.cancel()
+            exitProcess(-1)
         }
 
+        mAlertDialog.show()
     }
 
     fun initialDBCreation():String

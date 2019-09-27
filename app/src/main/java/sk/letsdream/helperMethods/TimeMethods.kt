@@ -1,23 +1,15 @@
 package sk.letsdream.helperMethods
 
 
-import android.app.Activity
 import android.app.DatePickerDialog
-import android.app.PendingIntent.getActivity
 import android.app.TimePickerDialog
 import android.content.Context
-import android.os.AsyncTask
 import android.os.Handler
 import android.os.Vibrator
-import android.view.View
 import android.widget.TextView
-import sk.letsdream.MainActivity
 import sk.letsdream.R
-import java.sql.Time
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.*
-import java.time.format.DateTimeFormatter
 
 
 class TimeMethods {

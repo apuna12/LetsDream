@@ -2,24 +2,13 @@ package sk.letsdream.helperMethods
 
 import android.content.Context
 import android.graphics.Color
-import android.view.View
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.charts.PieChart
-import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.github.mikephil.charting.utils.ColorTemplate
-import sk.letsdream.R
-import sk.letsdream.StatistikyActivity
 import sk.letsdream.dbMethods.DBConnection
-import java.sql.Time
-import android.R.attr.entries
-import com.github.mikephil.charting.components.Legend
-import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.random.Random
 
 
 class ChartMethods{

@@ -2,7 +2,6 @@ package sk.letsdream.helperMethods
 
 import android.app.*
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.net.ConnectivityManager
@@ -15,26 +14,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import kotlinx.android.synthetic.main.dialog_changeaction.view.*
-import kotlinx.android.synthetic.main.dialog_fullaction.view.*
 import kotlinx.android.synthetic.main.dialog_fullaction.view.casDoAkcieDialog
 import kotlinx.android.synthetic.main.dialog_fullaction.view.casOdAkcieDialog
 import kotlinx.android.synthetic.main.dialog_fullaction.view.datumAkcieDialog
 import kotlinx.android.synthetic.main.dialog_fullaction.view.nazovAkcieDialog
-import kotlinx.android.synthetic.main.dialog_fullpoznamka.view.*
-import kotlinx.android.synthetic.main.dialog_newregistrations.view.*
 import kotlinx.android.synthetic.main.dialog_newregistrations.view.buttonSpatDialog
-import kotlinx.android.synthetic.main.dialog_newregistrations.view.fullPoznDialog
 import kotlinx.android.synthetic.main.dialog_poznamka.view.*
-import org.w3c.dom.Text
-import sk.letsdream.MainActivity
 import sk.letsdream.R
 import sk.letsdream.VyberMenaActivity
 import sk.letsdream.dbMethods.DBConnection
-import java.sql.Time
 import java.util.*
-import android.widget.LinearLayout
-import kotlinx.android.synthetic.main.content_akcie.view.*
 import kotlinx.android.synthetic.main.dialog_changeaction.view.buttonPotvrditDialog
 import kotlinx.android.synthetic.main.dialog_changedochadzka.view.*
 import kotlinx.android.synthetic.main.dialog_changedochadzka.view.menoDialog

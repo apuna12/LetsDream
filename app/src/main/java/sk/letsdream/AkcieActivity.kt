@@ -1,43 +1,29 @@
 package sk.letsdream
 
 import android.app.AlertDialog
-import android.app.TimePickerDialog
 import android.content.Context
-import android.content.ContextWrapper
 import android.content.DialogInterface
-import android.content.Intent
-import android.media.Image
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.StrictMode
 import android.os.Vibrator
-import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
-import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.text.InputFilter
-import android.text.InputType
 import android.view.*
 import android.widget.*
-import kotlinx.android.synthetic.main.content_dochadzka.view.*
-import kotlinx.android.synthetic.main.content_login.*
 import kotlinx.android.synthetic.main.dialog_addnewaction.view.*
 import kotlinx.android.synthetic.main.dialog_fullpoznamka.view.*
-import org.w3c.dom.Text
 import sk.letsdream.dbMethods.DBConnection
 import sk.letsdream.helperMethods.*
 import java.lang.Exception
 import java.net.URL
-import java.security.MessageDigest
 import java.text.SimpleDateFormat
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
-import java.util.*
+
 
 
 class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -124,7 +110,7 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
                 jsonStr = jsonStr.removeRange(firstApp, lastApp + 1)
                 if (jsonStr == "0") {
-                    Toast.makeText(this, "Hups! Niekde nastala chyba", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Hups! Niekde nastala chyba", Toast.LENGTH_SHORT).show()
                 } else {
                     akcieList = jsonStr.split(",").toTypedArray()
                     akcieList = akcieList.dropLast(1).toTypedArray()
@@ -160,7 +146,7 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     casDo.text = statsArray.get(4)
                     poznamka.text = statsArray.get(5)
                 } else
-                    Toast.makeText(this, "Hups! Niečo je zlé", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Hups! Niečo je zlé", Toast.LENGTH_SHORT).show()
             } else
                 Toast.makeText(
                     this,
@@ -192,7 +178,7 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         casDo.text = statsArray.get(4)
                         poznamka.text = statsArray.get(5)
                     } else
-                        Toast.makeText(this, "Hups! Niečo je zlé", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Hups! Niečo je zlé", Toast.LENGTH_SHORT).show()
                     true
                 }
                 popUpMenu.show()
@@ -230,10 +216,10 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.makeText(
                     this,
                     "K tejto funkcii ma prístup iba administrátor!",
-                    Toast.LENGTH_LONG
+                    Toast.LENGTH_SHORT
                 ).show()
             } else if ((privileges.toLowerCase() == "11" || privileges.toLowerCase() == "111") && adminUserLabel.text == "Používateľ") {
-                Toast.makeText(this, "Zapnutý admin mód!", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Zapnutý admin mód!", Toast.LENGTH_SHORT).show()
                 vytvoritAkciu.visibility = View.VISIBLE
                 upravitDobr.visibility = View.VISIBLE
                 upravitNavs.visibility = View.VISIBLE
@@ -246,7 +232,7 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 changePrivileges.visibility = View.VISIBLE
 
             } else if ((privileges.toLowerCase() == "11" || privileges.toLowerCase() == "111") && adminUserLabel.text == "Administrátor") {
-                Toast.makeText(this, "Zapnutý používateľský mód!", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Zapnutý používateľský mód!", Toast.LENGTH_SHORT).show()
                 vytvoritAkciu.visibility = View.INVISIBLE
                 upravitDobr.visibility = View.INVISIBLE
                 upravitNavs.visibility = View.INVISIBLE
@@ -259,7 +245,7 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.makeText(
                     this,
                     "Nastala chyba! Nerozpoznaná rola používateľa",
-                    Toast.LENGTH_LONG
+                    Toast.LENGTH_SHORT
                 ).show()
                 vytvoritAkciu.visibility = View.INVISIBLE
                 upravitDobr.visibility = View.INVISIBLE
@@ -426,7 +412,7 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                 )
                                 if (check == "1") {
                                     mAlertDialog.dismiss()
-                                    Toast.makeText(this, "Nová akcia pridaná", Toast.LENGTH_LONG)
+                                    Toast.makeText(this, "Nová akcia pridaná", Toast.LENGTH_SHORT)
                                         .show()
                                     finish()
                                     startActivity(intent)
@@ -434,19 +420,19 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                     Toast.makeText(
                                         this,
                                         "Hups! Záznam nebol pridaný.",
-                                        Toast.LENGTH_LONG
+                                        Toast.LENGTH_SHORT
                                     ).show()
                             } else
                                 Toast.makeText(
                                     this,
                                     "Hups! Opravte si prosím čas.",
-                                    Toast.LENGTH_LONG
+                                    Toast.LENGTH_SHORT
                                 ).show()
                         } else
                             Toast.makeText(
                                 this,
                                 "Vyplňte prosím všetky povinné položky!",
-                                Toast.LENGTH_LONG
+                                Toast.LENGTH_SHORT
                             ).show()
 
                     } else {
@@ -530,13 +516,13 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             if (dbMethods.deleteAction(nazovAkcieVedlaSpinnera.text.toString()) == "1") {
                                 finish()
                                 startActivity(intent)
-                                Toast.makeText(this, "Akcia úspešne vymazaná", Toast.LENGTH_LONG)
+                                Toast.makeText(this, "Akcia úspešne vymazaná", Toast.LENGTH_SHORT)
                                     .show()
                             } else {
                                 Toast.makeText(
                                     this,
                                     "Hups! Akcia nebola vymazaná",
-                                    Toast.LENGTH_LONG
+                                    Toast.LENGTH_SHORT
                                 )
                                     .show()
                             }

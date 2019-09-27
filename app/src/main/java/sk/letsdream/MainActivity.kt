@@ -16,16 +16,14 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.View
-import android.view.WindowManager
 import android.widget.ImageButton
-import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.content_main.*
+import sk.letsdream.dbMethods.DBConnection
 import sk.letsdream.helperMethods.ButtonEffects
 import sk.letsdream.helperMethods.NetworkTask
 import sk.letsdream.helperMethods.TimeMethods
-import java.text.SimpleDateFormat
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     var privileges: String = ""
@@ -96,7 +94,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet",
-                    Toast.LENGTH_LONG
+                    Toast.LENGTH_SHORT
                 ).show()
             }
         }
@@ -114,7 +112,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet",
-                    Toast.LENGTH_LONG
+                    Toast.LENGTH_SHORT
                 ).show()
             }
         }
@@ -132,7 +130,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.makeText(
                     this,
                     "Hups! Nie ste pripojený na internet",
-                    Toast.LENGTH_LONG
+                    Toast.LENGTH_SHORT
                 ).show()
             }
         }
@@ -142,17 +140,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             networkTask.execute()
             if (isOnline(this)) {
 
-                val intent = Intent(this@MainActivity, StatistikyActivity::class.java)
-                intent.putExtra("privileges", privileges)
-                intent.putExtra("login", loginName)
-                startActivity(intent)
-            } else {
-                Toast.makeText(
-                    this,
-                    "Hups! Nie ste pripojený na internet",
-                    Toast.LENGTH_LONG
-                ).show()
+                val dbMethods: DBConnection = DBConnection()
+
+                if (dbMethods.getNumberOfActions() != "0") {
+                    val intent = Intent(this@MainActivity, StatistikyActivity::class.java)
+                    intent.putExtra("privileges", privileges)
+                    intent.putExtra("login", loginName)
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Hups! Nie ste pripojený na internet",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
+            else
+                Toast.makeText(this, "V databáze zatiaľ nie sú žiadne akcie.", Toast.LENGTH_SHORT).show()
         }
 
         if (privileges != "111") {

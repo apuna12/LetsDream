@@ -1,9 +1,7 @@
 package sk.letsdream
 
-import android.app.DatePickerDialog
-import android.app.PendingIntent.getActivity
+
 import android.content.Context
-import android.database.SQLException
 import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
@@ -20,23 +18,12 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.*
 import android.widget.*
-import kotlinx.android.synthetic.main.content_akcie.*
-import kotlinx.android.synthetic.main.content_dochadzka.*
-import kotlinx.android.synthetic.main.dialog_addnewaction.view.*
-import okhttp3.*
 import sk.letsdream.dbMethods.DBConnection
-import sk.letsdream.helperMethods.ButtonEffects
 import sk.letsdream.helperMethods.NetworkTask
 import sk.letsdream.helperMethods.TimeMethods
-import java.io.IOException
 import java.lang.Exception
-import java.net.HttpURLConnection
-import java.net.URL
-import java.sql.Connection
-import java.sql.DriverManager
 import java.text.SimpleDateFormat
-import java.util.*
-import javax.xml.datatype.DatatypeConstants.MONTHS
+
 
 
 
@@ -133,7 +120,7 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                             Toast.makeText(
                                 this,
                                 "Hups! V Databáze sa nenachádza žiadne meno!",
-                                Toast.LENGTH_LONG
+                                Toast.LENGTH_SHORT
                             ).show()
                         } else {
                             meno.text = it.title.toString()
@@ -218,10 +205,10 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                         Toast.makeText(
                             this,
                             "Prosím vyplňte všetky potrebné informácie",
-                            Toast.LENGTH_LONG
+                            Toast.LENGTH_SHORT
                         ).show()
                     else if (meno.text.toString() == "Vyberte meno")
-                        Toast.makeText(this, "Nevybrali ste meno", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Nevybrali ste meno", Toast.LENGTH_SHORT).show()
                     else {
                         var timeParser = SimpleDateFormat("HH:mm")
                         var timeFormatter = SimpleDateFormat("HH:mm")
@@ -255,7 +242,7 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                                             poznamka.text.toString()
                                         ) == "1"
                                     ) {
-                                        Toast.makeText(this, "Záznam pridaný", Toast.LENGTH_LONG)
+                                        Toast.makeText(this, "Záznam pridaný", Toast.LENGTH_SHORT)
                                             .show()
                                         meno.text = ""
                                         prichodDatePicker.text = "Dátum"
@@ -267,24 +254,24 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                                         Toast.makeText(
                                             this,
                                             "Hups! Záznam nebol pridaný!",
-                                            Toast.LENGTH_LONG
+                                            Toast.LENGTH_SHORT
                                         ).show()
 
                                 } catch (e: Exception) {
                                     Toast.makeText(
                                         this,
                                         "Hups! Záznam nebol pridaný! Máte zapnutý internet?",
-                                        Toast.LENGTH_LONG
+                                        Toast.LENGTH_SHORT
                                     )
                                         .show()
                                 }
                             } else {
-                                Toast.makeText(this, "Prosím opravte si čas!", Toast.LENGTH_LONG)
+                                Toast.makeText(this, "Prosím opravte si čas!", Toast.LENGTH_SHORT)
                                     .show()
                             }
 
                         } else {
-                            Toast.makeText(this, "Prosím opravte si dátum!", Toast.LENGTH_LONG)
+                            Toast.makeText(this, "Prosím opravte si dátum!", Toast.LENGTH_SHORT)
                                 .show()
                         }
                     }

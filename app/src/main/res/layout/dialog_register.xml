@@ -1,184 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical"
     android:scrollbars="vertical"
     android:background="@drawable/dialog_back">
-
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/dialogHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Registrácia"
+                android:textColor="#000"
+                android:textSize="25dp"
+                android:gravity="center"
+                android:textStyle="bold"/>
+        </LinearLayout>
         <TextView
-            android:id="@+id/dialogHeader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Registrácia"
-            android:textColor="#000"
-            android:textSize="25dp"
-            android:gravity="center"
-            android:textStyle="bold"/>
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_marginLeft="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
-        android:text="Používateľ"
-        android:textColor="#000"/>
-
-    <EditText
-        android:id="@+id/userEdt"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Zadajte názov používateľa"
-        android:singleLine="true"
-        android:maxLength="100" />
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_marginLeft="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Heslo"
-        android:textColor="#000"/>
-    <EditText
-        android:id="@+id/passwordRegEdt"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:paddingLeft="5dp"
-        android:singleLine="true"
-        android:hint="Zadajte heslo"
-        android:textColor="#000"/>
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_marginLeft="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Heslo znova"
-        android:textColor="#000" />
-
-    <EditText
-        android:id="@+id/passwordAgainRegEdt"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:paddingLeft="5dp"
-        android:singleLine="true"
-        android:hint="Zadajte heslo znova"
-        android:textColor="#000" />
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_marginLeft="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Meno"
-        android:textColor="#000"/>
-    <EditText
-        android:id="@+id/nameRegEdt"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
-        android:singleLine="true"
-        android:hint="Zadajte meno"
-        android:textColor="#000" />
-    <TextView
-        android:id="@+id/textView11"
-        android:layout_marginLeft="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Priezvisko"
-        android:textColor="#000"/>
-    <EditText
-        android:id="@+id/surnameRegEdt"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
-        android:singleLine="true"
-        android:hint="Zadajte priezvisko"
-        android:textColor="#000" />
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_marginLeft="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Email"
-        android:textColor="#000"/>
-    <EditText
-        android:id="@+id/emailRegEdt"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
-        android:singleLine="true"
-        android:hint="Zadajte email"
-        android:textColor="#000" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:orientation="horizontal"
-        android:gravity="left"
-        android:paddingTop="20dp">
-        <CheckBox
-            android:id="@+id/gdprCHB"
+            android:id="@+id/textView7"
+            android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Zaškrtnutím súhlasím so spracovaním osobných údajov "/>
+            android:layout_marginTop="52dp"
+            android:text="Používateľ"
+            android:textColor="#000"/>
+        <EditText
+            android:id="@+id/userEdt"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Zadajte názov používateľa"
+            android:singleLine="true"
+            android:maxLength="100" />
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Heslo"
+            android:textColor="#000"/>
+        <EditText
+            android:id="@+id/passwordRegEdt"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:paddingLeft="5dp"
+            android:singleLine="true"
+            android:hint="Zadajte heslo"
+            android:textColor="#000"/>
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Heslo znova"
+            android:textColor="#000" />
+        <EditText
+            android:id="@+id/passwordAgainRegEdt"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:paddingLeft="5dp"
+            android:singleLine="true"
+            android:hint="Zadajte heslo znova"
+            android:textColor="#000" />
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Meno"
+            android:textColor="#000"/>
+        <EditText
+            android:id="@+id/nameRegEdt"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:singleLine="true"
+            android:hint="Zadajte meno"
+            android:textColor="#000" />
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Priezvisko"
+            android:textColor="#000"/>
+        <EditText
+            android:id="@+id/surnameRegEdt"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:singleLine="true"
+            android:hint="Zadajte priezvisko"
+            android:textColor="#000" />
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Email"
+            android:textColor="#000"/>
+        <EditText
+            android:id="@+id/emailRegEdt"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:singleLine="true"
+            android:hint="Zadajte email"
+            android:textColor="#000" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:orientation="horizontal"
-            android:gravity="left"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal"
-        android:gravity="left"
-        android:paddingTop="20dp">
-        <Button
-            android:id="@+id/backRegBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Späť"/>
+            android:gravity="left"
+            android:paddingTop="20dp">
+            <CheckBox
+                android:id="@+id/gdprCHB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Zaškrtnutím súhlasím so spracovaním osobných údajov "/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="left"/>
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
             android:orientation="horizontal"
-            android:gravity="right">
-
+            android:gravity="left"
+            android:paddingTop="20dp">
             <Button
-                android:id="@+id/registrujBtn"
+                android:id="@+id/backRegBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Potvrdiť" />
+                android:text="Späť"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="right">
+                <Button
+                    android:id="@+id/registrujBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Potvrdiť" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</ScrollView>
