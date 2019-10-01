@@ -5,10 +5,9 @@ O.Z.Let's dream
 
 TODO:
 
-    
-BONUS
-    - DB delete  (adjust)
-    - make rotating spinner by changing colors of certain places of the ring
-    - put LENGTH_SHORT everywhere
+BUGS:
+
+- after clicking "štatistika" without any statistics it shows "No Internet available"
+- adjust a filter for Štatistika. User can step in when: dochadzka is not null (show only dochadzka chart)
 
  
