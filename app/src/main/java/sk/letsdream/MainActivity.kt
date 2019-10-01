@@ -157,13 +157,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 } else {
                     Toast.makeText(
                         this,
-                        "Hups! Nie ste pripojený na internet",
+                        "V databáze zatiaľ nie sú žiadne akcie.",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-            }
-            else
-                Toast.makeText(this, "V databáze zatiaľ nie sú žiadne akcie.", Toast.LENGTH_SHORT).show()
+            } else
+
+                Toast.makeText(
+                    this,
+                    "Hups! Nie ste pripojený na internet",
+                    Toast.LENGTH_SHORT
+                ).show()
         }
 
         if (privileges != "111") {
