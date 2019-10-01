@@ -98,11 +98,12 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             namesList = arrayOf<String>()
 
             namesList = dbMethods.getAllApprovedNames().split("?").toTypedArray()
-
+            namesList = namesList.dropLast(1).toTypedArray()
+            namesList = namesList.sortedArray()
             val wrapper: Context = ContextThemeWrapper(this, R.style.popupMenuStyle)
             var popUpMenu: PopupMenu = PopupMenu(wrapper, spinnerMeno)
             if (namesList.size > 0) {
-                for (i in 0 until namesList.size - 1) {
+                for (i in 0 until namesList.size) {
                     if (namesList[i] != null || namesList[i] != "") {
                         popUpMenu.menu.add(namesList[i])
                     }

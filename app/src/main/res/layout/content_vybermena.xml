@@ -154,10 +154,10 @@
         android:layout_marginStart="16dp"
         android:background="@drawable/back"
         android:hint="Vyberte meno"
+        android:maxLines="2"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:singleLine="false"
-        android:maxLines="2"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
         android:textColorHint="@color/colorWhite"
@@ -237,10 +237,20 @@
         android:text="Zobraziť dochádzku"
         android:textColor="@color/yellow"
         app:layout_constraintBottom_toBottomOf="parent"
-
         app:layout_constraintStart_toStartOf="@+id/adminUserTW_VM"
         app:layout_constraintTop_toBottomOf="@+id/adminUserTW_VM"
         app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/deleteUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Zmazať používateľa"
+        android:textColor="@color/yellow"
+
+        app:layout_constraintBottom_toBottomOf="@+id/showDochadzka"
+        app:layout_constraintEnd_toEndOf="@+id/textView20"
+        app:layout_constraintTop_toTopOf="@+id/showDochadzka" />
 
     <TextView
         android:id="@+id/textView18"

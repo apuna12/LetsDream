@@ -1,7 +1,9 @@
 package sk.letsdream
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.os.Bundle
@@ -13,6 +15,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.*
 import android.widget.*
+import kotlinx.android.synthetic.main.content_dochadzka.*
 import kotlinx.android.synthetic.main.dialog_fullpoznamka.view.buttonSpatDialog
 import kotlinx.android.synthetic.main.dialog_newregistrations.view.*
 import sk.letsdream.dbMethods.DBConnection
@@ -77,6 +80,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
         val userTW: TextView = findViewById(R.id.adminUserTW_VM)
         val showDochadzka: TextView = findViewById(R.id.showDochadzka)
         val vyberPouzivatelaTW: TextView = findViewById(R.id.vybermenaLABEL_VM)
+        val deleteUser: TextView = findViewById(R.id.deleteUser)
         val vibrate = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
         if (privileges == "1") {
@@ -88,6 +92,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
             changePrivileges.visibility = View.INVISIBLE
             vyberPouzivatelaTW.text = "Používateľ"
             spinnerMeno.visibility = View.INVISIBLE
+            deleteUser.visibility = View.INVISIBLE
             if (isOnline(this)) {
                 meno.text = dbMethods.getLoggedUserName(loginName)
 
@@ -109,6 +114,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
             changePrivileges.visibility = View.VISIBLE
             vyberPouzivatelaTW.text = "Výber používateľa"
             spinnerMeno.visibility = View.VISIBLE
+            deleteUser.visibility = View.INVISIBLE
             if (isOnline(this)) {
                 var newRegs: String = dbMethods.getNewRegistrations()
                 if (newRegs != "0")
@@ -132,17 +138,20 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
             spravovatRegistracie.visibility = View.INVISIBLE
             vyberPouzivatelaTW.text = "Používateľ"
             spinnerMeno.visibility = View.INVISIBLE
+            deleteUser.visibility = View.INVISIBLE
         }
         promoteDemote.visibility = View.INVISIBLE
 
         var namesList: Array<String>
 
         namesList = dbMethods.getAllApprovedNames().split("?").toTypedArray()
+        namesList = namesList.dropLast(1).toTypedArray()
+        namesList = namesList.sortedArray()
 
         val wrapper: Context = ContextThemeWrapper(this, R.style.popupMenuStyle)
         var popUpMenu: PopupMenu = PopupMenu(wrapper, spinnerMeno)
         if (namesList.size > 0) {
-            for (i in 0 until namesList.size - 1) {
+            for (i in 0 until namesList.size) {
                 if (namesList[i] != null || namesList[i] != "") {
                     popUpMenu.menu.add(namesList[i])
                 }
@@ -493,15 +502,20 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                             Toast.LENGTH_SHORT
                         ).show()
                         updateLabelMethods.allActions(this, table, intent, "1")
+                        deleteUser.visibility = View.INVISIBLE
                     } else if ((privileges.toLowerCase() == "11" || privileges.toLowerCase() == "111") && userTW.text == "Používateľ") {
                         Toast.makeText(this, "Zapnutý admin mód!", Toast.LENGTH_SHORT).show()
                         userTW.text = "Admin"
                         changePrivileges.visibility = View.VISIBLE
                         updateLabelMethods.allActions(this, table, intent, "11")
+                        if(privileges == "111")
+                            deleteUser.visibility = View.VISIBLE
                     } else if ((privileges.toLowerCase() == "11" || privileges.toLowerCase() == "111") && userTW.text == "Admin") {
                         Toast.makeText(this, "Zapnutý používateľský mód!", Toast.LENGTH_SHORT)
                             .show()
                         userTW.text = "Používateľ"
+                        if(privileges == "111")
+                            deleteUser.visibility = View.INVISIBLE
                         updateLabelMethods.allActions(this, table, intent, "1")
                     } else {
                         Toast.makeText(
@@ -511,6 +525,7 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                         ).show()
                         userTW.visibility = View.INVISIBLE
                         changePrivileges.visibility = View.INVISIBLE
+                        deleteUser.visibility = View.INVISIBLE
                         updateLabelMethods.allActions(this, table, intent, "1")
                     }
                 } else
@@ -559,6 +574,74 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
                         Toast.LENGTH_SHORT
                     ).show()
             }
+
+            deleteUser.setOnClickListener{
+                vibrate.vibrate(70)
+                networkTask = NetworkTask(this)
+                networkTask.execute()
+                if(isOnline(this))
+                {
+                    if(meno.text.toString() != "") {
+                        lateinit var dialog: AlertDialog
+                        val builder = AlertDialog.Builder(this)
+                        builder.setTitle("Naozaj?")
+                        builder.setMessage("Naozaj chcete zmazať používateľa '" + meno.text.toString() + "' ?")
+                        val dialogClickListener = DialogInterface.OnClickListener { _, which ->
+                            when (which) {
+                                DialogInterface.BUTTON_POSITIVE -> {
+                                    vibrate.vibrate(70)
+                                    networkTask = NetworkTask(this)
+                                    networkTask.execute()
+                                    if (dbMethods.deleteUserByName(meno.text.toString()) == "1") {
+                                        Toast.makeText(
+                                            this, "Používateľ zmazaný",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        networkTask = NetworkTask(this)
+                                        networkTask.execute()
+                                        val intent = Intent(
+                                            this@VyberMenaActivity,
+                                            LoginActivity::class.java
+                                        )
+                                        startActivity(intent)
+                                        networkTask = NetworkTask(this)
+                                        networkTask.execute()
+                                    } else
+                                        Toast.makeText(
+                                            this,
+                                            "Hups! Niekde nastala chyba",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                }
+                                DialogInterface.BUTTON_NEGATIVE -> {
+                                    vibrate.vibrate(70)
+                                    dialog.dismiss()
+                                }
+                            }
+                        }
+                        builder.setPositiveButton("Áno", dialogClickListener)
+
+                        builder.setNegativeButton("Nie", dialogClickListener)
+
+                        dialog = builder.create()
+
+                        dialog.show()
+                    }
+                    else
+                        Toast.makeText(
+                            this,
+                            "Vyberte prosím meno zo zoznamu!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                }
+                else
+                    Toast.makeText(
+                        this,
+                        "Hups! Nie ste pripojený na internet.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+            }
+
         } else
             Toast.makeText(
                 this,
