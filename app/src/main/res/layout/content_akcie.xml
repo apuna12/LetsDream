@@ -88,7 +88,8 @@
         android:ellipsize="end"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:singleLine="true"
+        android:singleLine="false"
+        android:maxLines="2"
         android:text="Názov akcie"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
@@ -267,7 +268,7 @@
         android:id="@+id/pocetDobrET"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="30dp"
         android:text=""
         android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="@+id/textView10"
@@ -304,7 +305,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:text="od:"
+        android:text="od: "
         android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="@+id/textView13"
         app:layout_constraintStart_toEndOf="@+id/textView13"
@@ -315,7 +316,6 @@
         android:id="@+id/casOd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:text=""
         android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="@+id/textView13"
@@ -328,9 +328,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="do:"
+        android:text="do: "
         android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="@+id/textView13"
+        app:layout_constraintEnd_toStartOf="@+id/casDo"
         app:layout_constraintStart_toEndOf="@+id/casOd"
         app:layout_constraintTop_toTopOf="@+id/textView13" />
 
@@ -343,7 +344,6 @@
         android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="@+id/textView13"
         app:layout_constraintEnd_toEndOf="@+id/datumET"
-        app:layout_constraintStart_toEndOf="@+id/textView15"
         app:layout_constraintTop_toTopOf="@+id/textView13" />
 
 

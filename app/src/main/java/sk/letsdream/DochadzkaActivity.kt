@@ -72,7 +72,7 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
-
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
 
         val prichodDatePicker: TextView = findViewById(R.id.prichodDatePicker)
         val prichodTimePicker: TextView = findViewById(R.id.prichodTimePicker)

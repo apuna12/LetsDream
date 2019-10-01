@@ -40,7 +40,6 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
         val time: TextView = findViewById(R.id.timeTW)
 
         val timeMethod: TimeMethods = TimeMethods()
-        val buttonEffects: ButtonEffects = ButtonEffects()
         var networkTask: NetworkTask
 
 
@@ -59,6 +58,8 @@ class VyberMenaActivity: AppCompatActivity(), NavigationView.OnNavigationItemSel
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
+
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
 
 
         var dbMethods: DBConnection = DBConnection()

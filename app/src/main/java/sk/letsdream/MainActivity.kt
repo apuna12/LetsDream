@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.os.Handler
 import android.os.Vibrator
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
@@ -24,10 +25,14 @@ import sk.letsdream.dbMethods.DBConnection
 import sk.letsdream.helperMethods.ButtonEffects
 import sk.letsdream.helperMethods.NetworkTask
 import sk.letsdream.helperMethods.TimeMethods
+import android.support.v4.os.HandlerCompat.postDelayed
+
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     var privileges: String = ""
     var loginName: String = ""
+    private var doubleBackToExitPressedOnce = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         privileges = intent.getStringExtra("privileges")
@@ -78,6 +83,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
+
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
 
 
         dochadzka.setOnClickListener {
@@ -183,12 +190,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onBackPressed() {
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
+
+        if (doubleBackToExitPressedOnce) {
             super.onBackPressed()
+            val intent = Intent(this@MainActivity, LoginActivity::class.java)
+            startActivity(intent)
+            return
         }
+
+        this.doubleBackToExitPressedOnce = true
+        Toast.makeText(this, "Pre odhlásenie kliknite 'Späť' 2x po sebe. ", Toast.LENGTH_SHORT).show()
+
+        Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

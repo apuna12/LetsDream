@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.os.Handler
 import android.os.StrictMode
 import android.os.Vibrator
 import android.support.design.widget.NavigationView
@@ -25,7 +26,11 @@ import kotlinx.android.synthetic.main.dialog_register.view.*
 import sk.letsdream.dbMethods.DBConnection
 import sk.letsdream.helperMethods.*
 
+
+
 class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    private var doubleBackToExitPressedOnce = false
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -56,6 +61,8 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
 
         navView.setNavigationItemSelectedListener(this)
         val dbMethods: DBConnection = DBConnection()
@@ -536,12 +543,15 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onBackPressed() {
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
+        if (doubleBackToExitPressedOnce) {
             super.onBackPressed()
+            return
         }
+
+        this.doubleBackToExitPressedOnce = true
+        Toast.makeText(this, "Pre ukončenie aplikácie kliknite 'Späť' 2x po sebe. ", Toast.LENGTH_SHORT).show()
+
+        Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
 
     }
 

@@ -59,6 +59,8 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
 
         navView.setNavigationItemSelectedListener(this)
 
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+
         val imageButton: ImageButton = findViewById(R.id.vyberstatistikySPINNER)
         val textViewStatName: TextView = findViewById(R.id.statFromSpinner)
         val textViewStatNameLabel: TextView = findViewById(R.id.názovStatistikyLABEL)
@@ -75,7 +77,6 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         textViewStatNameLabel.setText(textViewStatName.text)
         val lineChart: LineChart = findViewById(R.id.lineChart)
         barChart.visibility = View.INVISIBLE
-        //pieChart.visibility = View.INVISIBLE
         lineChart.visibility = View.VISIBLE
         val chartMethods: ChartMethods = ChartMethods()
         chartMethods.lineChart(this, 2, lineChart)
@@ -98,7 +99,6 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                         networkTask.execute()
                         val lineChart: LineChart = findViewById(R.id.lineChart)
                         barChart.visibility = View.INVISIBLE
-                        //pieChart.visibility = View.INVISIBLE
                         lineChart.visibility = View.VISIBLE
                         chartMethods.lineChart(this, 2, lineChart)
                     } else if (itemId == R.id.menu_item_3) {
@@ -106,7 +106,6 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                         networkTask.execute()
                         val barChart: BarChart = findViewById(R.id.barChart)
                         lineChart.visibility = View.INVISIBLE
-                        //pieChart.visibility = View.INVISIBLE
                         barChart.visibility = View.VISIBLE
                         chartMethods.barChart(this, 3, barChart)
                     } else if (itemId == R.id.menu_item_4) {
@@ -114,7 +113,6 @@ class StatistikyActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                         networkTask.execute()
                         val pieChart: PieChart = findViewById(R.id.pieChart)
                         lineChart.visibility = View.INVISIBLE
-                        //pieChart.visibility = View.VISIBLE
                         barChart.visibility = View.VISIBLE
                         chartMethods.volunteerPerformance(this, barChart)
                     }

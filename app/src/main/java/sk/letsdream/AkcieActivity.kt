@@ -61,6 +61,7 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
 
         val dbMethods: DBConnection = DBConnection()
         val updateLabelMethods: UpdateLabelMethods = UpdateLabelMethods()

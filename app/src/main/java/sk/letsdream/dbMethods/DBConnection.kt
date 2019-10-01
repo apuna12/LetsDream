@@ -653,9 +653,6 @@ class DBConnection {
         id: String
     ): String {
 
-        //nastavit kontrolu vonku mimo tejto funkcie... napriklad ak je zly cas tak hodit return "5"
-
-
         val sql = "http://letsdream.xf.cz/index.php?name=" + name.replace(
             " ",
             "_"

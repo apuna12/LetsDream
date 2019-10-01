@@ -81,7 +81,7 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
-
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
 
         val emailButton: Button = findViewById(R.id.buttonOdoslMail)
         val backupButton: Button = findViewById(R.id.buttonZalohaDB)

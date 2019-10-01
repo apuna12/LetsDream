@@ -19,13 +19,13 @@ class ChartMethods{
         val dbMethods: DBConnection = DBConnection()
         val request: String = dbMethods.getStatistics(chart)
         var arrayList: ArrayList<BarEntry> = ArrayList()
-        var typedArrayList = request.split(",").toTypedArray()
+        var typedArrayList = request.split(";").toTypedArray()
         typedArrayList = typedArrayList.dropLast(1).toTypedArray()
         var items = arrayOf<Array<String>>()
         var xAxisValues = ArrayList<String>()
 
         for (i in 0 until typedArrayList.size) {
-            items += typedArrayList[i].split("-").toTypedArray()
+            items += typedArrayList[i].split("#").toTypedArray()
             arrayList.add(BarEntry(i.toFloat(), items[i][1].toFloat()))
             xAxisValues.add(items[i][0])
         }
@@ -66,14 +66,14 @@ class ChartMethods{
         val dbMethods: DBConnection = DBConnection()
         val request: String = dbMethods.getStatistics(chart)
         var arrayList: ArrayList<Entry> = ArrayList()
-        var typedArrayList = request.split(",").toTypedArray()
+        var typedArrayList = request.split(";").toTypedArray()
         typedArrayList = typedArrayList.dropLast(1).toTypedArray()
         var items = arrayOf<Array<String>>()
         var xAxisValues = ArrayList<String>()
 
         for (i in 0 until typedArrayList.size)
         {
-            items  += typedArrayList[i].split("-").toTypedArray()
+            items  += typedArrayList[i].split("#").toTypedArray()
             arrayList.add(Entry(i.toFloat(), items[i][1].toFloat()))
             xAxisValues.add(items[i][0])
         }
@@ -120,7 +120,7 @@ class ChartMethods{
         for (i in 0 until typedArrayList.size)
         {
             var helper : String = String()
-            items  += typedArrayList[i].split("-").toTypedArray()
+            items  += typedArrayList[i].split("#").toTypedArray()
             if(items[i][0].contains(","))
             {
                 var temp = items[i][0].split(",")

@@ -80,7 +80,7 @@
         android:background="@drawable/back"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:singleLine="true"
+        android:singleLine="false"
         android:text="Nazov statistiky"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"

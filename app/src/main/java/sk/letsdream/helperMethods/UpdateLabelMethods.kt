@@ -294,7 +294,7 @@ class UpdateLabelMethods {
 
                 var allActions = arrayOf<Array<String>>()
                 for (i in 0 until splittedDbValue.size) {
-                    allActions += splittedDbValue[i].split("-").toTypedArray()
+                    allActions += splittedDbValue[i].split("#").toTypedArray()
                 }
                 allActions = allActions.dropLast(1).toTypedArray()
 
@@ -380,7 +380,6 @@ class UpdateLabelMethods {
                                                 .inflate(R.layout.dialog_changeaction, null)
                                             val mBuilder =
                                                 AlertDialog.Builder(context).setView(dialogView)
-                                            //val nazov = row.getChildAt(0) as TextView
                                             val nazov = allActions[i - 1][0]
                                             val datum = row.getChildAt(1) as TextView
                                             val casOd = row.getChildAt(2) as TextView
@@ -482,7 +481,6 @@ class UpdateLabelMethods {
 
             val dbValue = dbMethods.getDochadzka(privileges, name)
             if (dbValue != "0") {
-                //dochadzkaTable.visibility = View.VISIBLE
                 val dialogView =
                     LayoutInflater.from(context).inflate(R.layout.dialog_getdochadzka, null)
                 val mBuilder = AlertDialog.Builder(context).setView(dialogView)
@@ -735,7 +733,6 @@ class UpdateLabelMethods {
                                                     ).show()
                                             }
                                         } else {
-                                            //prisposobiť náhľad
                                             val dialogView = LayoutInflater.from(context)
                                                 .inflate(R.layout.dialog_fulldochadzka, null)
                                             val mBuilder =
@@ -766,7 +763,6 @@ class UpdateLabelMethods {
                         }
 
                     } else {
-                        //actionTable.visibility = View.INVISIBLE
                     }
                 }
             }
