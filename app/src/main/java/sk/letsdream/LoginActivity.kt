@@ -24,6 +24,7 @@ import java.net.URL
 import java.security.MessageDigest
 import android.widget.TextView
 import android.widget.EditText
+import com.dcastalia.localappupdate.DownloadApk
 import com.github.javiersantos.appupdater.AppUpdater
 import com.github.javiersantos.appupdater.enums.Display
 import com.github.javiersantos.appupdater.enums.UpdateFrom
@@ -77,7 +78,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val initialSetup: InitialSetup = InitialSetup()
         var networkTask: NetworkTask
 
-        var updater = AppUpdater(this)
+        /*var updater = AppUpdater(this)
             .setDisplay(Display.DIALOG)
             .setUpdateFrom(UpdateFrom.GITHUB)
             .setGitHubUserAndRepo("Apuna12", "LetsDream")
@@ -89,7 +90,13 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .setButtonDismiss("Neskôr")
             .setIcon(R.drawable.ic_system_update_white_24dp)
             .setCancelable(false)
-        updater.start()
+        updater.start()*/
+
+        val url = "https://github.com/apuna12/LetsDream/tree/master/app/release/app-release.apk"
+
+        val downloadApk = DownloadApk(this@LoginActivity)
+
+        downloadApk.startDownloadingApk(url)
 
 
 
