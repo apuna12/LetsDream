@@ -24,9 +24,7 @@ import java.net.URL
 import java.security.MessageDigest
 import android.widget.TextView
 import android.widget.EditText
-import com.dcastalia.localappupdate.DownloadApk
 import com.github.javiersantos.appupdater.AppUpdater
-import com.github.javiersantos.appupdater.enums.Display
 import com.github.javiersantos.appupdater.enums.UpdateFrom
 import kotlinx.android.synthetic.main.dialog_fullpoznamka.view.*
 import kotlinx.android.synthetic.main.dialog_register.view.*
@@ -78,10 +76,12 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val initialSetup: InitialSetup = InitialSetup()
         var networkTask: NetworkTask
 
-        /*var updater = AppUpdater(this)
-            .setDisplay(Display.DIALOG)
-            .setUpdateFrom(UpdateFrom.GITHUB)
-            .setGitHubUserAndRepo("Apuna12", "LetsDream")
+        var updater = AppUpdater(this)
+            .setUpdateFrom(UpdateFrom.XML)
+            .setUpdateXML("https://github.com/apuna12/LetsDream/tree/master/app/src/main/res/xml/provider_paths.xml")
+
+        updater.start()
+            /*.setGitHubUserAndRepo("Apuna12", "LetsDream")
             .setTitleOnUpdateAvailable("Nová verzia dostupná")
             .setContentOnUpdateAvailable("Stiahnite si prosím novú verziu aplikácie")
             .setTitleOnUpdateNotAvailable("Nová verzia nie je dostupná")
@@ -89,15 +89,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .setButtonUpdate("Stiahnúť")
             .setButtonDismiss("Neskôr")
             .setIcon(R.drawable.ic_system_update_white_24dp)
-            .setCancelable(false)
-        updater.start()*/
-
-        val url = "https://github.com/apuna12/LetsDream/tree/master/app/release/app-release.apk"
-
-        val downloadApk = DownloadApk(this@LoginActivity)
-
-        downloadApk.startDownloadingApk(url)
-
+            .setCancelable(false)*/
 
 
         if (isOnline(this)) {
