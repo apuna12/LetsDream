@@ -78,6 +78,14 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         var updater = AppUpdater(this)
             .setUpdateFrom(UpdateFrom.XML)
+            .setTitleOnUpdateAvailable("Nová verzia dostupná")
+            .setContentOnUpdateAvailable("Stiahnite si prosím novú verziu aplikácie")
+            .setTitleOnUpdateNotAvailable("Nová verzia nie je dostupná")
+            .setContentOnUpdateNotAvailable("Nová verzia aplikácie Let's Dream nie je dostupná. Skúste neskôr")
+            .setButtonUpdate("Stiahnúť")
+            .setButtonDismiss("Neskôr")
+            .setIcon(R.drawable.ic_system_update_white_24dp)
+            .setCancelable(false)
             .setUpdateXML("https://github.com/apuna12/LetsDream/tree/master/app/src/main/res/xml/provider_paths.xml")
 
         updater.start()

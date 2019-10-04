@@ -1,7 +1,7 @@
 <AppUpdater>
     <update>
         <latestVersion>1.1</latestVersion>
-        <latestVersionCode>1</latestVersionCode>
+        <latestVersionCode>2</latestVersionCode>
         <url>https://github.com/apuna12/LetsDream/tree/master/app/release</url>
     </update>
 </AppUpdater>
