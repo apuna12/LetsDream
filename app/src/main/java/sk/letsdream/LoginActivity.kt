@@ -1,6 +1,7 @@
 package sk.letsdream
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
@@ -14,6 +15,7 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.text.InputFilter
 import android.text.InputType
 import android.view.*
 import android.widget.*
@@ -22,6 +24,10 @@ import java.net.URL
 import java.security.MessageDigest
 import android.widget.TextView
 import android.widget.EditText
+import com.github.javiersantos.appupdater.AppUpdater
+import com.github.javiersantos.appupdater.enums.Display
+import com.github.javiersantos.appupdater.enums.UpdateFrom
+import kotlinx.android.synthetic.main.dialog_fullpoznamka.view.*
 import kotlinx.android.synthetic.main.dialog_register.view.*
 import sk.letsdream.dbMethods.DBConnection
 import sk.letsdream.helperMethods.*
@@ -71,6 +77,20 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val initialSetup: InitialSetup = InitialSetup()
         var networkTask: NetworkTask
 
+        var updater = AppUpdater(this)
+            .setDisplay(Display.DIALOG)
+            .setUpdateFrom(UpdateFrom.GITHUB)
+            .setGitHubUserAndRepo("Apuna12", "LetsDream")
+            .setTitleOnUpdateAvailable("Nová verzia dostupná")
+            .setContentOnUpdateAvailable("Stiahnite si prosím novú verziu aplikácie")
+            .setTitleOnUpdateNotAvailable("Nová verzia nie je dostupná")
+            .setContentOnUpdateNotAvailable("Nová verzia aplikácie Let's Dream nie je dostupná. Skúste neskôr")
+            .setButtonUpdate("Stiahnúť")
+            .setButtonDismiss("Neskôr")
+            .setIcon(R.drawable.ic_system_update_white_24dp)
+            .setCancelable(false)
+        updater.start()
+
 
 
         if (isOnline(this)) {
@@ -99,6 +119,7 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 var usernameEdt: EditText = findViewById(R.id.userEdt)
                 val registerBtn: Button = findViewById(R.id.registraciaBtn)
                 val loginBtn: Button = findViewById(R.id.prihlasBtn)
+                val oNas: TextView = findViewById(R.id.textView21)
 
                 usernameEdt.setOnFocusChangeListener { v, hasFocus ->
                     vibrate.vibrate(70)
@@ -107,6 +128,20 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     } else {
                         if (usernameEdt.text.toString() == "")
                             usernameEdt.hint = "Používateľ"
+                    }
+                }
+
+                oNas.setOnClickListener{
+                    vibrate.vibrate(70)
+
+                    val dialogView =
+                        LayoutInflater.from(this).inflate(R.layout.dialog_about, null)
+                    val mBuilder = AlertDialog.Builder(this).setView(dialogView)
+                    dialogView.fullPoznDialog.filters =
+                        arrayOf(*dialogView.fullPoznDialog.filters, InputFilter.LengthFilter(100))
+                    val mAlertDialog = mBuilder.show()
+                    dialogView.buttonSpatDialog.setOnClickListener {
+                        mAlertDialog.dismiss()
                     }
                 }
 

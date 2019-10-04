@@ -119,7 +119,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
         android:layout_marginLeft="52dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="27dp"
         android:text="dd.MM.YYYY"
         android:textColor="@color/colorWhite"
         app:layout_constraintStart_toStartOf="parent"
@@ -129,7 +129,7 @@
         android:id="@+id/timeTW"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="27dp"
         android:layout_marginEnd="56dp"
         android:layout_marginRight="56dp"
         android:text="HH:MM"
@@ -141,7 +141,7 @@
         android:id="@+id/vybermenaLABEL_VM"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="25dp"
         android:text="Výber používateľa"
         android:textColor="@color/colorWhite"
         app:layout_constraintStart_toStartOf="@+id/full_dateTW"
@@ -171,11 +171,11 @@
         android:id="@+id/adminUserTW_VM"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="340dp"
+        android:layout_marginTop="25dp"
         android:text="Používateľ"
         android:textColor="@color/colorWhite"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/vybermenaLABEL_VM" />
+        app:layout_constraintStart_toStartOf="@+id/full_dateTW"
+        app:layout_constraintTop_toBottomOf="@+id/vybermenaLABEL_VM" />
 
     <TextView
         android:id="@+id/textView20"
@@ -191,11 +191,11 @@
         android:id="@+id/textView16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="264dp"
+        android:layout_marginTop="20dp"
         android:text="Spravovať registrácie "
         android:textColor="@color/colorWhite"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/adminUserTW_VM" />
+        app:layout_constraintStart_toStartOf="@+id/full_dateTW"
+        app:layout_constraintTop_toBottomOf="@+id/showDochadzka" />
 
     <TextView
         android:id="@+id/leftBracket"
@@ -233,13 +233,11 @@
         android:id="@+id/showDochadzka"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="304dp"
+        android:layout_marginTop="20dp"
         android:text="Zobraziť dochádzku"
         android:textColor="@color/yellow"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/adminUserTW_VM"
-        app:layout_constraintTop_toBottomOf="@+id/adminUserTW_VM"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintStart_toStartOf="@+id/full_dateTW"
+        app:layout_constraintTop_toBottomOf="@+id/adminUserTW_VM" />
 
     <TextView
         android:id="@+id/deleteUser"
@@ -247,7 +245,6 @@
         android:layout_height="wrap_content"
         android:text="Zmazať používateľa"
         android:textColor="@color/yellow"
-
         app:layout_constraintBottom_toBottomOf="@+id/showDochadzka"
         app:layout_constraintEnd_toEndOf="@+id/textView20"
         app:layout_constraintTop_toTopOf="@+id/showDochadzka" />
@@ -256,11 +253,11 @@
         android:id="@+id/textView18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="224dp"
+        android:layout_marginTop="20dp"
         android:text="Celkový počet hodín:"
         android:textColor="@color/colorWhite"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView16" />
+        app:layout_constraintStart_toStartOf="@+id/full_dateTW"
+        app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
     <TextView
         android:id="@+id/pocetHodin"
@@ -280,7 +277,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="60dp"
         android:text="História akcií"
         android:textColor="@color/yellow"

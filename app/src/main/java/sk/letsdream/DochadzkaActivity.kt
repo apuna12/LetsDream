@@ -208,7 +208,7 @@ class DochadzkaActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                             "Prosím vyplňte všetky potrebné informácie",
                             Toast.LENGTH_SHORT
                         ).show()
-                    else if (meno.text.toString() == "Vyberte meno")
+                    else if (meno.text.toString() == "Vyberte meno" || meno.text.toString() == "")
                         Toast.makeText(this, "Nevybrali ste meno", Toast.LENGTH_SHORT).show()
                     else {
                         var timeParser = SimpleDateFormat("HH:mm")

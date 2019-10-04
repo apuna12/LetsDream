@@ -3,183 +3,185 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/dialog_back">
-    <LinearLayout
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Upraviť dochádzku"
-            android:textColor="#000"
-            android:textSize="25dp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:paddingBottom="20dp"/>
-    </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Meno"
-        android:textStyle="bold"
-        android:textColor="#000"
-        android:paddingStart="20dp"
-        android:textSize="16dp"
-        android:paddingBottom="5dp"/>
-    <TextView
-        android:id="@+id/menoDialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="meno"
-        android:textColor="#000"
-        android:paddingStart="20dp"
-        android:paddingBottom="25dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dátum príchodu"
-        android:textStyle="bold"
-        android:textColor="#000"
-        android:paddingStart="20dp"
-        android:textSize="16dp"
-        android:paddingBottom="5dp"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="20dp">
-        <TextView
-            android:id="@+id/datumPrichoduDialog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="datum"
-            android:textColor="#000"
-            android:paddingBottom="25dp"/>
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Čas príchodu"
-        android:textStyle="bold"
-        android:textColor="#000"
-        android:paddingStart="20dp"
-        android:textSize="16dp"
-        android:paddingBottom="5dp"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="20dp">
-        <TextView
-            android:id="@+id/casPrichoduDialog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="cas"
-            android:textColor="#000"
-            android:paddingBottom="25dp"/>
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dátum odchodu"
-        android:textStyle="bold"
-        android:textColor="#000"
-        android:paddingStart="20dp"
-        android:textSize="16dp"
-        android:paddingBottom="5dp"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="20dp">
-        <TextView
-            android:id="@+id/datumOdchoduDialog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="datum"
-            android:textColor="#000"
-            android:paddingBottom="25dp"/>
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Čas odchodu"
-        android:textStyle="bold"
-        android:textColor="#000"
-        android:paddingStart="20dp"
-        android:textSize="16dp"
-        android:paddingBottom="5dp"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="20dp">
-        <TextView
-            android:id="@+id/casOdchoduDialog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="cas"
-            android:textColor="#000"
-            android:paddingBottom="25dp"/>
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Poznámka"
-        android:textStyle="bold"
-        android:textColor="#000"
-        android:paddingStart="20dp"
-        android:textSize="16dp"
-        android:paddingBottom="5dp"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="20dp">
-        <EditText
-            android:id="@+id/poznamkaDialog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="poznamka"
-            android:textColor="#000"
-            android:paddingBottom="25dp"/>
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="left">
-            <Button
-                android:id="@+id/buttonSpatDialog"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Späť"/>
-        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="right">
-            <Button
-                android:id="@+id/buttonPotvrditDialog"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Upraviť dochádzku"
+                    android:textColor="#000"
+                    android:textSize="25dp"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:paddingBottom="20dp"/>
+            </LinearLayout>
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:text="Potvrdiť"/>
+                android:text="Meno"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:paddingStart="20dp"
+                android:textSize="16dp"
+                android:paddingBottom="5dp"/>
+            <TextView
+                android:id="@+id/menoDialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="meno"
+                android:textColor="#000"
+                android:paddingStart="20dp"
+                android:paddingBottom="25dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dátum príchodu"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:paddingStart="20dp"
+                android:textSize="16dp"
+                android:paddingBottom="5dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp">
+                <TextView
+                    android:id="@+id/datumPrichoduDialog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="datum"
+                    android:textColor="#000"
+                    android:paddingBottom="25dp"/>
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Čas príchodu"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:paddingStart="20dp"
+                android:textSize="16dp"
+                android:paddingBottom="5dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp">
+                <TextView
+                    android:id="@+id/casPrichoduDialog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="cas"
+                    android:textColor="#000"
+                    android:paddingBottom="25dp"/>
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dátum odchodu"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:paddingStart="20dp"
+                android:textSize="16dp"
+                android:paddingBottom="5dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp">
+                <TextView
+                    android:id="@+id/datumOdchoduDialog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="datum"
+                    android:textColor="#000"
+                    android:paddingBottom="25dp"/>
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Čas odchodu"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:paddingStart="20dp"
+                android:textSize="16dp"
+                android:paddingBottom="5dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp">
+                <TextView
+                    android:id="@+id/casOdchoduDialog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="cas"
+                    android:textColor="#000"
+                    android:paddingBottom="25dp"/>
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Poznámka"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:paddingStart="20dp"
+                android:textSize="16dp"
+                android:paddingBottom="5dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp">
+                <EditText
+                    android:id="@+id/poznamkaDialog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="poznamka"
+                    android:textColor="#000"
+                    android:paddingBottom="25dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="left">
+                    <Button
+                        android:id="@+id/buttonSpatDialog"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Späť"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="right">
+                    <Button
+                        android:id="@+id/buttonPotvrditDialog"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:text="Potvrdiť"/>
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
-
-
-    </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

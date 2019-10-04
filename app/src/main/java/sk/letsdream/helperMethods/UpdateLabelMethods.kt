@@ -9,10 +9,7 @@ import android.os.Vibrator
 import android.support.v4.content.ContextCompat.startActivity
 import android.text.InputFilter
 import android.text.TextUtils
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import kotlinx.android.synthetic.main.dialog_fullaction.view.casDoAkcieDialog
 import kotlinx.android.synthetic.main.dialog_fullaction.view.casOdAkcieDialog
@@ -470,7 +467,7 @@ class UpdateLabelMethods {
 
 
     fun processDochadzka(
-        context: Context,
+        context: Activity,
         intent: Intent,
         privileges: String,
         name: String? = null
@@ -613,7 +610,56 @@ class UpdateLabelMethods {
                                             dialogView.poznamkaDialog.setText(poznamka.text)
 
 
+                                            dialogView.menoDialog.setOnClickListener {
+                                                var networkTask = NetworkTask(context)
+                                                networkTask.execute()
+                                                if(isOnline(context)) {
+                                                    var namesList: Array<String>
 
+                                                    namesList =
+                                                        dbMethods.getAllApprovedNames().split("?")
+                                                            .toTypedArray()
+                                                    namesList = namesList.dropLast(1).toTypedArray()
+                                                    namesList = namesList.sortedArray()
+
+                                                    val wrapper: Context = ContextThemeWrapper(
+                                                        context,
+                                                        R.style.popupMenuStyle
+                                                    )
+                                                    var popUpMenu: PopupMenu =
+                                                        PopupMenu(wrapper, dialogView.menoDialog)
+                                                    if (namesList.size > 0) {
+                                                        for (i in 0 until namesList.size) {
+                                                            if (namesList[i] != null || namesList[i] != "") {
+                                                                popUpMenu.menu.add(namesList[i])
+                                                            }
+                                                        }
+
+                                                        popUpMenu.setOnMenuItemClickListener {
+                                                            vibrate.vibrate(70)
+                                                            networkTask = NetworkTask(context)
+                                                            networkTask.execute()
+                                                            dialogView.menoDialog.text = it.title.toString()
+                                                            true
+                                                        }
+                                                        popUpMenu.show()
+
+                                                    } else
+                                                        Toast.makeText(
+                                                            context,
+                                                            "Hups! Neexistujú žiadne mená v databáze",
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
+                                                }
+                                                else
+                                                {
+                                                    Toast.makeText(
+                                                        context,
+                                                        "Hups! Nie ste pripojený na internet.",
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
+                                                }
+                                            } //vybrat meno zo zoznamu po kliknuti na meno
 
 
                                             dialogView.casPrichoduDialog.setOnClickListener {
@@ -694,7 +740,7 @@ class UpdateLabelMethods {
 
                                                         var updateResult =
                                                             dbMethods.updateDochadzka(
-                                                                meno.text.toString(),
+                                                                dialogView.menoDialog.text.toString(),
                                                                 dateOdTIME,
                                                                 dateDoTIME,
                                                                 casOdTIME,
@@ -709,6 +755,7 @@ class UpdateLabelMethods {
                                                                 "Dochádzka zmenená",
                                                                 Toast.LENGTH_LONG
                                                             ).show()
+                                                            context.finish()
                                                             startActivity(context, intent, null)
                                                             mAlertDialog.dismiss()
                                                         } else {

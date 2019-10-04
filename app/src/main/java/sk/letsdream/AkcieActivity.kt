@@ -268,11 +268,12 @@ class AkcieActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                 updateLabelMethods.updateTimeLabel(this, casOd, casDo, nazovAkcieVedlaSpinnera)
             }
-            Toast.makeText(
-                this,
-                "Hups! Nie ste pripojený na internet.",
-                Toast.LENGTH_SHORT
-            ).show()
+            else
+                Toast.makeText(
+                    this,
+                    "Hups! Nie ste pripojený na internet.",
+                    Toast.LENGTH_SHORT
+                ).show()
         }
         upravitDobr.setOnClickListener {
             vibrate.vibrate(70)
