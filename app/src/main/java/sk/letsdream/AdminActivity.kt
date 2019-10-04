@@ -564,7 +564,7 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                         } else
                             Toast.makeText(
                                 this,
-                                "Nezaškrtli ste, že rozumiete ako táto funkcia funguje",
+                                "Nezaškrtli ste, že rozumiete ako táto funkcia funguje.",
                                 Toast.LENGTH_SHORT
                             ).show()
                     } else {
