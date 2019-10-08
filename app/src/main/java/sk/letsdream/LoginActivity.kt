@@ -1,15 +1,17 @@
 package sk.letsdream
 
+import android.Manifest
 import android.app.AlertDialog
-import android.app.Dialog
-import android.content.Context
-import android.content.Intent
+import android.app.DownloadManager
+import android.app.ProgressDialog
+import android.content.*
+import android.content.pm.PackageManager
 import android.net.ConnectivityManager
-import android.os.Bundle
-import android.os.Handler
-import android.os.StrictMode
-import android.os.Vibrator
+import android.net.Uri
+import android.os.*
+import android.support.annotation.NonNull
 import android.support.design.widget.NavigationView
+import android.support.v4.content.FileProvider
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
@@ -17,6 +19,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.text.InputFilter
 import android.text.InputType
+import android.util.Log
 import android.view.*
 import android.widget.*
 import java.lang.Exception
@@ -24,18 +27,22 @@ import java.net.URL
 import java.security.MessageDigest
 import android.widget.TextView
 import android.widget.EditText
-import com.github.javiersantos.appupdater.AppUpdater
-import com.github.javiersantos.appupdater.enums.UpdateFrom
 import kotlinx.android.synthetic.main.dialog_fullpoznamka.view.*
 import kotlinx.android.synthetic.main.dialog_register.view.*
+import pub.devrel.easypermissions.EasyPermissions
 import sk.letsdream.dbMethods.DBConnection
 import sk.letsdream.helperMethods.*
-
+import java.io.BufferedInputStream
+import java.io.File
+import java.io.FileOutputStream
+import kotlin.system.exitProcess
 
 
 class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private var doubleBackToExitPressedOnce = false
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -76,29 +83,58 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val initialSetup: InitialSetup = InitialSetup()
         var networkTask: NetworkTask
 
-        var updater = AppUpdater(this)
-            .setUpdateFrom(UpdateFrom.XML)
-            .setTitleOnUpdateAvailable("Nová verzia dostupná")
-            .setContentOnUpdateAvailable("Stiahnite si prosím novú verziu aplikácie")
-            .setTitleOnUpdateNotAvailable("Nová verzia nie je dostupná")
-            .setContentOnUpdateNotAvailable("Nová verzia aplikácie Let's Dream nie je dostupná. Skúste neskôr")
-            .setButtonUpdate("Stiahnúť")
-            .setButtonDismiss("Neskôr")
-            .setIcon(R.drawable.ic_system_update_white_24dp)
-            .setCancelable(false)
-            .setUpdateXML("https://github.com/apuna12/LetsDream/tree/master/app/src/main/res/xml/provider_paths.xml")
 
-        updater.start()
-            /*.setGitHubUserAndRepo("Apuna12", "LetsDream")
-            .setTitleOnUpdateAvailable("Nová verzia dostupná")
-            .setContentOnUpdateAvailable("Stiahnite si prosím novú verziu aplikácie")
-            .setTitleOnUpdateNotAvailable("Nová verzia nie je dostupná")
-            .setContentOnUpdateNotAvailable("Nová verzia aplikácie Let's Dream nie je dostupná. Skúste neskôr")
-            .setButtonUpdate("Stiahnúť")
-            .setButtonDismiss("Neskôr")
-            .setIcon(R.drawable.ic_system_update_white_24dp)
-            .setCancelable(false)*/
+        var packageInfo = packageManager.getPackageInfo(this.packageName, 0)
+        var curVersionCode = packageInfo.versionCode
+        var newVersionCode = dbMethods.checkNewVersionCode().toInt()
 
+
+        if(curVersionCode < newVersionCode)
+        {
+            lateinit var dialog: AlertDialog
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Aktualizácia")
+            builder.setMessage("Je dostupná aktualizácia aplikácie Let's Dream. Stiahnúť?")
+            val dialogClickListener = DialogInterface.OnClickListener { _, which ->
+                when (which) {
+                    DialogInterface.BUTTON_POSITIVE -> {
+                        vibrate.vibrate(70)
+
+                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                        {
+                            if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                                    PackageManager.PERMISSION_DENIED)
+                            {
+                                requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1000)
+                            }
+                            else
+                            {
+                                startDownloading()
+
+                            }
+                        }
+                        else {
+                            startDownloading()
+                        }
+
+
+                    }
+                    DialogInterface.BUTTON_NEGATIVE -> {
+                        vibrate.vibrate(70)
+                        dialog.dismiss()
+                        moveTaskToBack(true)
+                        exitProcess(-1)
+                    }
+                }
+            }
+            builder.setPositiveButton("Áno", dialogClickListener)
+
+            builder.setNegativeButton("Nie", dialogClickListener)
+
+            dialog = builder.create()
+
+            dialog.show()
+        }
 
         if (isOnline(this)) {
             if (initialSetup.initialDBCreation() != "111") {
@@ -584,6 +620,93 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
+    private fun startDownloading() {
+
+        var networkTask = NetworkTask(this)
+        networkTask.execute()
+
+        val url = "http://letsdream.xf.cz/index.php?mod=downloadNewVersion&rest=get"
+
+        var downloadmanager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        var uri = Uri.parse(url)
+
+        var request = DownloadManager.Request(uri)
+
+        var filename = "app-release.apk"
+
+        var fullPath: String =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() +
+                    "/" + filename
+
+
+        val myFile = File(fullPath)
+        if (myFile.exists())
+            myFile.delete()
+
+        request.setTitle("Let's Dream")
+        request.setDescription("Downloading")
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setVisibleInDownloadsUi(false)
+        request.setDestinationUri(
+            Uri.parse("file://" + fullPath)
+        )
+
+        downloadmanager.enqueue(request)
+
+        var onComplete:BroadcastReceiver = object:BroadcastReceiver() {
+            override fun onReceive(context:Context, intent:Intent) {
+
+
+                myFile.setReadable(true, false)
+
+                if(Build.VERSION.SDK_INT > 23) {
+                    val uri = FileProvider.getUriForFile(
+                        this@LoginActivity,
+                        BuildConfig.APPLICATION_ID + ".provider",
+                        myFile
+                    )
+                    val intent = Intent(Intent.ACTION_INSTALL_PACKAGE)
+                    intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    intent.setDataAndType(uri, "application/vnd.android.package-archive")
+                    startActivity(intent)
+                }
+                else
+                {
+                    var intent = Intent(Intent.ACTION_VIEW)
+                    intent.setDataAndType(Uri.fromFile(myFile), "application/vnd.android.package-archive")
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
+                }
+            }
+        }
+        registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+
+
+    }
+
+
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when(requestCode)
+        {
+            1000 ->{
+                if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    startDownloading()
+                }
+                else
+                {
+                    Toast.makeText(this, "Permission denied!", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
     override fun onBackPressed() {
         if (doubleBackToExitPressedOnce) {
             super.onBackPressed()
@@ -645,4 +768,6 @@ class LoginActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val networkInfo = connectivityManager.activeNetworkInfo
         return networkInfo != null && networkInfo.isConnected
     }
+
+
 }

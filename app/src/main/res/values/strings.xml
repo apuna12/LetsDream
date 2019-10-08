@@ -25,4 +25,10 @@
         či naozaj chcete vymazať všetky hodnoty z databázy. Po spustení tejto funkcie budú záznamy
         nenávratne zmazané.</string>
 
+    <string name="app_name2">Download File from URL</string>
+    <string name="http">http://</string>
+    <string name="download">Download</string>
+    <string name="write_file">This app needs access to your file storage so that it can write files.</string>
+
 </resources>
+

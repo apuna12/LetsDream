@@ -1,7 +1,4 @@
-<AppUpdater>
-    <update>
-        <latestVersion>1.1</latestVersion>
-        <latestVersionCode>2</latestVersionCode>
-        <url>https://github.com/apuna12/LetsDream/tree/master/app/release</url>
-    </update>
-</AppUpdater>
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <external-path name="Download" path="Download"/>
+</paths>

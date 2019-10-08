@@ -991,6 +991,39 @@ class DBConnection {
         }
         return "0"
     }
+
+    fun checkNewVersionCode(): String {
+        val sql =
+                "http://letsdream.xf.cz/index.php?mod=versionCode&rest=get"
+
+        try {
+            var jsonStr: String = URL(sql).readText()
+            var firstApp: Int = 0
+            var lastApp: Int = 0
+            if (jsonStr.toString().contains("<") || jsonStr.toString().contains(">")) {
+                for (i in 0 until jsonStr.toString().length) {
+                    if (jsonStr[i] == '<') {
+                        firstApp = i
+                        break
+                    }
+                }
+                for (i in 0 until jsonStr.toString().length) {
+                    if (jsonStr[i] == '>')
+                        lastApp = i
+                }
+                jsonStr = jsonStr.removeRange(firstApp, lastApp + 1)
+                if (jsonStr == "Unable to open file!") {
+                    return "0"
+                } else {
+                    return jsonStr
+                }
+            }
+
+        } catch (e: Exception) {
+            throw Exception(e)
+        }
+        return "0"
+    }
 }
 
 
