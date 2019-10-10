@@ -16,7 +16,7 @@
 
     <string name="main_layout_akcie">Akcie</string>
     <string name="main_layout_statistika">Štatistika</string>
-    <string name="main_layout_vyber_mena">Výber mena</string>
+    <string name="main_layout_vyber_mena">Užívateľský panel</string>
     <string name="main_layout_prichod_odchod">Príchod / odchod</string>
     <string name="backupdb">Táto funkcia slúži k zálohovaniu všetkých databáz, následnemu uloženiu
         do excelovského súboru a odoslaniu databáz manažérovi O.Z. Pri tejto funkcii nedochádza k
