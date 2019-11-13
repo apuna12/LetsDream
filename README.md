@@ -7,6 +7,6 @@ TODO:
 
 - add option to navigate to action
 - static analysis tool for code quality
--
+- forbid multitapping
 
  
